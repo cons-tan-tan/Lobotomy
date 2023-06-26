@@ -1,0 +1,18 @@
+{
+  "itemGroup.lobotomy": "Lobotomy Mod",
+
+
+  "item.lobotomy.giant_tree_sap": "Giant Tree Sap",
+  "item.lobotomy.giant_tree_sap.unknown": "T-09-80",
+
+
+  "tooltip.lobotomy.press_shift.tooltip": "Press §eShift§r to show details",
+  "tooltip.lobotomy.giant_tree_sap.tooltip": "aaa",
+  "tooltip.lobotomy.giant_tree_sap.tooltip.shift": "bbb",
+
+
+  "death.attack.lobotomy.giant_tree_sap": "%1$s returned what %1$s has borrowed",
+
+
+  "effect.lobotomy.owing": "Owing"
+}

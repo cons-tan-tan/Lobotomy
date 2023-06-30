@@ -69,7 +69,7 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
             double maxHealthModifier = ANGRY_MAX_HEALTH - this.getMaxHealth();
             this.getAttribute(Attributes.MAX_HEALTH)
                     .addTransientModifier(new AttributeModifier("MaxHealth", maxHealthModifier, AttributeModifier.Operation.ADDITION));
-            this.setHealth(this.getMaxHealth());
+            this.setHealth(this.getMaxHealth() - pAmount);
             this.setAngry(true);
         }
         return flag;

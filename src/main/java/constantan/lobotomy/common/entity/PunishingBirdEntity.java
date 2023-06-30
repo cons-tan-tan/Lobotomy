@@ -65,7 +65,7 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FALL) return false;
         boolean flag = super.hurt(pSource, pAmount);
-        if (flag && this.getMaxHealth() < ANGRY_MAX_HEALTH && pSource == DamageSource.OUT_OF_WORLD) {
+        if (flag && this.getMaxHealth() < ANGRY_MAX_HEALTH && pSource != DamageSource.OUT_OF_WORLD) {
             double maxHealthModifier = ANGRY_MAX_HEALTH - this.getMaxHealth();
             this.getAttribute(Attributes.MAX_HEALTH)
                     .addTransientModifier(new AttributeModifier("MaxHealth", maxHealthModifier, AttributeModifier.Operation.ADDITION));

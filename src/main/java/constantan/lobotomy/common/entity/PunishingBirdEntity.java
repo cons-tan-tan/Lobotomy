@@ -21,7 +21,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -32,8 +31,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
-
-import java.util.EnumSet;
 
 public class PunishingBirdEntity extends Monster implements IAnimatable {
 
@@ -53,8 +50,11 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     protected static final AnimationBuilder ATTACK_ANGRY = new AnimationBuilder()
             .addAnimation("animation.punishing_bird.attack_angry", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
-    public static final float NORMAL_MAX_HEALTH = 200.0F;
-    public static final float ANGRY_MAX_HEALTH = 1000.0F;
+    public static final double NORMAL_MAX_HEALTH = 200.0D;
+    public static final double ANGRY_MAX_HEALTH = 1000.0D;
+
+    public static final double NORMAL_ATTACK_DAMAGE = 1.0D;
+    public static final double ANGRY_ATTACK_DAMAGE = 1000.0D;
 
     public PunishingBirdEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -63,9 +63,10 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
+        if (pSource == DamageSource.FALL) return false;
         boolean flag = super.hurt(pSource, pAmount);
         if (flag && this.getMaxHealth() < ANGRY_MAX_HEALTH) {
-            float maxHealthModifier = ANGRY_MAX_HEALTH - this.getMaxHealth();
+            double maxHealthModifier = ANGRY_MAX_HEALTH - this.getMaxHealth();
             this.getAttribute(Attributes.MAX_HEALTH)
                     .addTransientModifier(new AttributeModifier("MaxHealth", maxHealthModifier, AttributeModifier.Operation.ADDITION));
             this.setHealth(this.getMaxHealth());
@@ -86,17 +87,17 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     public static AttributeSupplier setAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, NORMAL_MAX_HEALTH)
-                .add(Attributes.ATTACK_DAMAGE, 10.0F)
-                .add(Attributes.ATTACK_SPEED, 1.0F)
+                .add(Attributes.ATTACK_DAMAGE, NORMAL_ATTACK_DAMAGE)
+                .add(Attributes.ATTACK_SPEED, 1.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.1F)
                 .add(Attributes.FLYING_SPEED, 0.3F)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5F).build();
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.8D).build();
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new PunishingBirdAngryAttackGoal(this, 2.0F, false));
+        this.goalSelector.addGoal(2, new PunishingBirdAngryAttackGoal(this, 2.0F, true));
         this.goalSelector.addGoal(3, new PunishingBirdNormalAttackGoal(this, 1.0F, false));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -116,11 +117,11 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level.isClientSide()) this.getEntityData().set(ATTACK_TICK, this.getAttackTick() - 1);
+        if (!this.level.isClientSide()) this.getEntityData().set(ATTACK_TICK, Math.max(this.getAttackTick() - 1, 0));
     }
 
-    private <E extends PunishingBirdEntity>PlayState predicate(final AnimationEvent<E> event) {
-        if (this.getMaxHealth() == 1000.0F) {
+    private <E extends PunishingBirdEntity>PlayState bodyPredicate(final AnimationEvent<E> event) {
+        if (this.isAngry()) {
             event.getController().setAnimation(FLY_ANGRY);
             return PlayState.CONTINUE;
         }
@@ -133,10 +134,9 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     }
 
     private PlayState attackPredicate(AnimationEvent event) {
-        if (this.getMaxHealth() == 1000.0F && this.swinging) {
+        if (this.isAngry() && this.swinging) {
             event.getController().markNeedsReload();
             event.getController().setAnimation(ATTACK_ANGRY);
-            this.swinging = false;
         } else if (this.swinging) {
             event.getController().markNeedsReload();
             event.getController().setAnimation(ATTACK_NORMAL);
@@ -147,8 +147,8 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
 
     @Override
     public void registerControllers(final AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller",
-                0, this::predicate));
+        data.addAnimationController(new AnimationController(this, "body_controller",
+                0, this::bodyPredicate));
         data.addAnimationController(new AnimationController(this, "attack_controller",
                 0, this::attackPredicate));
     }
@@ -199,8 +199,11 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         return isAngry() ? new TranslatableComponent(descriptionID) : new TranslatableComponent(descriptionID + ".unknown");
     }
 
+    /**
+     * 通常攻撃
+     */
     static class PunishingBirdNormalAttackGoal extends MeleeAttackGoal {
-        PunishingBirdEntity owner;
+        protected PunishingBirdEntity owner;
 
         public PunishingBirdNormalAttackGoal(PunishingBirdEntity pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
             super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
@@ -218,8 +221,12 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         }
     }
 
+    /**
+     * 特殊攻撃
+     */
     public class PunishingBirdAngryAttackGoal extends MeleeAttackGoal {
         protected PunishingBirdEntity owner;
+        protected boolean isPunishing = false;
 
         public PunishingBirdAngryAttackGoal(PunishingBirdEntity pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
             super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
@@ -237,8 +244,35 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         }
 
         @Override
+        protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
+            double d0 = this.getAttackReachSqr(pEnemy);
+            boolean isValidRange = pDistToEnemySqr <= d0;
+            boolean isReadyRange = pDistToEnemySqr <= d0 * 0.75D;
+            if (this.isPunishing && this.owner.getAttackTick() == 25) {
+                if (isValidRange) this.mob.doHurtTarget(pEnemy);
+                LibDebug log = new LibDebug();
+                log.addChatMessage(isValidRange ? "attack!" : "miss!");
+            }
+            if (!this.isPunishing && isReadyRange) {
+                this.mob.swing(InteractionHand.MAIN_HAND);
+                this.owner.startAttackAnim();
+                this.owner.getAttribute(Attributes.FLYING_SPEED)
+                        .addTransientModifier(new AttributeModifier("FlyingSpeed", 0.0F, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                double attackDamageModifier = ANGRY_ATTACK_DAMAGE - this.owner.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
+                this.owner.getAttribute(Attributes.ATTACK_DAMAGE)
+                        .addTransientModifier(new AttributeModifier("AttackDamage", attackDamageModifier, AttributeModifier.Operation.ADDITION));
+                this.isPunishing = true;
+            }
+
+            if (this.owner.getAttackTick() == 0) {
+                this.owner.getAttribute(Attributes.FLYING_SPEED).removeModifiers();
+                this.isPunishing = false;
+            }
+        }
+
+        @Override
         protected double getAttackReachSqr(LivingEntity pAttackTarget) {
-            return super.getAttackReachSqr(pAttackTarget) + 48.0D;
+            return super.getAttackReachSqr(pAttackTarget) + 20.0D;
         }
     }
 }

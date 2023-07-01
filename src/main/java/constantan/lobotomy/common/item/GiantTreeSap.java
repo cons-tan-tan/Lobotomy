@@ -2,7 +2,6 @@ package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.common.effect.OwingEffect;
 import constantan.lobotomy.common.init.ModEffects;
-import constantan.lobotomy.lib.LibDebug;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -22,7 +21,7 @@ import java.util.Random;
 public class GiantTreeSap extends ItemMod{
     private static final int DRINK_DURATION = 32;
 
-    private static float COMPENSATE_PROBABILITY = 0f;
+    private static float compensateProbability = 0f;
     public GiantTreeSap(Properties properties) {
         super(properties);
     }
@@ -51,16 +50,12 @@ public class GiantTreeSap extends ItemMod{
         if (!level.isClientSide && livingEntity instanceof Player player) {
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 1200, 3));
             Random random = new Random();
-            LibDebug libDebug = new LibDebug();
             if (OwingEffect.getTargetUUID() != null) {
-                libDebug.addChatMessage("INVALID");
-            } else if (random.nextFloat() < COMPENSATE_PROBABILITY) {
+            } else if (random.nextFloat() < compensateProbability) {
                 OwingEffect.setTargetUUID(player.getUUID());
-                COMPENSATE_PROBABILITY = 0F;
-                libDebug.addChatMessage("OUT!!");
-            } else if (COMPENSATE_PROBABILITY < 0.6F) {
-                COMPENSATE_PROBABILITY += 0.15F;
-                libDebug.addChatMessage("SAFE:Next Probability = " + COMPENSATE_PROBABILITY);
+                compensateProbability = 0F;
+            } else if (compensateProbability < 0.6F) {
+                compensateProbability += 0.15F;
             }
             if (player.getUUID() != OwingEffect.getTargetUUID()) {
                 player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 400, 0, false, false, false)

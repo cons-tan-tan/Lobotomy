@@ -248,10 +248,8 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
             double d0 = this.getAttackReachSqr(pEnemy);
             boolean isValidRange = pDistToEnemySqr <= d0;
             boolean isReadyRange = pDistToEnemySqr <= d0 * 0.75D;
-            if (this.isPunishing && this.owner.getAttackTick() == 25) {
-                if (isValidRange) this.mob.doHurtTarget(pEnemy);
-                LibDebug log = new LibDebug();
-                log.addChatMessage(isValidRange ? "attack!" : "miss!");
+            if (this.isPunishing && this.owner.getAttackTick() == 25 && isValidRange) {
+                this.mob.doHurtTarget(pEnemy);
             }
             if (!this.isPunishing && isReadyRange) {
                 this.mob.swing(InteractionHand.MAIN_HAND);

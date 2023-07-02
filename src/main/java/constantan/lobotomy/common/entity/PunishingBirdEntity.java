@@ -35,10 +35,8 @@ import java.util.UUID;
 
 public class PunishingBirdEntity extends Monster implements IAnimatable {
 
-    private static final EntityDataAccessor<Boolean> IS_ANGRY =
-            SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> ATTACK_TICK =
-            SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 

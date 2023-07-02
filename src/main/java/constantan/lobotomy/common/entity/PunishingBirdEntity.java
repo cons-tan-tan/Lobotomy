@@ -1,6 +1,5 @@
 package constantan.lobotomy.common.entity;
 
-import constantan.lobotomy.lib.LibDebug;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -36,6 +35,7 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
 
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> REST_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
@@ -55,6 +55,10 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
 
     public static final double NORMAL_ATTACK_DAMAGE = 1.0D;
     public static final double ANGRY_ATTACK_DAMAGE = 1000.0D;
+
+    public static final int WAIT_ANIMATION_TICK = 50;
+    public static final int OCCUR_ATTACKING_TICK = 25;
+    public static final int ENOUGH_REST_TICK = 1200;
 
     public PunishingBirdEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -108,7 +112,7 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
 
             @Override
             protected AABB getTargetSearchArea(double pTargetDistance) {
-                return this.mob.getBoundingBox().inflate(pTargetDistance);
+                return this.mob.getBoundingBox().inflate(pTargetDistance);//デフォルトから上下方向に感知範囲を広げた
             }
 
         });
@@ -162,7 +166,8 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.getEntityData().define(IS_ANGRY, false);
-        this.getEntityData().define(ATTACK_TICK, 50);
+        this.getEntityData().define(ATTACK_TICK, WAIT_ANIMATION_TICK);
+        this.getEntityData().define(REST_TICK, ENOUGH_REST_TICK);
     }
 
     public boolean isAngry() {
@@ -178,19 +183,33 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     }
 
     public void startAttackAnim() {
-    this.getEntityData().set(ATTACK_TICK, 50);
+        this.getEntityData().set(ATTACK_TICK, WAIT_ANIMATION_TICK);
+    }
+
+    public int getRestTick() {
+        return this.getEntityData().get(REST_TICK);
+    }
+
+    public void setRestTick(int tick) {
+        this.getEntityData().set(REST_TICK, tick);
+    }
+
+    public void resetRestTick() {
+        this.getEntityData().set(REST_TICK, ENOUGH_REST_TICK);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("angry", isAngry());
+        pCompound.putInt("rest_tick", getRestTick());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         setAngry(pCompound.getBoolean("angry"));
+        setRestTick(pCompound.getInt("rest_tick"));
     }
 
     @Override
@@ -247,8 +266,8 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
             double d0 = this.getAttackReachSqr(pEnemy);
             boolean isValidRange = pDistToEnemySqr <= d0;
-            boolean isReadyRange = pDistToEnemySqr <= d0 * 0.75D;
-            if (this.isPunishing && this.owner.getAttackTick() == 25 && isValidRange) {
+            boolean isReadyRange = pDistToEnemySqr <= d0 * 0.75D;//攻撃開始の判定は実際の攻撃範囲の75%で判定
+            if (this.isPunishing && this.owner.getAttackTick() == WAIT_ANIMATION_TICK - OCCUR_ATTACKING_TICK && isValidRange) {
                 this.mob.doHurtTarget(pEnemy);
             }
             if (!this.isPunishing && isReadyRange) {

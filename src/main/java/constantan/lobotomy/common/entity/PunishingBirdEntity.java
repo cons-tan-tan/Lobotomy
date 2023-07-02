@@ -31,11 +31,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.UUID;
+
 public class PunishingBirdEntity extends Monster implements IAnimatable {
 
-    private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> REST_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> IS_ANGRY =
+            SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ATTACK_TICK =
+            SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
@@ -50,33 +53,81 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     protected static final AnimationBuilder ATTACK_ANGRY = new AnimationBuilder()
             .addAnimation("animation.punishing_bird.attack_angry", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
-    public static final double NORMAL_MAX_HEALTH = 200.0D;
-    public static final double ANGRY_MAX_HEALTH = 1000.0D;
+    public static final float NORMAL_MAX_HEALTH = 200.0F;
+    public static final float ANGRY_MAX_HEALTH = 1000.0F;
 
     public static final double NORMAL_ATTACK_DAMAGE = 1.0D;
     public static final double ANGRY_ATTACK_DAMAGE = 1000.0D;
 
     public static final int WAIT_ANIMATION_TICK = 50;
     public static final int OCCUR_ATTACKING_TICK = 25;
-    public static final int ENOUGH_REST_TICK = 1200;
+    public static final int ENOUGH_REST_TICK = 20 * 10;
+
+    private int restTick = 0;
+    private UUID maxHealthModifierUuid = UUID.randomUUID();
+    private UUID attackDamageModifierUuid = UUID.randomUUID();
+    private UUID flyingSpeedModifierUuid = UUID.randomUUID();
 
     public PunishingBirdEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.moveControl = new FlyingMoveControl(this, 10, false);
     }
 
+    public void anger() {
+        double maxHealthModifierValue = ANGRY_MAX_HEALTH - this.getAttribute(Attributes.MAX_HEALTH).getValue();
+        AttributeModifier maxHealthModifier = new AttributeModifier("MaxHealth", maxHealthModifierValue, AttributeModifier.Operation.ADDITION);
+        this.setMaxHealthModifierUuid(maxHealthModifier.getId());
+        this.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(maxHealthModifier);
+        this.setHealth(this.getHealth() + (ANGRY_MAX_HEALTH - NORMAL_MAX_HEALTH));
+
+        double attackDamageModifierValue = ANGRY_ATTACK_DAMAGE - this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
+        AttributeModifier attackDamageModifier = new AttributeModifier("AttackDamage", attackDamageModifierValue, AttributeModifier.Operation.ADDITION);
+        this.setAttackDamageModifierUuid(attackDamageModifier.getId());
+        this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(attackDamageModifier);
+
+        this.setAngry(true);
+    }
+
+    public void calmDown() {
+        this.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(this.getAttackDamageModifierUuid());
+        this.getAttribute(Attributes.MAX_HEALTH).removeModifier(this.getMaxHealthModifierUuid());
+        this.setHealth(Math.min(this.getHealth(), this.getMaxHealth()));
+        this.setAngry(false);
+    }
+
+    public void stopFlyingSpeed() {
+        AttributeModifier flyingSpeedModifier = new AttributeModifier("FlyingSpeed", 0.0F, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        this.setFlyingSpeedModifierUuid(flyingSpeedModifier.getId());
+        this.getAttribute(Attributes.FLYING_SPEED).addTransientModifier(flyingSpeedModifier);
+    }
+
+    public void resetFlyingSpeed() {
+        this.getAttribute(Attributes.FLYING_SPEED).removeModifier(this.getFlyingSpeedModifierUuid());
+    }
+
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FALL) return false;
         boolean flag = super.hurt(pSource, pAmount);
-        if (flag && this.getMaxHealth() < ANGRY_MAX_HEALTH && pSource != DamageSource.OUT_OF_WORLD) {
-            double maxHealthModifier = ANGRY_MAX_HEALTH - this.getMaxHealth();
-            this.getAttribute(Attributes.MAX_HEALTH)
-                    .addTransientModifier(new AttributeModifier("MaxHealth", maxHealthModifier, AttributeModifier.Operation.ADDITION));
-            this.setHealth(this.getMaxHealth() - pAmount);
-            this.setAngry(true);
+        if (flag && this.getHealth() > 0) {
+            this.resetRestTick();
+            if (!this.isAngry() && pSource != DamageSource.OUT_OF_WORLD) {
+                this.anger();
+            }
         }
         return flag;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level.isClientSide()) {
+            this.getEntityData().set(ATTACK_TICK, Math.max(this.getAttackTick() - 1, 0));
+            this.setRestTick(Math.max(this.getRestTick() - 1, 0));
+            if (this.isAngry() && this.getRestTick() == 0) {
+                this.calmDown();
+            }
+        }
     }
 
     @Override
@@ -116,12 +167,6 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
             }
 
         });
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (!this.level.isClientSide()) this.getEntityData().set(ATTACK_TICK, Math.max(this.getAttackTick() - 1, 0));
     }
 
     private <E extends PunishingBirdEntity>PlayState bodyPredicate(final AnimationEvent<E> event) {
@@ -167,7 +212,6 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         super.defineSynchedData();
         this.getEntityData().define(IS_ANGRY, false);
         this.getEntityData().define(ATTACK_TICK, WAIT_ANIMATION_TICK);
-        this.getEntityData().define(REST_TICK, ENOUGH_REST_TICK);
     }
 
     public boolean isAngry() {
@@ -187,15 +231,39 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     }
 
     public int getRestTick() {
-        return this.getEntityData().get(REST_TICK);
+        return restTick;
     }
 
     public void setRestTick(int tick) {
-        this.getEntityData().set(REST_TICK, tick);
+        this.restTick = tick;
     }
 
     public void resetRestTick() {
-        this.getEntityData().set(REST_TICK, ENOUGH_REST_TICK);
+        this.restTick = ENOUGH_REST_TICK;
+    }
+
+    public UUID getMaxHealthModifierUuid() {
+        return this.maxHealthModifierUuid;
+    }
+
+    public void setMaxHealthModifierUuid(UUID uuid) {
+        this.maxHealthModifierUuid = uuid;
+    }
+
+    public UUID getAttackDamageModifierUuid() {
+        return this.attackDamageModifierUuid;
+    }
+
+    public void setAttackDamageModifierUuid(UUID uuid) {
+        this.attackDamageModifierUuid = uuid;
+    }
+
+    public UUID getFlyingSpeedModifierUuid() {
+        return this.flyingSpeedModifierUuid;
+    }
+
+    public void setFlyingSpeedModifierUuid(UUID uuid) {
+        this.flyingSpeedModifierUuid = uuid;
     }
 
     @Override
@@ -203,6 +271,9 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("angry", isAngry());
         pCompound.putInt("rest_tick", getRestTick());
+        pCompound.putString("max_health_modifier_uuid_string", this.getMaxHealthModifierUuid().toString());
+        pCompound.putString("attack_damage_modifier_uuid_string", this.getAttackDamageModifierUuid().toString());
+        pCompound.putString("flying_speed_modifier_uuid_string", this.getFlyingSpeedModifierUuid().toString());
     }
 
     @Override
@@ -210,6 +281,9 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         super.readAdditionalSaveData(pCompound);
         setAngry(pCompound.getBoolean("angry"));
         setRestTick(pCompound.getInt("rest_tick"));
+        setMaxHealthModifierUuid(UUID.fromString(pCompound.getString("max_health_modifier_uuid_string")));
+        setAttackDamageModifierUuid(UUID.fromString(pCompound.getString("attack_damage_modifier_uuid_string")));
+        setFlyingSpeedModifierUuid(UUID.fromString(pCompound.getString("flying_speed_modifier_uuid_string")));
     }
 
     @Override
@@ -273,16 +347,12 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
             if (!this.isPunishing && isReadyRange) {
                 this.mob.swing(InteractionHand.MAIN_HAND);
                 this.owner.startAttackAnim();
-                this.owner.getAttribute(Attributes.FLYING_SPEED)
-                        .addTransientModifier(new AttributeModifier("FlyingSpeed", 0.0F, AttributeModifier.Operation.MULTIPLY_TOTAL));
-                double attackDamageModifier = ANGRY_ATTACK_DAMAGE - this.owner.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
-                this.owner.getAttribute(Attributes.ATTACK_DAMAGE)
-                        .addTransientModifier(new AttributeModifier("AttackDamage", attackDamageModifier, AttributeModifier.Operation.ADDITION));
+                this.owner.stopFlyingSpeed();
                 this.isPunishing = true;
             }
 
             if (this.owner.getAttackTick() == 0) {
-                this.owner.getAttribute(Attributes.FLYING_SPEED).removeModifiers();
+                this.owner.resetFlyingSpeed();
                 this.isPunishing = false;
             }
         }

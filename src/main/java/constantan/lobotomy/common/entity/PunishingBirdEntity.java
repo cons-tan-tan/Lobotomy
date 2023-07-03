@@ -59,7 +59,7 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
 
     public static final int WAIT_ANIMATION_TICK = 50;
     public static final int OCCUR_ATTACKING_TICK = 25;
-    public static final int ENOUGH_REST_TICK = 20 * 10;
+    public static final int ENOUGH_REST_TICK = 20 * 60;
 
     private int restTick = 0;
     private UUID maxHealthModifierUuid = UUID.randomUUID();

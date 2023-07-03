@@ -38,8 +38,6 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-
     protected static final AnimationBuilder IDLE_NORMAL = new AnimationBuilder()
             .addAnimation("animation.punishing_bird.idle_normal", ILoopType.EDefaultLoopTypes.LOOP);
     protected static final AnimationBuilder FLY_NORMAL = new AnimationBuilder()
@@ -60,6 +58,8 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     public static final int WAIT_ANIMATION_TICK = 50;
     public static final int OCCUR_ATTACKING_TICK = 25;
     public static final int ENOUGH_REST_TICK = 20 * 60;
+
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     private int restTick = 0;
     private UUID maxHealthModifierUuid = UUID.randomUUID();

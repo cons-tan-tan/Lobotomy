@@ -1,6 +1,5 @@
 package constantan.lobotomy.common.item;
 
-import constantan.lobotomy.common.effect.OwingEffect;
 import constantan.lobotomy.common.init.ModEffects;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -18,11 +17,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class GiantTreeSap extends ItemMod{
+public class GiantTreeSapItem extends ItemMod{
     private static final int DRINK_DURATION = 32;
 
     private static float compensateProbability = 0f;
-    public GiantTreeSap(Properties properties) {
+    public GiantTreeSapItem(Properties properties) {
         super(properties);
     }
 

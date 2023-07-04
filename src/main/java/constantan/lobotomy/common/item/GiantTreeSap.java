@@ -48,17 +48,13 @@ public class GiantTreeSap extends ItemMod{
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         if (!level.isClientSide && livingEntity instanceof Player player) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20*60, 3));
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20*60, 4));
             Random random = new Random();
-            if (OwingEffect.getTargetUUID() != null) {
-            } else if (random.nextFloat() < compensateProbability) {
-                OwingEffect.setTargetUUID(player.getUUID());
+            if (random.nextFloat() < compensateProbability) {
+                player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 20*20, 0, false, false));
                 compensateProbability = 0F;
             } else if (compensateProbability < 0.6F) {
                 compensateProbability += 0.15F;
-            }
-            if (player.getUUID() != OwingEffect.getTargetUUID()) {
-                player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 20*20, 0, false, false, false));
             }
         }
         return itemStack;

@@ -48,7 +48,7 @@ public class GiantTreeSap extends ItemMod{
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         if (!level.isClientSide && livingEntity instanceof Player player) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 1200, 3));
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20*60, 3));
             Random random = new Random();
             if (OwingEffect.getTargetUUID() != null) {
             } else if (random.nextFloat() < compensateProbability) {
@@ -58,13 +58,7 @@ public class GiantTreeSap extends ItemMod{
                 compensateProbability += 0.15F;
             }
             if (player.getUUID() != OwingEffect.getTargetUUID()) {
-                player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 400, 0, false, false, false)
-                {
-                    @Override
-                    public int getDuration() {
-                        return 0;
-                    }
-                });
+                player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 20*20, 0, false, false, false));
             }
         }
         return itemStack;

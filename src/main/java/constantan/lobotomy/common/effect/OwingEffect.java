@@ -27,7 +27,7 @@ public class OwingEffect extends MobEffect {
 
     public void compensate(PotionEvent event) {
         if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide && event.getPotionEffect().getEffect() == this) {
-            player.hurt(ModDamageSource.GIANT_TREE_SAP, player.getHealth());//即死
+            player.hurt(ModDamageSource.GIANT_TREE_SAP, player.getMaxHealth());//即死
         }
     }
 

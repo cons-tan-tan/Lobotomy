@@ -2,21 +2,16 @@ package constantan.lobotomy.common.effect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import constantan.lobotomy.common.init.ModDamageSource;
-import constantan.lobotomy.common.init.ModEffects;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.EffectRenderer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.UUID;
-import java.util.function.Consumer;
 
 public class OwingEffect extends MobEffect {
 

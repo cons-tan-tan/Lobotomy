@@ -6,6 +6,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -75,13 +76,13 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         double maxHealthModifierValue = ANGRY_MAX_HEALTH - this.getAttribute(Attributes.MAX_HEALTH).getValue();
         AttributeModifier maxHealthModifier = new AttributeModifier("MaxHealth", maxHealthModifierValue, AttributeModifier.Operation.ADDITION);
         this.setMaxHealthModifierUuid(maxHealthModifier.getId());
-        this.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(maxHealthModifier);
+        this.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(maxHealthModifier);
         this.setHealth(this.getHealth() + (ANGRY_MAX_HEALTH - NORMAL_MAX_HEALTH));
 
         double attackDamageModifierValue = ANGRY_ATTACK_DAMAGE - this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
         AttributeModifier attackDamageModifier = new AttributeModifier("AttackDamage", attackDamageModifierValue, AttributeModifier.Operation.ADDITION);
         this.setAttackDamageModifierUuid(attackDamageModifier.getId());
-        this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(attackDamageModifier);
+        this.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(attackDamageModifier);
 
         this.setAngry(true);
     }

@@ -13,6 +13,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.function.Consumer;
+
 public class OwingEffect extends MobEffect {
 
     public OwingEffect(MobEffectCategory mobEffectCategory, int color) {
@@ -42,8 +44,8 @@ public class OwingEffect extends MobEffect {
     }
 
     @Override
-    public Object getEffectRendererInternal() {
-        return new EffectRenderer() {
+    public void initializeClient(Consumer<EffectRenderer> consumer) {
+        consumer.accept(new EffectRenderer() {
             @Override
             public boolean shouldRender(MobEffectInstance effect) {
                 return false;
@@ -58,6 +60,6 @@ public class OwingEffect extends MobEffect {
             public void renderHUDEffect(MobEffectInstance effectInstance, GuiComponent gui, PoseStack poseStack, int x, int y, float z, float alpha) {
 
             }
-        };
+        });
     }
 }

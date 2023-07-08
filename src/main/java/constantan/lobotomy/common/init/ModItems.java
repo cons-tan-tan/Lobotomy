@@ -3,6 +3,7 @@ package constantan.lobotomy.common.init;
 
 import constantan.lobotomy.LobotomyMod;
 import constantan.lobotomy.common.item.GiantTreeSapItem;
+import constantan.lobotomy.common.item.PeakWeaponItem;
 import constantan.lobotomy.lib.LibBlockNames;
 import constantan.lobotomy.lib.LibItemNames;
 import constantan.lobotomy.lib.LibMisc;
@@ -33,4 +34,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> PUNISHING_BIRD_SPAWN_EGG = ITEMS.register(LibItemNames.PUNISHNG_BIRD_SPAWN_EGG,
             () -> new ForgeSpawnEggItem(ModEntityTypes.PUNISHING_BIRD, 0xffffff, 0xadc5f0, basicItem()));
+
+    public static final RegistryObject<Item> PEAK_WEAPON_ITEM = ITEMS.register(LibItemNames.PEAK_WEAPON,
+            () -> new PeakWeaponItem(basicItem().stacksTo(1)));
 }

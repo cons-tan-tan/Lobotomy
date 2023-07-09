@@ -6,7 +6,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -60,7 +59,7 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     public static final int OCCUR_ATTACKING_TICK = 25;
     public static final int ENOUGH_REST_TICK = 20 * 60;
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory FACTORY = GeckoLibUtil.createFactory(this);
 
     private int restTick = 0;
     private UUID maxHealthModifierUuid = UUID.randomUUID();
@@ -203,7 +202,7 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
 
     @Override
     public AnimationFactory getFactory() {
-        return this.factory;
+        return this.FACTORY;
     }
 
     @Override

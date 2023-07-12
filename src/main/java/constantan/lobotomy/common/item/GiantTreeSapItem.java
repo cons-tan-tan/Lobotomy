@@ -38,15 +38,6 @@ public class GiantTreeSapItem extends ItemMod{
     }
 
     @Override
-    public Component getName(ItemStack pStack) {
-        if (Screen.hasControlDown()) {
-            return new TranslatableComponent(this.getDescriptionId(pStack) + ".unknown");
-        } else {
-            return new TranslatableComponent(this.getDescriptionId(pStack));
-        }
-    }
-
-    @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(new TranslatableComponent("tooltip.lobotomy.giant_tree_sap.tooltip"));
         if(Screen.hasShiftDown()) {

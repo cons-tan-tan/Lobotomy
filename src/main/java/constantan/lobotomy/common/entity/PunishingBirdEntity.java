@@ -278,12 +278,6 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         setFlyingSpeedModifierUuid(UUID.fromString(pCompound.getString("flying_speed_modifier_uuid_string")));
     }
 
-    @Override
-    protected Component getTypeName() {//表示名変えるやつ
-        String descriptionID = super.getType().getDescriptionId();
-        return isAngry() ? new TranslatableComponent(descriptionID) : new TranslatableComponent(descriptionID + ".unknown");
-    }
-
     /**
      * 通常攻撃
      */

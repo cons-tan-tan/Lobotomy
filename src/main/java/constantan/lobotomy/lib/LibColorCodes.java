@@ -1,5 +1,5 @@
 package constantan.lobotomy.lib;
 
-public class LibColorCode {
+public class LibColorCodes {
     public static final int OWING = 5904406;
 }

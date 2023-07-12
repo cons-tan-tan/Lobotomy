@@ -1,6 +1,7 @@
 package constantan.lobotomy.client.model.entity;
 
 import constantan.lobotomy.common.entity.PunishingBirdEntity;
+import constantan.lobotomy.lib.LibEntityResources;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -9,17 +10,17 @@ public class PunishingBirdModel extends AnimatedGeoModel<PunishingBirdEntity> {
 
     @Override
     public ResourceLocation getModelLocation(PunishingBirdEntity object) {
-        return new ResourceLocation(LibMisc.MOD_ID, "geo/entity/punishing_bird.geo.json");
+        return LibEntityResources.PUNISHING_BIRD_MODEL;
     }
 
     @Override
     public ResourceLocation getTextureLocation(PunishingBirdEntity object) {
-        if (object.isAngry()) return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird_angry.png");
-        return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird_normal.png");
+        if (object.isAngry()) return LibEntityResources.PUNISHING_BIRD_TEXTURE_ANGRY;
+        return LibEntityResources.PUNISHING_BIRD_TEXTURE_NORMAL;
     }
 
     @Override
     public ResourceLocation getAnimationFileLocation(PunishingBirdEntity animatable) {
-        return new ResourceLocation(LibMisc.MOD_ID, "animations/entity/punishing_bird.animation.json");
+        return LibEntityResources.PUNISHING_BIRD_ANIMATION;
     }
 }

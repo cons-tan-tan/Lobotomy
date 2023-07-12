@@ -14,7 +14,8 @@ public class PunishingBirdModel extends AnimatedGeoModel<PunishingBirdEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(PunishingBirdEntity object) {
-        return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird.png");
+        if (object.isAngry()) return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird_angry.png");
+        return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird_normal.png");
     }
 
     @Override

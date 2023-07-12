@@ -20,7 +20,8 @@ public class PunishingBirdRenderer extends GeoEntityRenderer<PunishingBirdEntity
 
     @Override
     public ResourceLocation getTextureLocation(PunishingBirdEntity animatable) {
-        return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird.png");
+        if (animatable.isAngry()) return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird_angry.png");
+        return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird_normal.png");
     }
 
     @Override
@@ -28,7 +29,7 @@ public class PunishingBirdRenderer extends GeoEntityRenderer<PunishingBirdEntity
                                     @Nullable MultiBufferSource bufferSource,
                                     @Nullable VertexConsumer buffer, int packedLight,
                                     ResourceLocation texture) {
-        poseStack.scale(1.5f, 1.5f, 1.5f);
+        poseStack.scale(0.4F, 0.4F, 0.4F);
 
         return super.getRenderType(animatable, partialTick, poseStack, bufferSource, buffer, packedLight, texture);
     }

@@ -38,16 +38,14 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
 
-    protected static final AnimationBuilder IDLE_NORMAL = new AnimationBuilder()
-            .addAnimation("animation.punishing_bird.idle_normal", ILoopType.EDefaultLoopTypes.LOOP);
-    protected static final AnimationBuilder FLY_NORMAL = new AnimationBuilder()
-            .addAnimation("animation.punishing_bird.fly_normal", ILoopType.EDefaultLoopTypes.LOOP);
+    protected static final AnimationBuilder IDLE = new AnimationBuilder()
+            .addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
+    protected static final AnimationBuilder FLY = new AnimationBuilder()
+            .addAnimation("fly", ILoopType.EDefaultLoopTypes.LOOP);
     protected static final AnimationBuilder ATTACK_NORMAL = new AnimationBuilder()
-            .addAnimation("animation.punishing_bird.attack_normal", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-    protected static final AnimationBuilder FLY_ANGRY = new AnimationBuilder()
-            .addAnimation("animation.punishing_bird.fly_angry", ILoopType.EDefaultLoopTypes.LOOP);
+            .addAnimation("attack_normal", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     protected static final AnimationBuilder ATTACK_ANGRY = new AnimationBuilder()
-            .addAnimation("animation.punishing_bird.attack_angry", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+            .addAnimation("attack_angry", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
     public static final float NORMAL_MAX_HEALTH = 200.0F;
     public static final float ANGRY_MAX_HEALTH = 1000.0F;
@@ -168,15 +166,11 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     }
 
     private <E extends PunishingBirdEntity>PlayState bodyPredicate(final AnimationEvent<E> event) {
-        if (this.isAngry()) {
-            event.getController().setAnimation(FLY_ANGRY);
-            return PlayState.CONTINUE;
-        }
         if (event.isMoving()) {
-            event.getController().setAnimation(FLY_NORMAL);
+            event.getController().setAnimation(FLY);
             return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(IDLE_NORMAL);
+        event.getController().setAnimation(IDLE);
         return PlayState.CONTINUE;
     }
 

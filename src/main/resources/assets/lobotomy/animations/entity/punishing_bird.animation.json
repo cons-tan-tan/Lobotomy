@@ -42,7 +42,7 @@
 							"vector": [0, 0, 0]
 						},
 						"1.0": {
-							"vector": [0, 0, "-variable.open_arg"],
+							"vector": [0, 0, -50],
 							"easing": "easeOutQuint"
 						},
 						"1.125": {
@@ -57,7 +57,7 @@
 							"vector": [0, 0, 0]
 						},
 						"1.0": {
-							"vector": [0, "variable.open_arg", 0],
+							"vector": [0, 50, 0],
 							"easing": "easeOutQuint"
 						},
 						"1.125": {
@@ -72,7 +72,7 @@
 							"vector": [0, 0, 0]
 						},
 						"1.0": {
-							"vector": [0, 0, "variable.open_arg"],
+							"vector": [0, 0, 50],
 							"easing": "easeOutQuint"
 						},
 						"1.125": {
@@ -87,7 +87,7 @@
 							"vector": [0, 0, 0]
 						},
 						"1.0": {
-							"vector": [0, "-variable.open_arg", 0],
+							"vector": [0, -50, 0],
 							"easing": "easeOutQuint"
 						},
 						"1.125": {

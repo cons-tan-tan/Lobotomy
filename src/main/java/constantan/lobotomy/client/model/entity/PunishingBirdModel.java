@@ -2,7 +2,6 @@ package constantan.lobotomy.client.model.entity;
 
 import constantan.lobotomy.common.entity.PunishingBirdEntity;
 import constantan.lobotomy.lib.LibEntityResources;
-import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

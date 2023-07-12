@@ -1,12 +1,16 @@
 package constantan.lobotomy.common.item;
 
+import constantan.lobotomy.client.renderer.item.PeakWeaponRenderer;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.network.PacketDistributor;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -21,9 +25,10 @@ import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class PeakWeaponItem extends ProjectileWeaponItem implements IAnimatable, ISyncable {
+public class PeakWeaponItem extends Item implements IAnimatable, ISyncable {
 
     protected static final AnimationBuilder IDLE = new AnimationBuilder()
             .addAnimation("animation.peak_weapon.idle", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME);
@@ -74,16 +79,19 @@ public class PeakWeaponItem extends ProjectileWeaponItem implements IAnimatable,
             int id = GeckoLibUtil.guaranteeIDForStack(stack, (ServerLevel) pLevel);
             GeckoLibNetwork.syncAnimation(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pPlayer), this, id, FIRE_ANIM_STATE);
         }
-        return InteractionResultHolder.consume(stack);
+        return InteractionResultHolder.success(stack);
     }
 
     @Override
-    public Predicate<ItemStack> getAllSupportedProjectiles() {
-        return ARROW_ONLY;
-    }
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        super.initializeClient(consumer);
+        consumer.accept(new IItemRenderProperties() {
+            private final BlockEntityWithoutLevelRenderer renderer = new PeakWeaponRenderer();
 
-    @Override
-    public int getDefaultProjectileRange() {
-        return 0;
+            @Override
+            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+                return renderer;
+            }
+        });
     }
 }

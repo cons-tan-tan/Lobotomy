@@ -32,7 +32,7 @@ public class ModItems {
     public static final RegistryObject<Item> GIANT_TREE_SAP = ITEMS.register(LibItemNames.GIANT_TREE_SAP,
             () -> new GiantTreeSapItem(foodItem(ModFoods.GIANT_TREE_SAP).stacksTo(1)));
 
-    public static final RegistryObject<Item> PUNISHING_BIRD_SPAWN_EGG = ITEMS.register(LibItemNames.PUNISHNG_BIRD_SPAWN_EGG,
+    public static final RegistryObject<Item> PUNISHING_BIRD_SPAWN_EGG = ITEMS.register(LibItemNames.PUNISHING_BIRD_SPAWN_EGG,
             () -> new ForgeSpawnEggItem(ModEntityTypes.PUNISHING_BIRD, 0xffffff, 0xadc5f0, basicItem()));
 
     public static final RegistryObject<Item> PEAK_WEAPON_ITEM = ITEMS.register(LibItemNames.PEAK_WEAPON,

@@ -9,7 +9,7 @@ public class PunishingBirdModel extends AnimatedGeoModel<PunishingBirdEntity> {
 
     @Override
     public ResourceLocation getModelLocation(PunishingBirdEntity object) {
-        return new ResourceLocation(LibMisc.MOD_ID, "geo/punishing_bird.geo.json");
+        return new ResourceLocation(LibMisc.MOD_ID, "geo/entity/punishing_bird.geo.json");
     }
 
     @Override
@@ -19,6 +19,6 @@ public class PunishingBirdModel extends AnimatedGeoModel<PunishingBirdEntity> {
 
     @Override
     public ResourceLocation getAnimationFileLocation(PunishingBirdEntity animatable) {
-        return new ResourceLocation(LibMisc.MOD_ID, "animations/punishing_bird.animation.json");
+        return new ResourceLocation(LibMisc.MOD_ID, "animations/entity/punishing_bird.animation.json");
     }
 }

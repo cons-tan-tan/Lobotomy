@@ -3,6 +3,7 @@ package constantan.lobotomy.common;
 import constantan.lobotomy.common.entity.PunishingBirdEntity;
 import constantan.lobotomy.common.init.ModEntityTypes;
 import constantan.lobotomy.common.init.ModItems;
+import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import javax.annotation.Nonnull;
 
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModSetup {
+public class CommonSetup {
 
     public static final CreativeModeTab CREATIVE_TAB = new CreativeModeTab(LibMisc.MOD_ID)
     {
@@ -27,7 +28,7 @@ public class ModSetup {
     };
 
     public static void init(final FMLCommonSetupEvent event) {
-
+        Messages.register();
     }
 
     @SubscribeEvent

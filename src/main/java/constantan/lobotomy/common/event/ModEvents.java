@@ -2,7 +2,6 @@ package constantan.lobotomy.common.event;
 
 import constantan.lobotomy.common.sanity.PlayerSanity;
 import constantan.lobotomy.common.sanity.PlayerSanityProvider;
-import constantan.lobotomy.lib.LibDebug;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -49,9 +48,10 @@ public class ModEvents {
         if (event.side == LogicalSide.SERVER) {
             Player player = event.player;
             player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
-                if (sanity.getSanity() > 0 && player.getRandom().nextFloat() < 0.005f) {
-                    sanity.subSanity(1);
-                    player.sendMessage(new TextComponent("Subtracted Sanity"), player.getUUID());
+                if (sanity.getSanity() < sanity.getMaxSanity() && player.getRandom().nextFloat() < 0.005f) {
+                    sanity.addSanity(1);
+                    player.sendMessage(new TextComponent("Added Sanity"), player.getUUID());
+                    player.sendMessage(new TextComponent("Sanity=" + sanity.getSanity()), player.getUUID());
                 }
             });
         }

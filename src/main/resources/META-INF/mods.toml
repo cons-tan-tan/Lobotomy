@@ -60,3 +60,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis lacinia magn
     versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.lobotomy]]
+    modId="geckolib3"
+    mandatory=true
+    versionRange="[geckolib-forge-1.18:3.0.57,)"
+    ordering="NONE"
+    side="BOTH"

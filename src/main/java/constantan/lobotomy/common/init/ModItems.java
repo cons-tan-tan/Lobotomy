@@ -2,6 +2,7 @@ package constantan.lobotomy.common.init;
 
 
 import constantan.lobotomy.LobotomyMod;
+import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.item.GiantTreeSapItem;
 import constantan.lobotomy.common.item.PeakWeaponItem;
 import constantan.lobotomy.lib.LibBlockNames;
@@ -19,11 +20,11 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, LibMisc.MOD_ID);
 
     public static Item.Properties basicItem() {
-        return new Item.Properties().tab(LobotomyMod.CREATIVE_TAB);
+        return new Item.Properties().tab(ModSetup.CREATIVE_TAB);
     }
 
     public static Item.Properties foodItem(FoodProperties food) {
-        return new Item.Properties().food(food).tab(LobotomyMod.CREATIVE_TAB);
+        return new Item.Properties().food(food).tab(ModSetup.CREATIVE_TAB);
     }
 
     public static final RegistryObject<Item> FACTORY_BLOCK = ITEMS.register(LibBlockNames.FACTORY_BLOCK,

@@ -26,7 +26,7 @@ public class PlayerSanity {
 
     /**
      * 指定の値にサーバー側でSanityの値を変更する<br>
-     * クライアント同期の場合は{@link PlayerSanity#setSanity(int, Player)}を使用
+     * クライアント同期の場合は{@link PlayerSanity#setSanity(int, ServerPlayer)}を使用
      * @param sanity Sanityの値
      * @return Sanityが変更されたかどうか
      */
@@ -54,7 +54,7 @@ public class PlayerSanity {
 
     /**
      * 指定の値だけサーバー側のSanityを増減させる<br>
-     * クライアント同期の場合は{@link PlayerSanity#addSanity(int, Player)}を使用
+     * クライアント同期の場合は{@link PlayerSanity#addSanity(int, ServerPlayer)}を使用
      * @param add 追加するSanityの値 負の値なら減らす
      * @return Sanityが変更されたかどうか
      */

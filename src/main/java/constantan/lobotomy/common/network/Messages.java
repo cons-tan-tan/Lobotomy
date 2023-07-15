@@ -1,6 +1,7 @@
 package constantan.lobotomy.common.network;
 
 import constantan.lobotomy.common.network.packet.CheckSanityC2SPacket;
+import constantan.lobotomy.common.network.packet.SyncSanityS2CPacket;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,6 +32,12 @@ public class Messages {
                 .decoder(CheckSanityC2SPacket::new)
                 .encoder(CheckSanityC2SPacket::toBytes)
                 .consumer(CheckSanityC2SPacket::handle)
+                .add();
+
+        net.messageBuilder(SyncSanityS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncSanityS2CPacket::new)
+                .encoder(SyncSanityS2CPacket::toBytes)
+                .consumer(SyncSanityS2CPacket::handle)
                 .add();
     }
 

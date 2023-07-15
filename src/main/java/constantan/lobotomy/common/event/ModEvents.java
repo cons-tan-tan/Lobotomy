@@ -5,6 +5,7 @@ import constantan.lobotomy.common.sanity.PlayerSanityProvider;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -30,12 +31,21 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
-            event.getOriginal().getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(oldStore -> {
-                event.getOriginal().getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(newStore -> {
+            Player player = event.getOriginal();
+            player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(oldStore -> {
+                player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                 });
             });
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
+            sanity.setSanity(sanity.getMaxSanity(), (ServerPlayer) player);
+        });
     }
 
     @SubscribeEvent
@@ -49,7 +59,7 @@ public class ModEvents {
             Player player = event.player;
             player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
                 if (sanity.getSanity() < sanity.getMaxSanity() && player.getRandom().nextFloat() < 0.005f) {
-                    sanity.addSanity(1);
+                    sanity.addSanity(1, (ServerPlayer) player);
                     player.sendMessage(new TextComponent("Added Sanity"), player.getUUID());
                     player.sendMessage(new TextComponent("Sanity=" + sanity.getSanity()), player.getUUID());
                 }

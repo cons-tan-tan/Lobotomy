@@ -4,7 +4,6 @@ import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.common.network.packet.SyncSanityS2CPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class PlayerSanity {
     private int sanity;

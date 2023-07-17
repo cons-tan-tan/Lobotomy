@@ -3,7 +3,6 @@ package constantan.lobotomy.common.event;
 import constantan.lobotomy.common.sanity.PlayerSanity;
 import constantan.lobotomy.common.sanity.PlayerSanityProvider;
 import constantan.lobotomy.lib.LibMisc;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -45,9 +44,19 @@ public class ModEvents {
 
         @SubscribeEvent
         public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+            if (!event.isEndConquered()) {
+                Player player = event.getPlayer();
+                player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
+                    sanity.setSanity(sanity.getMaxSanity(), (ServerPlayer) player);
+                });
+            }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
             Player player = event.getPlayer();
             player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
-                sanity.setSanity(sanity.getMaxSanity(), (ServerPlayer) player);
+                sanity.syncWithClient((ServerPlayer) player);
             });
         }
 

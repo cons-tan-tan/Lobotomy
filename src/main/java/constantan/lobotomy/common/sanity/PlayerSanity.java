@@ -10,6 +10,10 @@ public class PlayerSanity {
     private final int MIN_SANITY = 0;
     private final int MAX_SANITY = 10;
 
+    public PlayerSanity() {
+        this.sanity = this.MAX_SANITY;
+    }
+
     public int getSanity() {
         return this.sanity;
     }

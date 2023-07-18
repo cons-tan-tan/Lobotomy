@@ -93,6 +93,7 @@ public class PlayerSanity {
     }
 
     public void syncClientData(ServerPlayer player) {
+        //クライアント同期用のパケットを送る
         Messages.sendToPlayer(new SyncSanityS2CPacket(this.sanity, this.maxSanity), player);
     }
 

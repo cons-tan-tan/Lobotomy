@@ -33,10 +33,12 @@ public class ModEvents {
         @SubscribeEvent
         public static void onPlayerCloned(PlayerEvent.Clone event) {
             if (event.isWasDeath()) {
-                Player player = event.getOriginal();
-                player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(oldStore -> {
-                    player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(newStore -> {
+                event.getOriginal().getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(oldStore -> {
+                    Player new_player = event.getPlayer();
+                    new_player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(newStore -> {
                         newStore.copyFrom(oldStore);
+                        //ついでにSanity全回復
+                        newStore.setSanity(newStore.getMaxSanity());
                     });
                 });
             }
@@ -47,7 +49,9 @@ public class ModEvents {
             if (!event.isEndConquered()) {
                 Player player = event.getPlayer();
                 player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
-                    sanity.setSanity(sanity.getMaxSanity(), (ServerPlayer) player);
+                    //onPlayerClonedで全回復したSanityのクライアント同期
+                    //onPlayerCloned時点で送っても同期されなかったため
+                    sanity.syncClientData((ServerPlayer) player);
                 });
             }
         }
@@ -56,7 +60,7 @@ public class ModEvents {
         public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
             Player player = event.getPlayer();
             player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
-                sanity.syncWithClient((ServerPlayer) player);
+                sanity.syncClientData((ServerPlayer) player);
             });
         }
 
@@ -71,7 +75,7 @@ public class ModEvents {
                 Player player = event.player;
                 player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
                     if (sanity.getSanity() < sanity.getMaxSanity() && player.getRandom().nextFloat() < 0.005f) {
-                        sanity.addSanity(1, (ServerPlayer) player);
+                        sanity.addSanityWithSync(1, (ServerPlayer) player);
                     }
                 });
             }

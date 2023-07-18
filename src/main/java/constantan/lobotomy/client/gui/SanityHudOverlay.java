@@ -21,14 +21,14 @@ public class SanityHudOverlay {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, EMPTY_SANITY);
-        for (int i = 0; i < 10; i++) {
-            GuiComponent.blit(poseStack, x - 94 + (i * 9), y - 54, 0, 0, 12, 12, 12, 12 );
+        for (int i = 0; i < 20; i++) {
+            GuiComponent.blit(poseStack, x - 92 + (i * 8), y - 54, 0, 0, 10, 10, 10, 10 );
         }
 
         RenderSystem.setShaderTexture(0, FILLED_SANITY);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             if (ClientSanityData.getPlayerSanity() > i) {
-                GuiComponent.blit(poseStack, x - 94 + (i * 9), y - 54, 0, 0, 12, 12, 12, 12 );
+                GuiComponent.blit(poseStack, x - 92 + (i * 8), y - 54, 0, 0, 10, 10, 10, 10 );
             } else {
                 break;
             }

@@ -6,12 +6,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 
 public class PlayerSanity {
-    private int sanity;
     private final int MIN_SANITY = 0;
-    private final int MAX_SANITY = 10;
+    private final int DEFAULT_SANITY = 20;
+
+    private int sanity;
+    private int maxSanity;
 
     public PlayerSanity() {
-        this.sanity = this.MAX_SANITY;
+        this.maxSanity = this.DEFAULT_SANITY;
+        this.sanity = this.maxSanity;
     }
 
     public int getSanity() {
@@ -19,7 +22,7 @@ public class PlayerSanity {
     }
 
     public int getMaxSanity() {
-        return this.MAX_SANITY;
+        return this.maxSanity;
     }
 
     public int getMinSanity() {
@@ -29,17 +32,17 @@ public class PlayerSanity {
 
     /**
      * 指定の値にサーバー側でSanityの値を変更する<br>
-     * クライアント同期の場合は{@link PlayerSanity#setSanity(int, ServerPlayer)}を使用
+     * クライアント同期の場合は{@link PlayerSanity#setSanityWithSync(int, ServerPlayer)}を使用
      * @param sanity Sanityの値
      * @return Sanityが変更されたかどうか
      */
-    private boolean setSanity(int sanity) {
+    public boolean setSanity(int sanity) {
         if (sanity == this.sanity) {
             return false;
         } else if (sanity < this.MIN_SANITY) {
             this.sanity = this.MIN_SANITY;
         } else {
-            this.sanity = Math.min(sanity, this.MAX_SANITY);
+            this.sanity = Math.min(sanity, this.maxSanity);
         }
         return true;
     }
@@ -49,46 +52,61 @@ public class PlayerSanity {
      * @param sanity Sanityの値
      * @param player 同期パケットを送るプレイヤー
      */
-    public void setSanity(int sanity, ServerPlayer player) {
+    public void setSanityWithSync(int sanity, ServerPlayer player) {
         if (this.setSanity(sanity)) {
-            syncWithClient(player);
+            this.syncClientData(player);
         }
     }
 
-    /**
-     * 指定の値だけサーバー側のSanityを増減させる<br>
-     * クライアント同期の場合は{@link PlayerSanity#addSanity(int, ServerPlayer)}を使用
-     * @param add 追加するSanityの値 負の値なら減らす
-     * @return Sanityが変更されたかどうか
-     */
-    private boolean addSanity(int add) {
+    public boolean addSanity(int add) {
         return this.setSanity(this.sanity + add);
     }
 
-    /**
-     * クライアント同期を伴うaddSanityメソッド
-     * @param add 追加するSanityの値 負の値なら減らす
-     * @param player 同期パケットを送るプレイヤー
-     */
-    public void addSanity(int add, ServerPlayer player) {
+    public void addSanityWithSync(int add, ServerPlayer player) {
         if (this.addSanity(add)) {
-            syncWithClient(player);
+            this.syncClientData(player);
         }
     }
 
-    public void syncWithClient(ServerPlayer player) {
-        Messages.sendToPlayer(new SyncSanityS2CPacket(this.sanity), player);
+    private boolean setMaxSanity(int max_sanity) {
+        if (max_sanity != this.maxSanity && max_sanity > this.MIN_SANITY) {
+            this.maxSanity = max_sanity;
+            return true;
+        }
+        return false;
+    }
+
+    public void setMaxSanity(int max_sanity, ServerPlayer player) {
+        if (setMaxSanity(max_sanity)) {
+            this.syncClientData(player);
+        }
+    }
+
+    private boolean addMaxSanity(int max_sanity) {
+        return this.setMaxSanity(max_sanity);
+    }
+
+    public void addMaxSanity(int max_sanity, ServerPlayer player) {
+        if (this.addMaxSanity(max_sanity)) {
+            this.syncClientData(player);
+        }
+    }
+
+    public void syncClientData(ServerPlayer player) {
+        Messages.sendToPlayer(new SyncSanityS2CPacket(this.sanity, this.maxSanity), player);
     }
 
     public void copyFrom(PlayerSanity source) {
-        this.sanity = source.sanity;
+        this.maxSanity = source.maxSanity;
     }
 
     public void saveNBTData(CompoundTag nbt) {
+        nbt.putInt("max_sanity", this.maxSanity);
         nbt.putInt("sanity", this.sanity);
     }
 
     public void loadNBTData(CompoundTag nbt) {
+        this.maxSanity = nbt.getInt("max_sanity");
         this.sanity = nbt.getInt("sanity");
     }
 }

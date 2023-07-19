@@ -19,12 +19,6 @@ public class PunishingBirdRenderer extends GeoEntityRenderer<PunishingBirdEntity
     }
 
     @Override
-    public ResourceLocation getTextureLocation(PunishingBirdEntity animatable) {
-        if (animatable.isAngry()) return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird_angry.png");
-        return new ResourceLocation(LibMisc.MOD_ID, "textures/entity/punishing_bird_normal.png");
-    }
-
-    @Override
     public RenderType getRenderType(PunishingBirdEntity animatable, float partialTick, PoseStack poseStack,
                                     @Nullable MultiBufferSource bufferSource,
                                     @Nullable VertexConsumer buffer, int packedLight,

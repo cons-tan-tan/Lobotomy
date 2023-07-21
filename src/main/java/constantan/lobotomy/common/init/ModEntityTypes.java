@@ -13,10 +13,10 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, LibMisc.MOD_ID);
 
-    public static final RegistryObject<EntityType<PunishingBirdEntity>> PUNISHING_BIRD = ENTITY_TYPES.register(LibEntityResources.PUNISHING_BIRD_NAME,
+    public static final RegistryObject<EntityType<PunishingBirdEntity>> PUNISHING_BIRD = ENTITY_TYPES.register(LibEntityResources.PUNISHING_BIRD.getName(),
             () -> EntityType.Builder.of(PunishingBirdEntity::new, MobCategory.MONSTER)
                     .sized(0.4f, 0.65f)
-                    .build(LibEntityResources.PUNISHING_BIRD_BUILD));
+                    .build(LibEntityResources.PUNISHING_BIRD.getBuild()));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

@@ -4,14 +4,44 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LibEntityResources {
 
-    public static ResourceLocation path(String path) {
-        return new ResourceLocation(LibMisc.MOD_ID, path);
-    }
+    public static final EntityResourceData PUNISHING_BIRD = new EntityResourceData("punishing_bird");
+    public static final EntityResourceData THE_BURROWING_HEAVEN = new EntityResourceData("the_burrowing_heaven");
 
-    public static final String PUNISHING_BIRD_NAME = "punishing_bird";
-    public static final String PUNISHING_BIRD_BUILD = path(PUNISHING_BIRD_NAME).toString();
-    public static final ResourceLocation PUNISHING_BIRD_MODEL = path("geo/entity/punishing_bird.geo.json");
-    public static final ResourceLocation PUNISHING_BIRD_TEXTURE_NORMAL = path("textures/entity/punishing_bird_normal.png");
-    public static final ResourceLocation PUNISHING_BIRD_TEXTURE_ANGRY = path("textures/entity/punishing_bird_angry.png");
-    public static final ResourceLocation PUNISHING_BIRD_ANIMATION = path("animations/entity/punishing_bird.animation.json");
+
+    public static class EntityResourceData {
+
+        public final String NAME;
+
+        public EntityResourceData(String name) {
+            this.NAME = name;
+        }
+
+        public static ResourceLocation path(String path) {
+            return new ResourceLocation(LibMisc.MOD_ID, path);
+        }
+
+        public String getName() {
+            return this.NAME;
+        }
+
+        public String getBuild() {
+            return path(this.NAME).toString();
+        }
+
+        public ResourceLocation getModel() {
+            return path("geo/entity/" + this.NAME + ".geo.json");
+        }
+
+        public ResourceLocation getAnimation() {
+            return path("animations/entity/" + this.NAME + ".animation.json");
+        }
+
+        public ResourceLocation getTexture() {
+            return path("textures/entity/" + this.NAME + ".png");
+        }
+
+        public ResourceLocation getTexture(String key) {
+            return path("textures/entity/" + this.NAME + "_" + key + ".png");
+        }
+    }
 }

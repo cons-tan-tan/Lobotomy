@@ -3,10 +3,8 @@ package constantan.lobotomy.client;
 import constantan.lobotomy.client.gui.SanityHudOverlay;
 import constantan.lobotomy.client.key.KeyBindings;
 import constantan.lobotomy.client.key.KeyInputHandler;
-import constantan.lobotomy.client.renderer.entity.PunishingBirdRenderer;
-import constantan.lobotomy.common.init.ModEntityTypes;
+import constantan.lobotomy.client.renderer.ModEntityRenderers;
 import constantan.lobotomy.lib.LibMisc;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
@@ -18,7 +16,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientSetup {
 
     public static void init(final FMLClientSetupEvent event) {
-        EntityRenderers.register(ModEntityTypes.PUNISHING_BIRD.get(), PunishingBirdRenderer::new);
+        ModEntityRenderers.register();
 
         MinecraftForge.EVENT_BUS.addListener(KeyInputHandler::onKeyInput);
         KeyBindings.init();

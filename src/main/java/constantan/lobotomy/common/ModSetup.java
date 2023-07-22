@@ -1,10 +1,7 @@
 package constantan.lobotomy.common;
 
 import constantan.lobotomy.common.entity.PunishingBirdEntity;
-import constantan.lobotomy.common.init.ModBlocks;
-import constantan.lobotomy.common.init.ModEffects;
-import constantan.lobotomy.common.init.ModEntityTypes;
-import constantan.lobotomy.common.init.ModItems;
+import constantan.lobotomy.common.init.*;
 import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.world.item.CreativeModeTab;
@@ -20,7 +17,7 @@ import software.bernie.geckolib3.GeckoLib;
 
 import javax.annotation.Nonnull;
 
-@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModSetup {
 
     public static final CreativeModeTab CREATIVE_TAB = new CreativeModeTab(LibMisc.MOD_ID)
@@ -38,16 +35,12 @@ public class ModSetup {
         ModBlocks.BLOCKS.register(modEventBus);
         ModEffects.MOB_EFFECTS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+        modEventBus.addListener(ModEntityTypes::entityAttributeEvent);
 
         GeckoLib.initialize();
     }
 
     public static void init(final FMLCommonSetupEvent event) {
         Messages.register();
-    }
-
-    @SubscribeEvent
-    public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
-        event.put(ModEntityTypes.PUNISHING_BIRD.get(), PunishingBirdEntity.setAttributes());
     }
 }

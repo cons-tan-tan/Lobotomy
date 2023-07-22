@@ -5,6 +5,7 @@ import constantan.lobotomy.lib.LibEntityResources;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -18,7 +19,8 @@ public class ModEntityTypes {
                     .sized(0.4f, 0.65f)
                     .build(LibEntityResources.PUNISHING_BIRD.getBuild()));
 
-    public static void register(IEventBus eventBus) {
-        ENTITY_TYPES.register(eventBus);
+
+    public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
+        event.put(ModEntityTypes.PUNISHING_BIRD.get(), PunishingBirdEntity.setAttributes());
     }
 }

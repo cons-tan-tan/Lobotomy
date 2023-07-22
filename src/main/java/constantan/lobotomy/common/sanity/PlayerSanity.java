@@ -4,6 +4,7 @@ import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.common.network.packet.SyncSanityS2CPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 
 public class PlayerSanity {
     private final int MIN_SANITY = 0;
@@ -37,13 +38,8 @@ public class PlayerSanity {
      * @return Sanityが変更されたかどうか
      */
     public boolean setSanity(int sanity) {
-        if (sanity == this.sanity) {
-            return false;
-        } else if (sanity < this.MIN_SANITY) {
-            this.sanity = this.MIN_SANITY;
-        } else {
-            this.sanity = Math.min(sanity, this.maxSanity);
-        }
+        if (sanity == this.sanity) return false;
+        this.sanity = Mth.clamp(sanity, this.MIN_SANITY, this.maxSanity);
         return true;
     }
 
@@ -69,24 +65,22 @@ public class PlayerSanity {
     }
 
     private boolean setMaxSanity(int max_sanity) {
-        if (max_sanity != this.maxSanity && max_sanity > this.MIN_SANITY) {
-            this.maxSanity = max_sanity;
-            return true;
-        }
-        return false;
+        if (max_sanity == this.maxSanity) return false;
+        this.maxSanity = Math.max(max_sanity, this.MIN_SANITY + 1);
+        return true;
     }
 
-    public void setMaxSanity(int max_sanity, ServerPlayer player) {
+    public void setMaxSanityWithSync(int max_sanity, ServerPlayer player) {
         if (setMaxSanity(max_sanity)) {
             this.syncClientData(player);
         }
     }
 
     private boolean addMaxSanity(int max_sanity) {
-        return this.setMaxSanity(max_sanity);
+        return this.setMaxSanity(this.maxSanity + max_sanity);
     }
 
-    public void addMaxSanity(int max_sanity, ServerPlayer player) {
+    public void addMaxSanityWithSync(int max_sanity, ServerPlayer player) {
         if (this.addMaxSanity(max_sanity)) {
             this.syncClientData(player);
         }

@@ -105,7 +105,7 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         boolean flag = super.hurt(pSource, pAmount);
         if (flag && this.getHealth() > 0) {
             this.resetRestTick();
-            if (!this.isAngry() && pSource != DamageSource.OUT_OF_WORLD) {
+            if (!this.isAngry() && pSource.isBypassInvul()) {
                 this.anger();
             }
         }

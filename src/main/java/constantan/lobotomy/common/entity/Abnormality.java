@@ -6,15 +6,15 @@ import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.IAnimatable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Abnormality extends Monster {
+public abstract class Abnormality extends Monster implements IAnimatable {
 
     protected Map<DamageTypeUtil, Float> Defense;
     protected RiskLevelUtil RISK_LEVEL;

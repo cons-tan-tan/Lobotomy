@@ -23,7 +23,6 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -70,7 +69,7 @@ public class PunishingBirdEntity extends Abnormality implements IAnimatable {
     private UUID attackDamageModifierUuid = UUID.randomUUID();
     private UUID flyingSpeedModifierUuid = UUID.randomUUID();
 
-    public PunishingBirdEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public PunishingBirdEntity(EntityType<? extends Abnormality> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.moveControl = new FlyingMoveControl(this, 10, false);
 
@@ -146,10 +145,9 @@ public class PunishingBirdEntity extends Abnormality implements IAnimatable {
     }
 
     public static AttributeSupplier setAttributes() {
-        return Monster.createMobAttributes()
+        return Abnormality.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, NORMAL_MAX_HEALTH)
                 .add(Attributes.ATTACK_DAMAGE, NORMAL_ATTACK_DAMAGE)
-                .add(Attributes.ATTACK_SPEED, 1.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.1F)
                 .add(Attributes.FLYING_SPEED, 0.3F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.8D).build();
@@ -175,7 +173,7 @@ public class PunishingBirdEntity extends Abnormality implements IAnimatable {
         });
     }
 
-    private <E extends PunishingBirdEntity>PlayState bodyPredicate(final AnimationEvent<E> event) {
+    private PlayState bodyPredicate(AnimationEvent event) {
         if (event.isMoving()) {
             event.getController().setAnimation(FLY);
             return PlayState.CONTINUE;

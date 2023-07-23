@@ -23,7 +23,7 @@ public class TheBurrowingHeavenEntity extends Abnormality {
         super(pEntityType, pLevel);
 
         this.setDefaultDamageType(DamageTypeUtil.BLACK);
-        this.RISK_LEVEL = RiskLevelUtil.WAW;
+        this.riskLevel = RiskLevelUtil.WAW;
         this.Defense = LivingEntityDefenseUtil.createDefense(0.0F, 1.2F, 0.5F, 1.5F);
     }
 

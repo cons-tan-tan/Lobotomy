@@ -21,9 +21,8 @@ public abstract class Abnormality extends Monster implements IAnimatable {
     public final AnimationFactory FACTORY;
 
     public Map<DamageTypeUtil, Float> Defense;
-    public RiskLevelUtil RISK_LEVEL;
-    public DamageTypeUtil DEFAULT_DAMAGE_TYPE;
-
+    public RiskLevelUtil riskLevel;
+    public DamageTypeUtil defaultDamageType;
     public DamageTypeUtil currentDamageType;
 
     public Abnormality(EntityType<? extends Monster> pEntityType, Level pLevel) {
@@ -32,7 +31,7 @@ public abstract class Abnormality extends Monster implements IAnimatable {
         this.FACTORY = GeckoLibUtil.createFactory(this);
 
         this.setDefaultDamageType(DamageTypeUtil.RED);
-        this.RISK_LEVEL = RiskLevelUtil.ZAYIN;
+        this.riskLevel = RiskLevelUtil.ZAYIN;
         this.Defense = new HashMap<>(LivingEntityDefenseUtil.DEFAULT_ENTITY_DEFENSE);
     }
 
@@ -58,16 +57,16 @@ public abstract class Abnormality extends Monster implements IAnimatable {
     }
 
     public RiskLevelUtil getRiskLevel() {
-        return this.RISK_LEVEL;
+        return this.riskLevel;
     }
 
     public DamageTypeUtil getDefaultDamageType() {
-        return this.DEFAULT_DAMAGE_TYPE;
+        return this.defaultDamageType;
     }
 
     public void setDefaultDamageType(DamageTypeUtil damageType) {
         if (damageType != null) {
-            this.DEFAULT_DAMAGE_TYPE = damageType;
+            this.defaultDamageType = damageType;
             this.currentDamageType = damageType;
         }
     }
@@ -76,7 +75,7 @@ public abstract class Abnormality extends Monster implements IAnimatable {
         if (this.currentDamageType != null) {
             return this.currentDamageType;
         }
-        return this.DEFAULT_DAMAGE_TYPE;
+        return this.defaultDamageType;
     }
 
     public void setCurrentDamageType(DamageTypeUtil damageType) {
@@ -84,6 +83,6 @@ public abstract class Abnormality extends Monster implements IAnimatable {
     }
 
     public void resetCurrentDamageType() {
-        this.currentDamageType = this.DEFAULT_DAMAGE_TYPE;
+        this.currentDamageType = this.defaultDamageType;
     }
 }

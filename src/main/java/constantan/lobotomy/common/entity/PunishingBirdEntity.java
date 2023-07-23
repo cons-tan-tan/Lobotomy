@@ -69,7 +69,7 @@ public class PunishingBirdEntity extends Abnormality {
         this.moveControl = new FlyingMoveControl(this, 10, false);
 
         this.setDefaultDamageType(DamageTypeUtil.RED);
-        this.RISK_LEVEL = RiskLevelUtil.TETH;
+        this.riskLevel = RiskLevelUtil.TETH;
         this.Defense = LivingEntityDefenseUtil.createDefense(2.0F, 2.0F, 2.0F, 2.0F);
     }
 

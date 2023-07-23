@@ -1,17 +1,25 @@
 package constantan.lobotomy.common.entity;
 
+import constantan.lobotomy.common.util.DamageTypeUtil;
+import constantan.lobotomy.common.util.LivingEntityDefenseUtil;
+import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -31,7 +39,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-public class PunishingBirdEntity extends Monster implements IAnimatable {
+public class PunishingBirdEntity extends Abnormality implements IAnimatable {
 
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
@@ -65,6 +73,10 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
     public PunishingBirdEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.moveControl = new FlyingMoveControl(this, 10, false);
+
+        this.setDefaultDamageType(DamageTypeUtil.RED);
+        this.RISK_LEVEL = RiskLevelUtil.TETH;
+        this.Defense = LivingEntityDefenseUtil.createDefense(2.0F, 2.0F, 2.0F, 2.0F);
     }
 
     public void anger() {
@@ -105,7 +117,7 @@ public class PunishingBirdEntity extends Monster implements IAnimatable {
         boolean flag = super.hurt(pSource, pAmount);
         if (flag && this.getHealth() > 0) {
             this.resetRestTick();
-            if (!this.isAngry() && pSource.isBypassInvul()) {
+            if (!this.isAngry() && !pSource.isBypassInvul()) {
                 this.anger();
             }
         }

@@ -15,17 +15,18 @@ import java.util.Map;
 
 public abstract class Abnormality extends Monster {
 
-    public final Map<DamageTypeUtil, Float> Defense;
-    public final RiskLevelUtil RISK_LEVEL;
-    public final DamageTypeUtil DEFAULT_DAMAGE_TYPE;
+    protected Map<DamageTypeUtil, Float> Defense;
+    protected RiskLevelUtil RISK_LEVEL;
+    protected DamageTypeUtil DEFAULT_DAMAGE_TYPE;
 
     public DamageTypeUtil currentDamageType;
 
     protected Abnormality(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.DEFAULT_DAMAGE_TYPE = DamageTypeUtil.RED;
+
+        this.setDefaultDamageType(DamageTypeUtil.RED);
         this.RISK_LEVEL = RiskLevelUtil.ZAYIN;
-        Defense = new HashMap<>(LivingEntityDefenseUtil.DEFAULT_ENTITY_DEFENSE);
+        this.Defense = new HashMap<>(LivingEntityDefenseUtil.DEFAULT_ENTITY_DEFENSE);
     }
 
     @Override
@@ -52,8 +53,18 @@ public abstract class Abnormality extends Monster {
         return this.DEFAULT_DAMAGE_TYPE;
     }
 
+    public void setDefaultDamageType(DamageTypeUtil damageType) {
+        if (damageType != null) {
+            this.DEFAULT_DAMAGE_TYPE = damageType;
+            this.currentDamageType = damageType;
+        }
+    }
+
     public DamageTypeUtil getCurrentDamageType() {
-        return this.currentDamageType;
+        if (this.currentDamageType != null) {
+            return this.currentDamageType;
+        }
+        return this.DEFAULT_DAMAGE_TYPE;
     }
 
     public void setCurrentDamageType(DamageTypeUtil damageType) {

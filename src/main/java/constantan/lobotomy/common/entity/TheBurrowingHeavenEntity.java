@@ -13,15 +13,11 @@ import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class TheBurrowingHeavenEntity extends Abnormality {
 
     protected static final AnimationBuilder IDLE = new AnimationBuilder()
             .addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
-
-    private final AnimationFactory FACTORY = GeckoLibUtil.createFactory(this);
 
     public TheBurrowingHeavenEntity(EntityType<? extends Abnormality> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -48,10 +44,5 @@ public class TheBurrowingHeavenEntity extends Abnormality {
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller",
                 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.FACTORY;
     }
 }

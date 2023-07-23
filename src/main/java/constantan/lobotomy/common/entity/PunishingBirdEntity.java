@@ -32,8 +32,6 @@ import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.UUID;
 
@@ -60,8 +58,6 @@ public class PunishingBirdEntity extends Abnormality {
     public static final int WAIT_ANIMATION_TICK = 50;
     public static final int OCCUR_ATTACKING_TICK = 25;
     public static final int ENOUGH_REST_TICK = 20 * 60;
-
-    private final AnimationFactory FACTORY = GeckoLibUtil.createFactory(this);
 
     private int restTick = 0;
     private UUID maxHealthModifierUuid = UUID.randomUUID();
@@ -199,11 +195,6 @@ public class PunishingBirdEntity extends Abnormality {
                 0, this::bodyPredicate));
         data.addAnimationController(new AnimationController(this, "attack_controller",
                 0, this::attackPredicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.FACTORY;
     }
 
     @Override

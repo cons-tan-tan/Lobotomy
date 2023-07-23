@@ -10,20 +10,26 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Abnormality extends Monster implements IAnimatable {
 
-    protected Map<DamageTypeUtil, Float> Defense;
-    protected RiskLevelUtil RISK_LEVEL;
-    protected DamageTypeUtil DEFAULT_DAMAGE_TYPE;
+    public final AnimationFactory FACTORY;
+
+    public Map<DamageTypeUtil, Float> Defense;
+    public RiskLevelUtil RISK_LEVEL;
+    public DamageTypeUtil DEFAULT_DAMAGE_TYPE;
 
     public DamageTypeUtil currentDamageType;
 
     public Abnormality(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+
+        this.FACTORY = GeckoLibUtil.createFactory(this);
 
         this.setDefaultDamageType(DamageTypeUtil.RED);
         this.RISK_LEVEL = RiskLevelUtil.ZAYIN;
@@ -40,6 +46,11 @@ public abstract class Abnormality extends Monster implements IAnimatable {
         }
 
         return super.doHurtTarget(pEntity);
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.FACTORY;
     }
 
     public Map<DamageTypeUtil, Float> getDefense() {

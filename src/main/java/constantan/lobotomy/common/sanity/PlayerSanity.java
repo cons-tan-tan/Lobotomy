@@ -48,20 +48,24 @@ public class PlayerSanity {
      * @param sanity Sanityの値
      * @param player 同期パケットを送るプレイヤー
      */
-    public void setSanityWithSync(int sanity, ServerPlayer player) {
-        if (this.setSanity(sanity)) {
+    public boolean setSanityWithSync(int sanity, ServerPlayer player) {
+        boolean flag = this.setSanity(sanity);
+        if (flag) {
             this.syncClientData(player);
         }
+        return flag;
     }
 
     public boolean addSanity(int add) {
         return this.setSanity(this.sanity + add);
     }
 
-    public void addSanityWithSync(int add, ServerPlayer player) {
-        if (this.addSanity(add)) {
+    public boolean addSanityWithSync(int add, ServerPlayer player) {
+        boolean flag = this.addSanity(add);
+        if (flag) {
             this.syncClientData(player);
         }
+        return flag;
     }
 
     private boolean setMaxSanity(int max_sanity) {
@@ -70,20 +74,24 @@ public class PlayerSanity {
         return true;
     }
 
-    public void setMaxSanityWithSync(int max_sanity, ServerPlayer player) {
-        if (setMaxSanity(max_sanity)) {
+    public boolean setMaxSanityWithSync(int max_sanity, ServerPlayer player) {
+        boolean flag = setMaxSanity(max_sanity);
+        if (flag) {
             this.syncClientData(player);
         }
+        return flag;
     }
 
     private boolean addMaxSanity(int max_sanity) {
         return this.setMaxSanity(this.maxSanity + max_sanity);
     }
 
-    public void addMaxSanityWithSync(int max_sanity, ServerPlayer player) {
-        if (this.addMaxSanity(max_sanity)) {
+    public boolean addMaxSanityWithSync(int max_sanity, ServerPlayer player) {
+        boolean flag = this.addMaxSanity(max_sanity);
+        if (flag) {
             this.syncClientData(player);
         }
+        return flag;
     }
 
     public void syncClientData(ServerPlayer player) {

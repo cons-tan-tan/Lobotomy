@@ -6,6 +6,7 @@ import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -21,7 +22,7 @@ public abstract class Abnormality extends Monster {
 
     public DamageTypeUtil currentDamageType;
 
-    protected Abnormality(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public Abnormality(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
 
         this.setDefaultDamageType(DamageTypeUtil.RED);

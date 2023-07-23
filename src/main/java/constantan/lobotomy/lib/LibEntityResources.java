@@ -10,7 +10,7 @@ public class LibEntityResources {
 
     public static class EntityResourceData {
 
-        public final String NAME;
+        private final String NAME;
 
         public EntityResourceData(String name) {
             this.NAME = name;

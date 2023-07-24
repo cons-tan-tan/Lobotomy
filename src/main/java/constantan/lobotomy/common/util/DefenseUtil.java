@@ -6,16 +6,16 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.Map;
 
-public class LivingEntityDefenseUtil {
+public class DefenseUtil {
 
-    public static final Map<DamageTypeUtil, Float> DEFAULT_ENTITY_DEFENSE = createDefense(1.0F, 1.0F, 1.5F, 2.0F);
+    public static final Map<DamageTypeUtil, Float> DEFAULT_DEFENSE = createDefense(1.0F, 1.0F, 1.5F, 2.0F);
 
     public static Map<DamageTypeUtil, Float> createDefense(float red, float white, float black, float pale) {
         return Map.of(DamageTypeUtil.RED, red, DamageTypeUtil.WHITE, white, DamageTypeUtil.BLACK, black, DamageTypeUtil.PALE, pale);
     }
 
     public static Map<DamageTypeUtil, Float> getLivingEntityDefense(LivingEntity livingEntity) {
-        return DEFAULT_ENTITY_DEFENSE;
+        return DEFAULT_DEFENSE;
     }
 
     public static Map<DamageTypeUtil, Float> getDefense(LivingEntity livingEntity) {

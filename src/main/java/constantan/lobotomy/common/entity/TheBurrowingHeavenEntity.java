@@ -1,7 +1,7 @@
 package constantan.lobotomy.common.entity;
 
 import constantan.lobotomy.common.util.DamageTypeUtil;
-import constantan.lobotomy.common.util.LivingEntityDefenseUtil;
+import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -24,7 +24,7 @@ public class TheBurrowingHeavenEntity extends Abnormality {
 
         this.setDefaultDamageType(DamageTypeUtil.BLACK);
         this.riskLevel = RiskLevelUtil.WAW;
-        this.Defense = LivingEntityDefenseUtil.createDefense(0.0F, 1.2F, 0.5F, 1.5F);
+        this.Defense = DefenseUtil.createDefense(0.0F, 1.2F, 0.5F, 1.5F);
     }
 
     public static AttributeSupplier setAttributes() {

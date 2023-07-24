@@ -1,7 +1,8 @@
 package constantan.lobotomy.common.entity;
 
 import constantan.lobotomy.common.util.DamageTypeUtil;
-import constantan.lobotomy.common.util.LivingEntityDefenseUtil;
+import constantan.lobotomy.common.util.IRiskLevel;
+import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -16,7 +17,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Abnormality extends Monster implements IAnimatable {
+public abstract class Abnormality extends Monster implements IRiskLevel, IAnimatable {
 
     public final AnimationFactory FACTORY;
 
@@ -31,8 +32,8 @@ public abstract class Abnormality extends Monster implements IAnimatable {
         this.FACTORY = GeckoLibUtil.createFactory(this);
 
         this.setDefaultDamageType(DamageTypeUtil.RED);
-        this.riskLevel = RiskLevelUtil.ZAYIN;
-        this.Defense = new HashMap<>(LivingEntityDefenseUtil.DEFAULT_ENTITY_DEFENSE);
+        this.setRiskLevel(RiskLevelUtil.ZAYIN);
+        this.Defense = new HashMap<>(DefenseUtil.DEFAULT_DEFENSE);
     }
 
     @Override
@@ -52,12 +53,18 @@ public abstract class Abnormality extends Monster implements IAnimatable {
         return this.FACTORY;
     }
 
-    public Map<DamageTypeUtil, Float> getDefense() {
-        return this.Defense;
-    }
-
+    @Override
     public RiskLevelUtil getRiskLevel() {
         return this.riskLevel;
+    }
+
+    @Override
+    public void setRiskLevel(RiskLevelUtil riskLevel) {
+        this.riskLevel = riskLevel;
+    }
+
+    public Map<DamageTypeUtil, Float> getDefense() {
+        return this.Defense;
     }
 
     public DamageTypeUtil getDefaultDamageType() {

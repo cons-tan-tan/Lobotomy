@@ -1,7 +1,7 @@
 package constantan.lobotomy.common.entity;
 
 import constantan.lobotomy.common.util.DamageTypeUtil;
-import constantan.lobotomy.common.util.LivingEntityDefenseUtil;
+import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -70,7 +70,7 @@ public class PunishingBirdEntity extends Abnormality {
 
         this.setDefaultDamageType(DamageTypeUtil.RED);
         this.riskLevel = RiskLevelUtil.TETH;
-        this.Defense = LivingEntityDefenseUtil.createDefense(2.0F, 2.0F, 2.0F, 2.0F);
+        this.Defense = DefenseUtil.createDefense(2.0F, 2.0F, 2.0F, 2.0F);
     }
 
     public void anger() {

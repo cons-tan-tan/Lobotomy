@@ -38,7 +38,7 @@ public enum DamageTypeUtil {
     public boolean hurtLivingEntity(LivingEntity target, LivingEntity attacker, float amount) {
         if (amount <= 0) return false;
         Difficulty difficulty = attacker.level.getDifficulty();
-        float ratio = RiskLevelUtil.getDamageRatio(target, attacker) * LivingEntityDefenseUtil.getDefense(target).get(this);
+        float ratio = RiskLevelUtil.getDamageRatio(target, attacker) * DefenseUtil.getDefense(target).get(this);
         float f = Math.abs(amount * ratio);
         if (ratio < 0) {//回復処理
             if (target instanceof Player player) {

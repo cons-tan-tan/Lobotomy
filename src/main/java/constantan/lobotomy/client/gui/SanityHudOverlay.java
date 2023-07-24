@@ -42,7 +42,7 @@ public class SanityHudOverlay {
 
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             //TRANSLUCENT_TRANSPARENCYを使わないとpAlphaの透過率が有効にならない
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.5F);
             RenderSystem.setShaderTexture(0, SANITY_BAR);
             GuiComponent.blit(poseStack, x, y, 0, 0, 5, 182, textureWidth, textureHeight);
 

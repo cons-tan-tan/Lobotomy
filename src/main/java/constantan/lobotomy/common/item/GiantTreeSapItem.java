@@ -20,8 +20,8 @@ import java.util.Random;
 public class GiantTreeSapItem extends ItemMod{
     private static final int DRINK_DURATION = 32;
 
-    private static final int compensateMaxPercentage = 60;
-    private static final int addedCompensatePercentage = 15;
+    private static final int COMPENSATE_MAX_PERCENTAGE = 60;
+    private static final int ADDED_COMPENSATE_PERCENTAGE = 15;
 
     private static int compensatePercentage = 0;
 
@@ -56,8 +56,8 @@ public class GiantTreeSapItem extends ItemMod{
             if (random.nextInt(100) < p) {
                 player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 20*20, 0, false, false));
                 this.setCompensatePercentage(0);
-            } else if (p < compensateMaxPercentage) {
-                this.setCompensatePercentage(p + addedCompensatePercentage);
+            } else if (p < COMPENSATE_MAX_PERCENTAGE) {
+                this.setCompensatePercentage(p + ADDED_COMPENSATE_PERCENTAGE);
             }
         }
         return itemStack;

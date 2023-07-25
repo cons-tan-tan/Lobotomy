@@ -10,10 +10,10 @@ public class LibEntityResources {
 
     public static class EntityResourceData {
 
-        private final String NAME;
+        private final String name;
 
         public EntityResourceData(String name) {
-            this.NAME = name;
+            this.name = name;
         }
 
         public static ResourceLocation path(String path) {
@@ -21,27 +21,31 @@ public class LibEntityResources {
         }
 
         public String getName() {
-            return this.NAME;
+            return this.name;
+        }
+
+        public String getSpawnEggName() {
+            return this.name + "_spawn_egg";
         }
 
         public String getBuild() {
-            return path(this.NAME).toString();
+            return path(this.name).toString();
         }
 
         public ResourceLocation getModel() {
-            return path("geo/entity/" + this.NAME + ".geo.json");
+            return path("geo/entity/" + this.name + ".geo.json");
         }
 
         public ResourceLocation getAnimation() {
-            return path("animations/entity/" + this.NAME + ".animation.json");
+            return path("animations/entity/" + this.name + ".animation.json");
         }
 
         public ResourceLocation getTexture() {
-            return path("textures/entity/" + this.NAME + ".png");
+            return path("textures/entity/" + this.name + ".png");
         }
 
         public ResourceLocation getTexture(String key) {
-            return path("textures/entity/" + this.NAME + "_" + key + ".png");
+            return path("textures/entity/" + this.name + "_" + key + ".png");
         }
     }
 }

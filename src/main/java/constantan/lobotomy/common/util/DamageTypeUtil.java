@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.util;
 
-import constantan.lobotomy.common.entity.Abnormality;
+import constantan.lobotomy.common.entity.AbnormalityEntity;
 import constantan.lobotomy.common.sanity.PlayerSanityProvider;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
@@ -55,7 +55,7 @@ public enum DamageTypeUtil {
                     }
                 }
             } else {
-                if (this == PALE && !(target instanceof Abnormality)) {
+                if (this == PALE && !(target instanceof AbnormalityEntity)) {
                     target.heal(target.getMaxHealth() * f * 0.01F);
                 } else {
                     target.heal(f);
@@ -85,7 +85,7 @@ public enum DamageTypeUtil {
                     }
                 }
             } else {
-                if (this == PALE && !(target instanceof Abnormality)) {
+                if (this == PALE && !(target instanceof AbnormalityEntity)) {
                     flag = target.hurt(this.getEntityDamageSource(attacker), target.getMaxHealth() * f * 0.01F);
                 } else {
                     flag = target.hurt(this.getEntityDamageSource(attacker), f);

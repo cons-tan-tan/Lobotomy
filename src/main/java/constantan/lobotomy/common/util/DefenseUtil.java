@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.util;
 
-import constantan.lobotomy.common.entity.Abnormality;
+import constantan.lobotomy.common.entity.AbnormalityEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -19,8 +19,8 @@ public class DefenseUtil {
     }
 
     public static Map<DamageTypeUtil, Float> getDefense(LivingEntity livingEntity) {
-        if (livingEntity instanceof Abnormality abnormality) {
-            return abnormality.getDefense();
+        if (livingEntity instanceof AbnormalityEntity abnormalityEntity) {
+            return abnormalityEntity.getDefense();
         } if (livingEntity instanceof Player player) {
 
             //PlayerのスーツEGOの耐性を取得

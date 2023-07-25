@@ -1,71 +1,46 @@
 package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.common.init.ModEffects;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Random;
 
-public class GiantTreeSapItem extends ItemMod{
-    private static final int DRINK_DURATION = 32;
+public class GiantTreeSapItem extends AbnormalityToolItem {
 
-    private static final int COMPENSATE_MAX_PERCENTAGE = 60;
-    private static final int ADDED_COMPENSATE_PERCENTAGE = 15;
+    public static final int COMPENSATE_MAX_PERCENTAGE = 60;
+    public static final int ADDED_COMPENSATE_PERCENTAGE = 15;
+    public static final int DEFAULT_COMPENSATE_PERCENTAGE = 0;
 
-    private static int compensatePercentage = 0;
+    public static int compensatePercentage;
 
-    public GiantTreeSapItem(Properties properties) {
-        super(properties);
-    }
+    public GiantTreeSapItem(Item.Properties pProperties) {
+        super(pProperties);
 
-    public int getCompensatePercentage() {
-        return compensatePercentage;
-    }
-
-    public void setCompensatePercentage(int p) {
-        compensatePercentage = p;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(new TranslatableComponent("tooltip.lobotomy.giant_tree_sap.tooltip"));
-        if(Screen.hasShiftDown()) {
-            pTooltipComponents.add(new TranslatableComponent("tooltip.lobotomy.giant_tree_sap.tooltip.shift"));
-        } else {
-            pTooltipComponents.add(new TranslatableComponent("tooltip.lobotomy.press_shift.tooltip"));
-        }
+        compensatePercentage = DEFAULT_COMPENSATE_PERCENTAGE;
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         if (!level.isClientSide && livingEntity instanceof Player player) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20*60, 4));
-            int p = this.getCompensatePercentage();
+            player.heal(player.getMaxHealth());
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20*60, 4, false, false));
+            int p = compensatePercentage;
             Random random = new Random();
             if (random.nextInt(100) < p) {
                 player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 20*20, 0, false, false));
-                this.setCompensatePercentage(0);
+                compensatePercentage = DEFAULT_COMPENSATE_PERCENTAGE;
             } else if (p < COMPENSATE_MAX_PERCENTAGE) {
-                this.setCompensatePercentage(p + ADDED_COMPENSATE_PERCENTAGE);
+                compensatePercentage = p + ADDED_COMPENSATE_PERCENTAGE;
             }
         }
         return itemStack;
-    }
-
-    @Override
-    public int getUseDuration(ItemStack itemStack) {
-        return DRINK_DURATION;
     }
 
     @Override

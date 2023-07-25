@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.util;
 
-import constantan.lobotomy.common.entity.Abnormality;
+import constantan.lobotomy.common.entity.AbnormalityEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -39,8 +39,8 @@ public enum RiskLevelUtil {
     }
 
     public static RiskLevelUtil getRiskLevel(LivingEntity livingEntity) {
-        if (livingEntity instanceof Abnormality abnormality) {
-            return abnormality.getRiskLevel();
+        if (livingEntity instanceof AbnormalityEntity abnormalityEntity) {
+            return abnormalityEntity.getRiskLevel();
         } else if (livingEntity instanceof Player player) {
 
             //PlayerのEGOのランクを取得

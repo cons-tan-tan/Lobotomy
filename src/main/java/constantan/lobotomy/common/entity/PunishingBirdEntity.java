@@ -1,8 +1,5 @@
 package constantan.lobotomy.common.entity;
 
-import constantan.lobotomy.common.util.DamageTypeUtil;
-import constantan.lobotomy.common.util.DefenseUtil;
-import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -35,7 +32,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.UUID;
 
-public class PunishingBirdEntity extends Abnormality {
+public class PunishingBirdEntity extends AbnormalityEntity {
 
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
@@ -64,13 +61,9 @@ public class PunishingBirdEntity extends Abnormality {
     private UUID attackDamageModifierUuid = UUID.randomUUID();
     private UUID flyingSpeedModifierUuid = UUID.randomUUID();
 
-    public PunishingBirdEntity(EntityType<? extends Abnormality> pEntityType, Level pLevel) {
+    public PunishingBirdEntity(EntityType<? extends AbnormalityEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.moveControl = new FlyingMoveControl(this, 10, false);
-
-        this.setDefaultDamageType(DamageTypeUtil.RED);
-        this.riskLevel = RiskLevelUtil.TETH;
-        this.Defense = DefenseUtil.createDefense(2.0F, 2.0F, 2.0F, 2.0F);
     }
 
     public void anger() {
@@ -140,7 +133,7 @@ public class PunishingBirdEntity extends Abnormality {
     }
 
     public static AttributeSupplier setAttributes() {
-        return Abnormality.createMobAttributes()
+        return AbnormalityEntity.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, NORMAL_MAX_HEALTH)
                 .add(Attributes.ATTACK_DAMAGE, NORMAL_ATTACK_DAMAGE)
                 .add(Attributes.MOVEMENT_SPEED, 0.1F)

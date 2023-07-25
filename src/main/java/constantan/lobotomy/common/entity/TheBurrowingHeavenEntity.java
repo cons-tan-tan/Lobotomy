@@ -1,8 +1,5 @@
 package constantan.lobotomy.common.entity;
 
-import constantan.lobotomy.common.util.DamageTypeUtil;
-import constantan.lobotomy.common.util.DefenseUtil;
-import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -14,21 +11,17 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
-public class TheBurrowingHeavenEntity extends Abnormality {
+public class TheBurrowingHeavenEntity extends AbnormalityEntity {
 
     protected static final AnimationBuilder IDLE = new AnimationBuilder()
             .addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
 
-    public TheBurrowingHeavenEntity(EntityType<? extends Abnormality> pEntityType, Level pLevel) {
+    public TheBurrowingHeavenEntity(EntityType<? extends AbnormalityEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-
-        this.setDefaultDamageType(DamageTypeUtil.BLACK);
-        this.riskLevel = RiskLevelUtil.WAW;
-        this.Defense = DefenseUtil.createDefense(0.0F, 1.2F, 0.5F, 1.5F);
     }
 
     public static AttributeSupplier setAttributes() {
-        return Abnormality.createMobAttributes()
+        return AbnormalityEntity.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 800.0F)
                 .add(Attributes.ATTACK_DAMAGE, 150.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.0F)

@@ -173,6 +173,7 @@ dependencies {
     implementation fg.deobf("curse.maven:just-enough-items-238222:3940240")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3965688")
     runtimeOnly fg.deobf("curse.maven:itemzoom-261725:3749454")
+    runtimeOnly fg.deobf("curse.maven:neat-238372:3859673")
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.57')
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency

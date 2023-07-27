@@ -1,0 +1,84 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"idle": {
+			"loop": true,
+			"animation_length": 100,
+			"bones": {
+				"eye": {
+					"rotation": {
+						"vector": [0, 0, "5 * math.round(math.random(-0.505, 0.505))"]
+					},
+					"scale": {
+						"vector": [
+							"1 + 0.05 * math.round(math.random(-0.501, 0.501))",
+							"1 + 0.05 * math.round(math.random(-0.501, 0.501))",
+							"1 + 0.05 * math.round(math.random(-0.501, 0.501))"
+						]
+					}
+				},
+				"eye2": {
+					"rotation": {
+						"vector": ["5 * math.round(math.random(-0.505, 0.505))", 0, 0]
+					}
+				},
+				"eye3": {
+					"rotation": {
+						"vector": [0, 0, "5 * math.round(math.random(-0.505, 0.505))"]
+					}
+				},
+				"eye4": {
+					"rotation": {
+						"vector": [0, 0, "5 * math.round(math.random(-0.505, 0.505))"]
+					}
+				}
+			}
+		},
+		"setup": {
+			"loop": "hold_on_last_frame",
+			"bones": {
+				"base": {
+					"scale": {
+						"vector": [1.005, 1.005, 1.005]
+					}
+				},
+				"base2": {
+					"scale": {
+						"vector": [1.005, 1.005, 1.005]
+					}
+				},
+				"base3": {
+					"scale": {
+						"vector": [1.005, 1.005, 1.005]
+					}
+				},
+				"base4": {
+					"scale": {
+						"vector": [1.005, 1.005, 1.005]
+					}
+				},
+				"base5": {
+					"scale": {
+						"vector": [1.005, 1.005, 1.005]
+					}
+				}
+			}
+		},
+		"hide_leg": {
+			"loop": "hold_on_last_frame",
+			"bones": {
+				"armorLeftLeg": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"armorRightLeg": {
+					"scale": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

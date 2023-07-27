@@ -1,6 +1,6 @@
 package constantan.lobotomy.mixin;
 
-import constantan.lobotomy.common.init.IMixinEntityType;
+import constantan.lobotomy.common.util.mixin.IMixinEntityType;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;

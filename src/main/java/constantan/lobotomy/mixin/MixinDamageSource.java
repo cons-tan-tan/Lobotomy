@@ -1,6 +1,6 @@
 package constantan.lobotomy.mixin;
 
-import constantan.lobotomy.common.init.IMixinDamageSource;
+import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.world.damagesource.DamageSource;

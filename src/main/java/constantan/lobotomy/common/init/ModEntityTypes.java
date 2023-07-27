@@ -4,6 +4,7 @@ import constantan.lobotomy.common.entity.PunishingBirdEntity;
 import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
+import constantan.lobotomy.common.util.mixin.IMixinEntityType;
 import constantan.lobotomy.lib.LibEntityResources;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.world.entity.Entity;

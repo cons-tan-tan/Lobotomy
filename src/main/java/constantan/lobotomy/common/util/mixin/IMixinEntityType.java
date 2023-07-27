@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.init;
+package constantan.lobotomy.common.util.mixin;
 
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;

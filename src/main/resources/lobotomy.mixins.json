@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "constantan.lobotomy.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "lobotomy.refmap.json",
+  "mixins": [
+    "MixinDamageSource",
+    "MixinEntityType",
+    "MixinLivingEntity",
+    "MixinMob"
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}

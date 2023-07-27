@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.entity;
 
-import constantan.lobotomy.common.init.IMixinDamageSource;
+import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import constantan.lobotomy.common.init.ModEntityTypes;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.IRiskLevel;
@@ -15,7 +15,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Map;
 
-public abstract class AbnormalityEntity extends Monster implements IRiskLevel, IAnimatable {
+public abstract class AbnormalityEntity extends Monster implements IRiskLevel {
 
     protected final AnimationFactory FACTORY;
 
@@ -24,11 +24,14 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     public AbnormalityEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
 
-        this.FACTORY = GeckoLibUtil.createFactory(this);
+        FACTORY = (this instanceof IAnimatable iAnimatable)
+                ? GeckoLibUtil.createFactory(iAnimatable)
+                : null;
+
         this.currentDamageType = this.getDefaultDamageType();
     }
 
-    @Override
+    //サブクラスでIAnimatableを実装した場合に使える
     public AnimationFactory getFactory() {
         return this.FACTORY;
     }

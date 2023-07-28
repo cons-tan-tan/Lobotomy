@@ -1,7 +1,7 @@
 package constantan.lobotomy.common.network;
 
-import constantan.lobotomy.common.network.packet.CheckSanityC2SPacket;
-import constantan.lobotomy.common.network.packet.SyncSanityS2CPacket;
+import constantan.lobotomy.common.network.packet.sanity.CheckSanityC2SPacket;
+import constantan.lobotomy.common.network.packet.sanity.SyncSanityS2CPacket;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

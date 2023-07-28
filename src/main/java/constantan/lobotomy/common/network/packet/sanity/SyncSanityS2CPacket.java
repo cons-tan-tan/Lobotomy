@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.network.packet;
+package constantan.lobotomy.common.network.packet.sanity;
 
 import constantan.lobotomy.client.gui.ClientSanityData;
 import net.minecraft.network.FriendlyByteBuf;

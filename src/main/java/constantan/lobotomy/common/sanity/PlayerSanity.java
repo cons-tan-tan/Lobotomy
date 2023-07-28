@@ -1,7 +1,7 @@
 package constantan.lobotomy.common.sanity;
 
 import constantan.lobotomy.common.network.Messages;
-import constantan.lobotomy.common.network.packet.SyncSanityS2CPacket;
+import constantan.lobotomy.common.network.packet.sanity.SyncSanityS2CPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;

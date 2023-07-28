@@ -2,7 +2,7 @@ package constantan.lobotomy.client.key;
 
 import constantan.lobotomy.client.gui.ClientSanityData;
 import constantan.lobotomy.common.network.Messages;
-import constantan.lobotomy.common.network.packet.CheckSanityC2SPacket;
+import constantan.lobotomy.common.network.packet.sanity.CheckSanityC2SPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;

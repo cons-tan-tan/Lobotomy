@@ -5,10 +5,12 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import constantan.lobotomy.client.model.entity.PunishingBirdModel;
 import constantan.lobotomy.common.entity.PunishingBirdEntity;
 import constantan.lobotomy.lib.LibMisc;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
@@ -27,4 +29,11 @@ public class PunishingBirdRenderer extends GeoEntityRenderer<PunishingBirdEntity
 
         return super.getRenderType(animatable, partialTick, poseStack, bufferSource, buffer, packedLight, texture);
     }
+
+//    @Override
+//    public void render(PunishingBirdEntity animatable, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+//        super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+//        AABB aabb = animatable.getBoundingBox().move(animatable.getViewVector(1.0F).normalize()).inflate(1.5F);
+//        LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), aabb, 1.0F, 1.0F, 1.0F, 1.0F);
+//    }
 }

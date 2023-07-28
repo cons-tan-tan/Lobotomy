@@ -31,6 +31,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
+import java.util.List;
 import java.util.UUID;
 
 public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatable {
@@ -270,10 +271,14 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
         setFlyingSpeedModifierUuid(UUID.fromString(pCompound.getString("flying_speed_modifier_uuid_string")));
     }
 
+    public AABB getAngryAttackAABB() {
+        return this.getBoundingBox().move(this.getViewVector(1.0F).normalize().scale(2.25F)).inflate(1.25F);
+    }
+
     /**
      * 通常攻撃
      */
-    static class PunishingBirdNormalAttackGoal extends MeleeAttackGoal {
+     private static class PunishingBirdNormalAttackGoal extends MeleeAttackGoal {
         protected PunishingBirdEntity owner;
 
         public PunishingBirdNormalAttackGoal(PunishingBirdEntity pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
@@ -295,7 +300,7 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
     /**
      * 特殊攻撃
      */
-    public class PunishingBirdAngryAttackGoal extends MeleeAttackGoal {
+    private static class PunishingBirdAngryAttackGoal extends MeleeAttackGoal {
         protected PunishingBirdEntity owner;
         protected boolean isPunishing = false;
 
@@ -316,13 +321,15 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
 
         @Override
         protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
-            double d0 = this.getAttackReachSqr(pEnemy);
-            boolean isValidRange = pDistToEnemySqr <= d0;
-            boolean isReadyRange = pDistToEnemySqr <= d0 * 0.75D;//攻撃開始の判定は実際の攻撃範囲の75%で判定
-            if (this.isPunishing && this.owner.getAttackTick() == WAIT_ANIMATION_TICK - OCCUR_ATTACKING_TICK && isValidRange) {
-                this.mob.doHurtTarget(pEnemy);
+            AABB attackRange = this.owner.getAngryAttackAABB();
+            List<LivingEntity> listInValidRange = this.owner.level.getEntitiesOfClass(LivingEntity.class, attackRange);
+            List<LivingEntity> listInReadyRange = this.owner.level.getEntitiesOfClass(LivingEntity.class, attackRange.inflate(0.8F));
+            if (this.isPunishing && this.owner.getAttackTick() == WAIT_ANIMATION_TICK - OCCUR_ATTACKING_TICK && listInValidRange.contains(pEnemy)) {
+                for (LivingEntity livingEntity : listInValidRange) {
+                    if (livingEntity != this.owner) this.owner.doHurtTarget(livingEntity);
+                }
             }
-            if (!this.isPunishing && isReadyRange) {
+            if (!this.isPunishing && listInReadyRange.contains(pEnemy)) {
                 this.mob.swing(InteractionHand.MAIN_HAND);
                 this.owner.startAttackAnim();
                 this.owner.stopFlyingSpeed();
@@ -333,11 +340,6 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
                 this.owner.resetFlyingSpeed();
                 this.isPunishing = false;
             }
-        }
-
-        @Override
-        protected double getAttackReachSqr(LivingEntity pAttackTarget) {
-            return super.getAttackReachSqr(pAttackTarget) + 20.0D;
         }
     }
 }

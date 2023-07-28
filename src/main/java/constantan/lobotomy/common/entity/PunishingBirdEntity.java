@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -271,8 +273,8 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
         setFlyingSpeedModifierUuid(UUID.fromString(pCompound.getString("flying_speed_modifier_uuid_string")));
     }
 
-    public AABB getAngryAttackAABB() {
-        return this.getBoundingBox().move(this.getViewVector(1.0F).normalize().scale(2.25F)).inflate(1.25F);
+    public AABB getAngryAttackAABB(float pPartialTicks) {
+        return this.getBoundingBox().move(this.getViewVector(pPartialTicks).multiply(1.0F,0.0F,1.0F).normalize().scale(2.25F)).inflate(1.25F);
     }
 
     /**
@@ -321,7 +323,7 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
 
         @Override
         protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
-            AABB attackRange = this.owner.getAngryAttackAABB();
+            AABB attackRange = this.owner.getAngryAttackAABB(1.0F);
             List<LivingEntity> listInValidRange = this.owner.level.getEntitiesOfClass(LivingEntity.class, attackRange);
             List<LivingEntity> listInReadyRange = this.owner.level.getEntitiesOfClass(LivingEntity.class, attackRange.inflate(0.8F));
             if (this.isPunishing && this.owner.getAttackTick() == WAIT_ANIMATION_TICK - OCCUR_ATTACKING_TICK && listInValidRange.contains(pEnemy)) {

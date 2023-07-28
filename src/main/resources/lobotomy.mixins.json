@@ -10,7 +10,6 @@
     "MixinMob"
   ],
   "client": [
-    "MixinEntityRendererDispatcher"
   ],
   "minVersion": "0.8"
 }

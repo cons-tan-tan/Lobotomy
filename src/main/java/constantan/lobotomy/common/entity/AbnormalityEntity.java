@@ -1,10 +1,10 @@
 package constantan.lobotomy.common.entity;
 
-import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import constantan.lobotomy.common.init.ModEntityTypes;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.IRiskLevel;
 import constantan.lobotomy.common.util.RiskLevelUtil;
+import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
@@ -24,7 +24,7 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel {
     public AbnormalityEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
 
-        FACTORY = (this instanceof IAnimatable iAnimatable)
+        FACTORY = this instanceof IAnimatable iAnimatable
                 ? GeckoLibUtil.createFactory(iAnimatable)
                 : null;
 

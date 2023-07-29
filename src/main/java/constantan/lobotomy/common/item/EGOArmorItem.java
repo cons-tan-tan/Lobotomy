@@ -1,8 +1,8 @@
 package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.common.util.DamageTypeUtil;
-import constantan.lobotomy.common.util.IRiskLevel;
 import constantan.lobotomy.common.util.DefenseUtil;
+import constantan.lobotomy.common.util.IRiskLevel;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
@@ -14,7 +14,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class EGOArmorItem extends GeoArmorItem implements IRiskLevel, IAnimatable {
+public abstract class EGOArmorItem extends GeoArmorItem implements IRiskLevel {
 
     public final AnimationFactory FACTORY;
 
@@ -24,7 +24,9 @@ public abstract class EGOArmorItem extends GeoArmorItem implements IRiskLevel, I
     public EGOArmorItem(ArmorMaterial materialIn, EquipmentSlot slot, Properties builder) {
         super(materialIn, slot, builder);
 
-        this.FACTORY = GeckoLibUtil.createFactory(this);
+        this.FACTORY = this instanceof IAnimatable iAnimatable
+                ? GeckoLibUtil.createFactory(iAnimatable)
+                : null;
 
         this.riskLevel = RiskLevelUtil.ZAYIN;
         this.defense = new HashMap<>(DefenseUtil.DEFAULT_DEFENSE);
@@ -35,7 +37,6 @@ public abstract class EGOArmorItem extends GeoArmorItem implements IRiskLevel, I
         return this.riskLevel;
     }
 
-    @Override
     public AnimationFactory getFactory() {
         return this.FACTORY;
     }

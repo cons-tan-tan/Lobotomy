@@ -1,5 +1,7 @@
 package constantan.lobotomy.common.network;
 
+import constantan.lobotomy.common.network.packet.entity.TheBurrowingHeavenC2SPacket;
+import constantan.lobotomy.common.network.packet.entity.TheBurrowingHeavenS2CPacket;
 import constantan.lobotomy.common.network.packet.sanity.CheckSanityC2SPacket;
 import constantan.lobotomy.common.network.packet.sanity.SyncSanityS2CPacket;
 import constantan.lobotomy.lib.LibMisc;
@@ -38,6 +40,18 @@ public class Messages {
                 .decoder(SyncSanityS2CPacket::new)
                 .encoder(SyncSanityS2CPacket::toBytes)
                 .consumer(SyncSanityS2CPacket::handle)
+                .add();
+
+        net.messageBuilder(TheBurrowingHeavenS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(TheBurrowingHeavenS2CPacket::new)
+                .encoder(TheBurrowingHeavenS2CPacket::toBytes)
+                .consumer(TheBurrowingHeavenS2CPacket::handle)
+                .add();
+
+        net.messageBuilder(TheBurrowingHeavenC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(TheBurrowingHeavenC2SPacket::new)
+                .encoder(TheBurrowingHeavenC2SPacket::toBytes)
+                .consumer(TheBurrowingHeavenC2SPacket::handle)
                 .add();
     }
 

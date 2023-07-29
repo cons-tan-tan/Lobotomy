@@ -1,9 +1,16 @@
 package constantan.lobotomy.common.entity;
 
+import constantan.lobotomy.LobotomyMod;
+import constantan.lobotomy.common.network.Messages;
+import constantan.lobotomy.common.network.packet.entity.TheBurrowingHeavenS2CPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -12,10 +19,19 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
+import java.util.List;
+
 public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnimatable {
+
+    public static final float SEARCH_RANGE = 30.0F;
 
     protected static final AnimationBuilder IDLE = new AnimationBuilder()
             .addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
+
+    public boolean clientShouldRenderer;
+
+    public boolean serverSeen = true;
+    private int serverCheckTick = 20;
 
     public TheBurrowingHeavenEntity(EntityType<? extends AbnormalityEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -32,6 +48,37 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
     private PlayState predicate(AnimationEvent event) {
         event.getController().setAnimation(IDLE);
         return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (!this.level.isClientSide && this.serverCheckTick-- == 0) {
+            this.serverCheckTick = 20;
+            LobotomyMod.logger.info(this.serverSeen ? "seen" : "not seen");
+            serverSeen = false;
+
+            Vec3 pos = this.getPosition(1.0F);
+            float r = TheBurrowingHeavenEntity.SEARCH_RANGE;
+            AABB searchArea = new AABB(pos.x - r, pos.y - r, pos.z - r, pos.x + r, pos.y + r, pos.z + r);
+            List<Player> listPlayer = this.level.getEntitiesOfClass(Player.class, searchArea);
+            for (Player player : listPlayer) {
+                if (this.getSensing().hasLineOfSight(player)) {
+                    Messages.sendToPlayer(new TheBurrowingHeavenS2CPacket(this.getUUID(), player.getUUID()), (ServerPlayer) player);
+                }
+            }
+        }
+    }
+
+    @Override
+    public AABB getBoundingBoxForCulling() {
+        Vec3 pos = this.getPosition(1.0F);
+        double x = 2.34375D * Math.cos(this.getYRot() * Math.PI / 180.0D);
+        double z = 2.34375D * Math.sin(this.getYRot() * Math.PI / 180.0D);
+        x = Math.max(Math.abs(x), 0.2D);
+        z = Math.max(Math.abs(z), 0.2D);
+        return new AABB(pos.x - x, pos.y, pos.z - z, pos.x + x, pos.y + 4.96875D, pos.z + z);
     }
 
     @Override

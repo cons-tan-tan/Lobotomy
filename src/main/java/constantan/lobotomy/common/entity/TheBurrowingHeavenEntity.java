@@ -57,7 +57,10 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
         if (!this.level.isClientSide && this.serverCheckTick-- == 0) {
             this.serverCheckTick = 20;
             LobotomyMod.logger.info(this.serverSeen ? "seen" : "not seen");
-            serverSeen = false;
+            if (this.serverSeen) {
+
+            }
+            this.serverSeen = false;
 
             Vec3 pos = this.getPosition(1.0F);
             float r = TheBurrowingHeavenEntity.SEARCH_RANGE;
@@ -74,11 +77,12 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
     @Override
     public AABB getBoundingBoxForCulling() {
         Vec3 pos = this.getPosition(1.0F);
-        double x = 2.34375D * Math.cos(this.getYRot() * Math.PI / 180.0D);
-        double z = 2.34375D * Math.sin(this.getYRot() * Math.PI / 180.0D);
-        x = Math.max(Math.abs(x), 0.2D);
-        z = Math.max(Math.abs(z), 0.2D);
-        return new AABB(pos.x - x, pos.y, pos.z - z, pos.x + x, pos.y + 4.96875D, pos.z + z);
+        double x = 2.40625D * Math.cos(this.getYRot() * Math.PI / 180.0D);
+        double z = 2.40625D * Math.sin(this.getYRot() * Math.PI / 180.0D);
+        x = Math.max(Math.abs(x), 0.25D);
+        z = Math.max(Math.abs(z), 0.25D);
+
+        return new AABB(pos.x - x, pos.y, pos.z - z, pos.x + x, pos.y + 5.03125D, pos.z + z);
     }
 
     @Override

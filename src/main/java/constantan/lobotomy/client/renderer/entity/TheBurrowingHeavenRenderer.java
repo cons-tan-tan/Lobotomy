@@ -2,7 +2,6 @@ package constantan.lobotomy.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import constantan.lobotomy.LobotomyMod;
 import constantan.lobotomy.client.model.entity.TheBurrowingHeavenModel;
 import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
 import net.minecraft.client.Minecraft;
@@ -45,7 +44,18 @@ public class TheBurrowingHeavenRenderer extends GeoEntityRenderer<TheBurrowingHe
 
     @Override
     public boolean shouldRender(TheBurrowingHeavenEntity pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
-        boolean seen = super.shouldRender(pLivingEntity, pCamera, pCamX, pCamY, pCamZ);
+        boolean seen;
+
+        if (!pLivingEntity.shouldRender(pCamX, pCamY, pCamZ)) {
+            return false;
+        } else if (pLivingEntity.noCulling) {
+            return true;
+        } else {
+            AABB aabb = pLivingEntity.getBoundingBoxForCulling();
+
+            seen = pCamera.isVisible(aabb);
+        }
+
         pLivingEntity.clientShouldRenderer = seen;
         return seen;
     }

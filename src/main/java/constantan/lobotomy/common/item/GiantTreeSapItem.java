@@ -16,14 +16,11 @@ public class GiantTreeSapItem extends AbnormalityToolItem {
 
     public static final int COMPENSATE_MAX_PERCENTAGE = 60;
     public static final int ADDED_COMPENSATE_PERCENTAGE = 15;
-    public static final int DEFAULT_COMPENSATE_PERCENTAGE = 0;
 
-    public static int compensatePercentage;
+    public static int compensatePercentage = 0;
 
     public GiantTreeSapItem(Item.Properties pProperties) {
         super(pProperties);
-
-        compensatePercentage = DEFAULT_COMPENSATE_PERCENTAGE;
     }
 
     @Override
@@ -35,7 +32,7 @@ public class GiantTreeSapItem extends AbnormalityToolItem {
             Random random = new Random();
             if (random.nextInt(100) < p) {
                 player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 20*20, 0, false, false));
-                compensatePercentage = DEFAULT_COMPENSATE_PERCENTAGE;
+                compensatePercentage = 0;
             } else if (p < COMPENSATE_MAX_PERCENTAGE) {
                 compensatePercentage = p + ADDED_COMPENSATE_PERCENTAGE;
             }

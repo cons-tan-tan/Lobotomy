@@ -14,8 +14,8 @@ import java.util.Random;
 
 public class GiantTreeSapItem extends AbnormalityToolItem {
 
-    public static final int COMPENSATE_MAX_PERCENTAGE = 60;
-    public static final int ADDED_COMPENSATE_PERCENTAGE = 15;
+    public static final int MAX_PERCENTAGE = 60;
+    public static final int ADDED_PERCENTAGE = 15;
 
     public static int compensatePercentage = 0;
 
@@ -28,13 +28,12 @@ public class GiantTreeSapItem extends AbnormalityToolItem {
         if (!level.isClientSide && livingEntity instanceof Player player) {
             player.heal(player.getMaxHealth());
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20*60, 4, false, false));
-            int p = compensatePercentage;
             Random random = new Random();
-            if (random.nextInt(100) < p) {
+            if (random.nextInt(100) < compensatePercentage) {
                 player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 20*20, 0, false, false));
                 compensatePercentage = 0;
-            } else if (p < COMPENSATE_MAX_PERCENTAGE) {
-                compensatePercentage = p + ADDED_COMPENSATE_PERCENTAGE;
+            } else {
+                compensatePercentage = Math.min(compensatePercentage + ADDED_PERCENTAGE, MAX_PERCENTAGE);
             }
         }
         return itemStack;

@@ -32,7 +32,7 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<TheBurrowingHeavenEntity>> THE_BURROWING_HEAVEN = ENTITY_TYPES.register(LibEntityResources.THE_BURROWING_HEAVEN.getName(),
             () -> abnormalityEntityType(EntityType.Builder
                     .of(TheBurrowingHeavenEntity::new, MobCategory.MONSTER)
-                    .sized(0.5F, 2.75F)
+                    .sized(0.6F, 2.75F)
                     .build(LibEntityResources.THE_BURROWING_HEAVEN.getBuild()))
                     .riskLevel(RiskLevelUtil.WAW)
                     .damageType(DamageTypeUtil.BLACK)

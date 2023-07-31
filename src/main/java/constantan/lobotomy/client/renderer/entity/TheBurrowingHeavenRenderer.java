@@ -19,7 +19,7 @@ public class TheBurrowingHeavenRenderer extends GeoEntityRenderer<TheBurrowingHe
 
     public TheBurrowingHeavenRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new TheBurrowingHeavenModel());
-        this.shadowRadius = 0.3F;
+        this.shadowRadius = 0.5F;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class TheBurrowingHeavenRenderer extends GeoEntityRenderer<TheBurrowingHe
         super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);
 
         if (this.entityRenderDispatcher.shouldRenderHitBoxes() && !animatable.isInvisible() && !Minecraft.getInstance().showOnlyReducedInfo()) {
-            AABB aabb = animatable.getBoundingBoxForCulling().move(-animatable.getX(), -animatable.getY(), -animatable.getZ());
+            AABB aabb = animatable.getBoundingBoxForCulling(partialTick).move(-animatable.getX(), -animatable.getY(), -animatable.getZ());
             LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), aabb, 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }

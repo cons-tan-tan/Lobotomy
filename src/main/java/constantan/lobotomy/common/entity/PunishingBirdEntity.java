@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -163,16 +164,15 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
         });
     }
 
-    private PlayState bodyPredicate(AnimationEvent event) {
+    private <P extends Entity & IAnimatable> PlayState bodyPredicate(AnimationEvent<P> event) {
         if (event.isMoving()) {
             event.getController().setAnimation(FLY);
-            return PlayState.CONTINUE;
         }
         event.getController().setAnimation(IDLE);
         return PlayState.CONTINUE;
     }
 
-    private PlayState attackPredicate(AnimationEvent event) {
+    private <P extends Entity & IAnimatable> PlayState attackPredicate(AnimationEvent<P> event) {
         if (this.isAngry() && this.swinging) {
             event.getController().markNeedsReload();
             event.getController().setAnimation(ATTACK_ANGRY);
@@ -186,9 +186,9 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
 
     @Override
     public void registerControllers(final AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "body_controller",
+        data.addAnimationController(new AnimationController<>(this, "body_controller",
                 0, this::bodyPredicate));
-        data.addAnimationController(new AnimationController(this, "attack_controller",
+        data.addAnimationController(new AnimationController<>(this, "attack_controller",
                 0, this::attackPredicate));
     }
 

@@ -8,11 +8,9 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.network.PacketDistributor;
-import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -26,14 +24,11 @@ import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class PeakWeaponItem extends Item implements IAnimatable, ISyncable {
 
-    protected static final AnimationBuilder IDLE = new AnimationBuilder()
-            .addAnimation("animation.peak_weapon.idle", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME);
     protected static final AnimationBuilder FIRE = new AnimationBuilder()
-            .addAnimation("animation.peak_weapon.fire", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+            .addAnimation("fire", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
     private final AnimationFactory FACTORY = GeckoLibUtil.createFactory(this);
 
@@ -46,14 +41,14 @@ public class PeakWeaponItem extends Item implements IAnimatable, ISyncable {
         GeckoLibNetwork.registerSyncable(this);
     }
 
-    private PlayState predicate(AnimationEvent event) {
-        event.getController().setAnimation(IDLE);
+    public <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, ANIM_CONTROLLER_NAME, 0, this::predicate));
+        //onAnimationSyncで制御するAnimationControllerはtransitionLengthTicksを1以上にしてないとクラッシュする!!!!
+        data.addAnimationController(new AnimationController<>(this, ANIM_CONTROLLER_NAME, 1, this::predicate));
     }
 
     @Override
@@ -64,22 +59,21 @@ public class PeakWeaponItem extends Item implements IAnimatable, ISyncable {
     @Override
     public void onAnimationSync(int id, int state) {
         if (state == FIRE_ANIM_STATE) {
-            AnimationController controller = GeckoLibUtil.getControllerForID(this.FACTORY, id, ANIM_CONTROLLER_NAME);
-            if (controller.getAnimationState() == AnimationState.Stopped) {
-                controller.markNeedsReload();
-                controller.setAnimation(FIRE);
-            }
+            final AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.FACTORY, id, ANIM_CONTROLLER_NAME);
+            controller.markNeedsReload();
+            controller.clearAnimationCache();
+            controller.setAnimation(FIRE);
         }
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        ItemStack stack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            int id = GeckoLibUtil.guaranteeIDForStack(stack, (ServerLevel) pLevel);
+            final ItemStack stack = pPlayer.getItemInHand(pUsedHand);
+            final int id = GeckoLibUtil.guaranteeIDForStack(stack, (ServerLevel) pLevel);
             GeckoLibNetwork.syncAnimation(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pPlayer), this, id, FIRE_ANIM_STATE);
         }
-        return InteractionResultHolder.success(stack);
+        return super.use(pLevel, pPlayer, pUsedHand);
     }
 
     @Override

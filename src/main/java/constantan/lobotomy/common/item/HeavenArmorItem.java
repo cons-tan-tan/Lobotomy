@@ -5,7 +5,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
-public class HeavenArmorItem extends EGOArmorItem implements IAnimatable {
+public class HeavenArmorItem extends EgoArmorItem implements IAnimatable {
 
     public HeavenArmorItem(ArmorMaterial materialIn, EquipmentSlot slot, Properties builder) {
         super(materialIn, slot, builder);

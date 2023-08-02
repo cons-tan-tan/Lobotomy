@@ -20,7 +20,7 @@ public class DefenseUtil {
 
     public static Map<DamageTypeUtil, Float> getDefense(LivingEntity livingEntity) {
         if (livingEntity instanceof AbnormalityEntity abnormalityEntity) {
-            return abnormalityEntity.getDefense();
+            return abnormalityEntity.getAbnormalDefense();
         } if (livingEntity instanceof Player player) {
 
             //PlayerのスーツEGOの耐性を取得

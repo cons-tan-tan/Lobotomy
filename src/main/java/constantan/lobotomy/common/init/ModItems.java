@@ -2,10 +2,8 @@ package constantan.lobotomy.common.init;
 
 
 import constantan.lobotomy.common.ModSetup;
-import constantan.lobotomy.common.item.AbnormalityToolItem;
-import constantan.lobotomy.common.item.GiantTreeSapItem;
-import constantan.lobotomy.common.item.LobotomyDebugItem;
-import constantan.lobotomy.common.item.PeakWeaponItem;
+import constantan.lobotomy.common.item.*;
+import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import constantan.lobotomy.lib.LibBlockNames;
 import constantan.lobotomy.lib.LibEntityResources;
@@ -30,6 +28,10 @@ public class ModItems {
         return new AbnormalityToolItem.AbnormalityToolItemProperties().riskLevel(riskLevel).tab(ModSetup.CREATIVE_TAB).stacksTo(1);
     }
 
+    public static Item.Properties egoWeaponItem(RiskLevelUtil riskLevel, DamageTypeUtil damageType) {
+        return new EgoWeaponItem.EgoWeaponItemProperties().damageType(damageType).riskLevel(riskLevel).tab(ModSetup.CREATIVE_TAB).stacksTo(1);
+    }
+
     //DEBUG
     public static final RegistryObject<Item> LOBOTOMY_DEBUG_ITEM = ITEMS.register("lobotomy_debug_item",
             () -> new LobotomyDebugItem(basicItem().stacksTo(1)));
@@ -49,6 +51,6 @@ public class ModItems {
             () -> new ForgeSpawnEggItem(ModEntityTypes.THE_BURROWING_HEAVEN, 0xb40a1a, 0xe4af50, basicItem()));
 
     //EGO_WEAPON
-    public static final RegistryObject<Item> PEAK_WEAPON_ITEM = ITEMS.register(LibItemNames.PEAK_WEAPON,
-            () -> new PeakWeaponItem(basicItem().stacksTo(1)));
+    public static final RegistryObject<Item> PEAK_WEAPON = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getWeaponEgoName(),
+            () -> new PeakWeaponItem(egoWeaponItem(RiskLevelUtil.TETH, DamageTypeUtil.RED)));
 }

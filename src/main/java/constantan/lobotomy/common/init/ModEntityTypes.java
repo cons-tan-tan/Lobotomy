@@ -19,7 +19,8 @@ public class ModEntityTypes {
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, LibMisc.MOD_ID);
 
-    public static final RegistryObject<EntityType<PunishingBirdEntity>> PUNISHING_BIRD = ENTITY_TYPES.register(LibEntityResources.PUNISHING_BIRD.getName(),
+    public static final RegistryObject<EntityType<PunishingBirdEntity>> PUNISHING_BIRD = ENTITY_TYPES
+            .register(LibEntityResources.PUNISHING_BIRD.getName(),
             () -> abnormalityEntityType(EntityType.Builder
                     .of(PunishingBirdEntity::new, MobCategory.MONSTER)
                     .sized(0.4F, 0.65F)
@@ -29,7 +30,8 @@ public class ModEntityTypes {
                     .defense(2.0F, 2.0F, 2.0F, 2.0F)
                     .build());
 
-    public static final RegistryObject<EntityType<TheBurrowingHeavenEntity>> THE_BURROWING_HEAVEN = ENTITY_TYPES.register(LibEntityResources.THE_BURROWING_HEAVEN.getName(),
+    public static final RegistryObject<EntityType<TheBurrowingHeavenEntity>> THE_BURROWING_HEAVEN = ENTITY_TYPES
+            .register(LibEntityResources.THE_BURROWING_HEAVEN.getName(),
             () -> abnormalityEntityType(EntityType.Builder
                     .of(TheBurrowingHeavenEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 2.75F)

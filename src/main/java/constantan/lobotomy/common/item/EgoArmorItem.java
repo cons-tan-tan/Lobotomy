@@ -2,7 +2,7 @@ package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.DefenseUtil;
-import constantan.lobotomy.common.util.IRiskLevel;
+import constantan.lobotomy.common.util.IDefense;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
@@ -11,25 +11,25 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.item.GeoArmorItem;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public abstract class EGOArmorItem extends GeoArmorItem implements IRiskLevel {
+public abstract class EgoArmorItem extends GeoArmorItem implements IEgo, IDefense {
 
-    public final AnimationFactory FACTORY;
+    public final AnimationFactory factory;
 
-    public Map<DamageTypeUtil, Float> defense;
-    public RiskLevelUtil riskLevel;
+    public final Map<DamageTypeUtil, Float> defense;
+    public final RiskLevelUtil riskLevel;
 
-    public EGOArmorItem(ArmorMaterial materialIn, EquipmentSlot slot, Properties builder) {
+    public EgoArmorItem(ArmorMaterial materialIn, EquipmentSlot slot, Properties builder) {
         super(materialIn, slot, builder);
 
-        this.FACTORY = this instanceof IAnimatable iAnimatable
+        this.factory = this instanceof IAnimatable iAnimatable
                 ? GeckoLibUtil.createFactory(iAnimatable)
                 : null;
 
-        this.riskLevel = RiskLevelUtil.ZAYIN;
-        this.defense = new HashMap<>(DefenseUtil.DEFAULT_DEFENSE);
+        EgoArmorItemProperties egoArmorItemProperties = (EgoArmorItemProperties) builder;
+        this.riskLevel = egoArmorItemProperties.riskLevel;
+        this.defense = egoArmorItemProperties.defense;
     }
 
     @Override
@@ -37,22 +37,21 @@ public abstract class EGOArmorItem extends GeoArmorItem implements IRiskLevel {
         return this.riskLevel;
     }
 
+    @Override
+    public Map<DamageTypeUtil, Float> getAbnormalDefense() {
+        return this.defense;
+    }
+
     public AnimationFactory getFactory() {
-        return this.FACTORY;
+        return this.factory;
     }
 
 
-    public static class EGOArmorItemProperties extends Properties {
+    public static class EgoArmorItemProperties extends EgoItemProperties {
 
-        RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;
 
-        public EGOArmorItemProperties riskLevel(RiskLevelUtil riskLevel) {
-            this.riskLevel = riskLevel;
-            return this;
-        }
-
-        public EGOArmorItemProperties defense(float red, float white, float black, float pale) {
+        public EgoArmorItemProperties defense(float red, float white, float black, float pale) {
             this.defense = DefenseUtil.createDefense(red, white, black, pale);
             return this;
         }

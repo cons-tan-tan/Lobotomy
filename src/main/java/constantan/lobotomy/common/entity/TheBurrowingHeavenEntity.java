@@ -49,7 +49,7 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).build();
     }
 
-    private PlayState predicate(AnimationEvent event) {
+    private <P extends Entity & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
         event.getController().setAnimation(IDLE);
         return PlayState.CONTINUE;
     }

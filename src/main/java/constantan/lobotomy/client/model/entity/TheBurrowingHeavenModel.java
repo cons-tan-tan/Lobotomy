@@ -2,26 +2,13 @@ package constantan.lobotomy.client.model.entity;
 
 import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
 import constantan.lobotomy.lib.LibEntityResources;
-import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class TheBurrowingHeavenModel extends AnimatedGeoModel<TheBurrowingHeavenEntity> {
+public class TheBurrowingHeavenModel extends AbnormalityEntityModel<TheBurrowingHeavenEntity> {
 
-    @Override
-    public ResourceLocation getModelLocation(TheBurrowingHeavenEntity object) {
-        return LibEntityResources.THE_BURROWING_HEAVEN.getModel();
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(TheBurrowingHeavenEntity object) {
-        return LibEntityResources.THE_BURROWING_HEAVEN.getTexture();
-    }
-
-    @Override
-    public ResourceLocation getAnimationFileLocation(TheBurrowingHeavenEntity animatable) {
-        return LibEntityResources.THE_BURROWING_HEAVEN.getAnimation();
+    public TheBurrowingHeavenModel(LibEntityResources.EntityResourceData entityResourceData) {
+        super(entityResourceData);
     }
 
     @Override

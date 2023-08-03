@@ -1,8 +1,8 @@
 package constantan.lobotomy.client.renderer;
 
-import constantan.lobotomy.client.renderer.item.HeavenWeaponRenderer;
-import constantan.lobotomy.client.renderer.item.PeakWeaponRenderer;
+import constantan.lobotomy.client.renderer.item.EgoWeaponItemRenderer;
 import constantan.lobotomy.common.init.ModItems;
+import constantan.lobotomy.lib.LibEntityResources;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Item;
 
@@ -18,7 +18,7 @@ public class ModItemRenderers<T extends Item> {
     }
 
     static {
-        map.put(ModItems.PEAK_WEAPON.get(), new PeakWeaponRenderer());
-        map.put(ModItems.HEAVEN_WEAPON.get(), new HeavenWeaponRenderer());
+        map.put(ModItems.PEAK_WEAPON.get(), new EgoWeaponItemRenderer<>(LibEntityResources.PUNISHING_BIRD));
+        map.put(ModItems.HEAVEN_WEAPON.get(), new EgoWeaponItemRenderer<>(LibEntityResources.THE_BURROWING_HEAVEN));
     }
 }

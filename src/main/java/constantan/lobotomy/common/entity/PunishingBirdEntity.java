@@ -167,8 +167,9 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
     private <P extends Entity & IAnimatable> PlayState bodyPredicate(AnimationEvent<P> event) {
         if (event.isMoving()) {
             event.getController().setAnimation(FLY);
+        } else {
+            event.getController().setAnimation(IDLE);
         }
-        event.getController().setAnimation(IDLE);
         return PlayState.CONTINUE;
     }
 

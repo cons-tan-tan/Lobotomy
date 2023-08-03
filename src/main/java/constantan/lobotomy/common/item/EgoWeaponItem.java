@@ -4,11 +4,16 @@ import constantan.lobotomy.client.renderer.ModItemRenderers;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
@@ -39,18 +44,40 @@ public abstract class EgoWeaponItem extends Item implements IEgo {
         this.damageType = egoWeaponItemProperties.damageType;
     }
 
+    /**
+     * ISyncable専用
+     */
+    public void playAnimation(LivingEntity entity, InteractionHand hand, int state) {
+        ItemStack stack = entity.getItemInHand(hand);
+        playAnimation(entity, stack, state);
+    }
+
+    /**
+     * ISyncable専用
+     */
+    public void playAnimation(LivingEntity entity, ItemStack stack, int state) {
+        if (!entity.level.isClientSide && this instanceof ISyncable iSyncable) {
+            int id = GeckoLibUtil.guaranteeIDForStack(stack, (ServerLevel) entity.level);
+            PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity);
+            GeckoLibNetwork.syncAnimation(target, iSyncable, id, state);
+        }
+    }
+
+    /**
+     * IAnimatable専用<br><br>
+     * {@link IAnimatable#registerControllers}で登録した{@link AnimationController}を{@link ISyncable#onAnimationSync}で制御する場合transitionLengthTicksを1以上にしてないとクラッシュするので注意
+     */
+    public AnimationFactory getFactory() {
+        return this.factory;
+    }
+
     @Override
     public RiskLevelUtil getRiskLevel() {
         return this.riskLevel;
     }
 
-    /**
-     * onAnimationSyncで制御するAnimationControllerはtransitionLengthTicksを1以上にしてないとクラッシュするから注意!!!!
-     */
-    public abstract void registerControllers(AnimationData data);
-
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public DamageTypeUtil getDamageType() {
+        return this.damageType;
     }
 
     @Override

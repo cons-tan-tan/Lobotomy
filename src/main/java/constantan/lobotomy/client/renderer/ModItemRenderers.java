@@ -1,5 +1,6 @@
 package constantan.lobotomy.client.renderer;
 
+import constantan.lobotomy.client.renderer.item.HeavenWeaponRenderer;
 import constantan.lobotomy.client.renderer.item.PeakWeaponRenderer;
 import constantan.lobotomy.common.init.ModItems;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -18,5 +19,6 @@ public class ModItemRenderers<T extends Item> {
 
     static {
         map.put(ModItems.PEAK_WEAPON.get(), new PeakWeaponRenderer());
+        map.put(ModItems.HEAVEN_WEAPON.get(), new HeavenWeaponRenderer());
     }
 }

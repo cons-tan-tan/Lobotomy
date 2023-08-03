@@ -17,16 +17,6 @@ public class PunishingBirdRenderer extends AbnormalityEntityRenderer<PunishingBi
         super(renderManager, new PunishingBirdModel(LibEntityResources.PUNISHING_BIRD), 0.3F, 0.4F);
     }
 
-//    @Override
-//    public RenderType getRenderType(PunishingBirdEntity animatable, float partialTick, PoseStack poseStack,
-//                                    @Nullable MultiBufferSource bufferSource,
-//                                    @Nullable VertexConsumer buffer, int packedLight,
-//                                    ResourceLocation texture) {
-//        poseStack.scale(0.4F, 0.4F, 0.4F);
-//
-//        return super.getRenderType(animatable, partialTick, poseStack, bufferSource, buffer, packedLight, texture);
-//    }
-
     @Override
     public void render(PunishingBirdEntity animatable, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);

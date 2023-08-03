@@ -18,16 +18,6 @@ public class TheBurrowingHeavenRenderer extends AbnormalityEntityRenderer<TheBur
         super(renderManager, new TheBurrowingHeavenModel(LibEntityResources.THE_BURROWING_HEAVEN), 0.5F, 1.5F);
     }
 
-//    @Override
-//    public RenderType getRenderType(TheBurrowingHeavenEntity animatable, float partialTick, PoseStack poseStack,
-//                                    @Nullable MultiBufferSource bufferSource,
-//                                    @Nullable VertexConsumer buffer, int packedLight,
-//                                    ResourceLocation texture) {
-//        poseStack.scale(1.5F, 1.5F, 1.5F);
-//
-//        return super.getRenderType(animatable, partialTick, poseStack, bufferSource, buffer, packedLight, texture);
-//    }
-
     @Override
     public void render(TheBurrowingHeavenEntity animatable, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);

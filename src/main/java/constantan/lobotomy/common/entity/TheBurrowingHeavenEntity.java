@@ -2,40 +2,40 @@ package constantan.lobotomy.common.entity;
 
 import constantan.lobotomy.LobotomyMod;
 import constantan.lobotomy.common.network.Messages;
-import constantan.lobotomy.common.network.packet.entity.TheBurrowingHeavenS2CPacket;
+import constantan.lobotomy.common.network.packet.entity.TheBurrowingHeavenC2SPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnimatable {
 
-    public static final float SEARCH_RANGE = 30.0F;
+    public static final float SEARCH_RANGE = 32.0F;
 
-    protected static final AnimationBuilder IDLE = new AnimationBuilder()
-            .addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
-
-    public boolean clientShouldRenderer;
+    public boolean clientShouldRender;
+    private int clientCheckTick = 20;
 
     public boolean serverSeen = true;
     private int serverCheckTick = 20;
+    private int subQliphothCounterSecond = 10;
+    private int attackSecond = 3;
 
     public TheBurrowingHeavenEntity(EntityType<? extends AbnormalityEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -50,7 +50,7 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
     }
 
     private <P extends Entity & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        event.getController().setAnimation(IDLE);
+        event.getController().setAnimation(ANIM_IDLE);
         return PlayState.CONTINUE;
     }
 
@@ -58,24 +58,64 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
     public void tick() {
         super.tick();
 
-        if (!this.level.isClientSide && this.serverCheckTick-- == 0) {
-            this.serverCheckTick = 20;
-            LobotomyMod.logger.info(this.serverSeen ? "seen" : "not seen");
-            if (this.serverSeen) {
-
-            }
-            this.serverSeen = false;
-
-            Vec3 pos = this.getPosition(1.0F);
-            float r = TheBurrowingHeavenEntity.SEARCH_RANGE;
-            AABB searchArea = new AABB(pos.x - r, pos.y - r, pos.z - r, pos.x + r, pos.y + r, pos.z + r);
-            List<Player> listPlayer = this.level.getEntitiesOfClass(Player.class, searchArea);
-            for (Player player : listPlayer) {
-                if (this.getSensing().hasLineOfSight(player)) {
-                    Messages.sendToPlayer(new TheBurrowingHeavenS2CPacket(this.getUUID(), player.getUUID()), (ServerPlayer) player);
+        if (this.level.isClientSide && this.clientCheckTick-- == 0) {
+            clientCheckTick = this.getQliphothCounter() == 0
+                    ? 10
+                    : 20;
+            if (this.clientShouldRender) {
+                Minecraft minecraft = Minecraft.getInstance();
+                if (this.level == minecraft.player.level) {
+                    Vec3 vec3 = this.getEyePosition();
+                    Vec3 vec31 = minecraft.gameRenderer.getMainCamera().getPosition();
+                    if (vec31.distanceTo(vec3) <= 128) {
+                        if (this.level.clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS) {
+                            Messages.sendToServer(new TheBurrowingHeavenC2SPacket(this.uuid));
+                        }
+                    }
                 }
             }
         }
+
+        if (!this.level.isClientSide) {
+            if (this.serverCheckTick-- == 0) {//見られているかの判定
+                this.serverCheckTick = 20;
+                LobotomyMod.logger.info(this.serverSeen ? "seen" : "not seen");
+
+                Vec3 pos = this.getPosition(1.0F);
+                float r = SEARCH_RANGE;
+                AABB searchArea = new AABB(pos.x - r, pos.y - r, pos.z - r, pos.x + r, pos.y + r, pos.z + r);
+
+                List<Player> listPlayer = new ArrayList<>();
+                for (Player player : this.level.getEntitiesOfClass(Player.class, searchArea)) {
+                    if (this.hasLineOfSight(player)) {
+                        listPlayer.add(player);
+                    }
+                }
+                //地中の天国の視界内にプレイヤーがいる＆どのプレイヤーにも見られていない状態で10秒経つごとにクリフォトカウンターが1下がる
+                if (!this.serverSeen) {
+                    if (!listPlayer.isEmpty() && this.subQliphothCounterSecond-- == 0) {
+                        this.subQliphothCounterSecond = 10;
+                        this.subQliphothCounter(1);
+                        LobotomyMod.logger.info("Qliphoth = " + this.getQliphothCounter());
+                    }
+                    if (this.getQliphothCounter() == 0 && this.attackSecond-- == 0) {
+                        this.attackSecond = 3;
+                        for (Player player : this.level.getEntitiesOfClass(Player.class, searchArea.inflate(SEARCH_RANGE))) {
+                            this.doHurtTarget(player);
+                        }
+                    }
+                } else {
+                    this.subQliphothCounterSecond = 10;
+                    this.attackSecond = 3;
+                    this.serverSeen = false;
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean canDoUnblockableAttack() {
+        return true;
     }
 
     @Override

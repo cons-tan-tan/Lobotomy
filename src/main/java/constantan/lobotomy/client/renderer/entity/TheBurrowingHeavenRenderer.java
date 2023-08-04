@@ -42,7 +42,7 @@ public class TheBurrowingHeavenRenderer extends AbnormalityEntityRenderer<TheBur
             seen = pCamera.isVisible(aabb);
         }
 
-        pLivingEntity.clientShouldRenderer = seen;
+        pLivingEntity.clientShouldRender = seen;
         return seen;
     }
 }

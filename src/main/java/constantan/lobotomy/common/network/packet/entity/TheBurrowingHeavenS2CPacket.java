@@ -1,6 +1,5 @@
 package constantan.lobotomy.common.network.packet.entity;
 
-import constantan.lobotomy.LobotomyMod;
 import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
 import constantan.lobotomy.common.network.Messages;
 import net.minecraft.client.Minecraft;
@@ -9,10 +8,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +38,7 @@ public class TheBurrowingHeavenS2CPacket {
         NetworkEvent.Context content = supplier.get();
         content.enqueueWork(() -> {
             //クライアント上での処理
-            DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> { return new DistExecutor.SafeRunnable() {
+            DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
                 public final UUID theBurrowingHeavenUUID = TheBurrowingHeavenS2CPacket.this.theBurrowingHeavenUUID;
                 @Override
                 public void run() {
@@ -51,13 +48,12 @@ public class TheBurrowingHeavenS2CPacket {
                     AABB searchArea = new AABB(pos.x - r, pos.y - r, pos.z - r, pos.x + r, pos.y + r, pos.z + r);
                     List<TheBurrowingHeavenEntity> listTheBurrowingHeaven = player.level.getEntitiesOfClass(TheBurrowingHeavenEntity.class, searchArea);
                     for (TheBurrowingHeavenEntity theBurrowingHeaven : listTheBurrowingHeaven) {
-                        if (theBurrowingHeaven.getUUID().equals(this.theBurrowingHeavenUUID) && theBurrowingHeaven.clientShouldRenderer) {
+                        if (theBurrowingHeaven.getUUID().equals(this.theBurrowingHeavenUUID) && theBurrowingHeaven.clientShouldRender) {
                             Messages.sendToServer(new TheBurrowingHeavenC2SPacket(this.theBurrowingHeavenUUID));
                         }
                     }
                 }
-                };
-            });
+                });
         });
         return true;
     }

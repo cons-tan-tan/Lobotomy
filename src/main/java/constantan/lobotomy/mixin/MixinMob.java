@@ -13,7 +13,7 @@ public abstract class MixinMob {
     private DamageSource doHurtTarget(DamageSource pSource) {
         Mob self = (Mob) (Object) this;
         if (self instanceof AbnormalityEntity abnormality) {
-            return abnormality.getAbnormalDamageSource(abnormality.getDamageType(), true);//引数を弄れるようにする
+            return abnormality.getAbnormalDamageSource(abnormality.getDamageType(), !abnormality.canDoUnblockableAttack());//引数を弄れるようにする
         }
         return pSource;
     }

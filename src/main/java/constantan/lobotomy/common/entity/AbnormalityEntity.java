@@ -100,10 +100,15 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
         return (DamageSource) (Object) this.abnormalDamageSource.riskLevel(this.getRiskLevel()).damageType(damageType).Blockable(blockable);
     }
 
+    public boolean canDoUnblockableAttack() {
+        return false;
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         //これが読み込まれるのはコンストラクタ前なのでgetMaxQliphothCounterは使えない
+        //とりあえず初期値は0
         //コンストラクタでabnormalityTypeを初期化した後クリフォトカウンターもリセットする
         this.getEntityData().define(QLIPHOTH_COUNTER, 0);
     }

@@ -18,6 +18,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -26,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnimatable {
+
+    private static final AnimationBuilder ANIM_ACTIVATE = new AnimationBuilder()
+            .addAnimation("activate", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME);
 
     public static final float SEARCH_RANGE = 32.0F;
 
@@ -50,7 +55,11 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
     }
 
     private <P extends Entity & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        event.getController().setAnimation(ANIM_IDLE);
+        if (this.getQliphothCounter() == 0) {
+            event.getController().setAnimation(ANIM_ACTIVATE);
+        } else {
+            event.getController().setAnimation(ANIM_IDLE);
+        }
         return PlayState.CONTINUE;
     }
 
@@ -96,7 +105,6 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
                     if (!listPlayer.isEmpty() && this.subQliphothCounterSecond-- == 0) {
                         this.subQliphothCounterSecond = 10;
                         this.subQliphothCounter(1);
-                        LobotomyMod.logger.info("Qliphoth = " + this.getQliphothCounter());
                     }
                     if (this.getQliphothCounter() == 0 && this.attackSecond-- == 0) {
                         this.attackSecond = 3;

@@ -15,6 +15,8 @@ public interface IMixinEntityType<T extends Entity> {
 
     IMixinEntityType<T> defense(float red, float white, float black, float pale);
 
+    IMixinEntityType<T> qliphothCounter(int maxValue);
+
     EntityType<T> build();
 
     RiskLevelUtil getRiskLevel();
@@ -22,4 +24,6 @@ public interface IMixinEntityType<T extends Entity> {
     DamageTypeUtil getDamageType();
 
     Map<DamageTypeUtil, Float> getDefense();
+
+    int getQliphothCounter();
 }

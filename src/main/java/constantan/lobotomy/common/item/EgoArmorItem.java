@@ -15,10 +15,10 @@ import java.util.Map;
 
 public abstract class EgoArmorItem extends GeoArmorItem implements IEgo, IDefense {
 
-    public final AnimationFactory factory;
+    private final AnimationFactory factory;
 
-    public final Map<DamageTypeUtil, Float> defense;
-    public final RiskLevelUtil riskLevel;
+    private final Map<DamageTypeUtil, Float> defense;
+    private final RiskLevelUtil riskLevel;
 
     public EgoArmorItem(ArmorMaterial materialIn, EquipmentSlot slot, Properties builder) {
         super(materialIn, slot, builder);

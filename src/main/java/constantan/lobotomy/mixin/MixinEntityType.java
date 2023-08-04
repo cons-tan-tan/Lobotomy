@@ -1,9 +1,9 @@
 package constantan.lobotomy.mixin;
 
-import constantan.lobotomy.common.util.mixin.IMixinEntityType;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
+import constantan.lobotomy.common.util.mixin.IMixinEntityType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,18 +20,24 @@ public abstract class MixinEntityType<T extends Entity> implements IMixinEntityT
     private DamageTypeUtil defaultDamageType = DamageTypeUtil.RED;
     @Unique
     private Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;
+    @Unique
+    private int qliphothCounter = 0;
 
     @Unique
     @Override
     public IMixinEntityType<T> riskLevel(RiskLevelUtil riskLevel) {
-        this.riskLevel = riskLevel;
+        if (riskLevel != null) {
+            this.riskLevel = riskLevel;
+        }
         return this;
     }
 
     @Unique
     @Override
     public IMixinEntityType<T> damageType(DamageTypeUtil defaultDamageType) {
-        this.defaultDamageType = defaultDamageType;
+        if (defaultDamageType != null) {
+            this.defaultDamageType = defaultDamageType;
+        }
         return this;
     }
 
@@ -39,6 +45,15 @@ public abstract class MixinEntityType<T extends Entity> implements IMixinEntityT
     @Override
     public IMixinEntityType<T> defense(float red, float white, float black, float pale) {
         this.defense = DefenseUtil.createDefense(red, white, black, pale);
+        return this;
+    }
+
+    @Unique
+    @Override
+    public IMixinEntityType<T> qliphothCounter(int maxValue) {
+        if (maxValue > 0) {
+            this.qliphothCounter = maxValue;
+        }
         return this;
     }
 
@@ -64,5 +79,11 @@ public abstract class MixinEntityType<T extends Entity> implements IMixinEntityT
     @Override
     public Map<DamageTypeUtil, Float> getDefense() {
         return this.defense;
+    }
+
+    @Unique
+    @Override
+    public int getQliphothCounter() {
+        return this.qliphothCounter;
     }
 }

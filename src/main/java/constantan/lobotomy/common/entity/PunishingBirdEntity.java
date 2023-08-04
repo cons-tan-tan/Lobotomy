@@ -40,13 +40,9 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
 
-    protected static final AnimationBuilder IDLE = new AnimationBuilder()
-            .addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
-    protected static final AnimationBuilder FLY = new AnimationBuilder()
-            .addAnimation("fly", ILoopType.EDefaultLoopTypes.LOOP);
-    protected static final AnimationBuilder ATTACK_NORMAL = new AnimationBuilder()
+    private static final AnimationBuilder ANIM_ATTACK_NORMAL = new AnimationBuilder()
             .addAnimation("attack_normal", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-    protected static final AnimationBuilder ATTACK_ANGRY = new AnimationBuilder()
+    private static final AnimationBuilder ANIM_ATTACK_ANGRY = new AnimationBuilder()
             .addAnimation("attack_angry", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
     public static final float NORMAL_MAX_HEALTH = 200.0F;
@@ -166,9 +162,9 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
 
     private <P extends Entity & IAnimatable> PlayState bodyPredicate(AnimationEvent<P> event) {
         if (event.isMoving()) {
-            event.getController().setAnimation(FLY);
+            event.getController().setAnimation(ANIM_FLY);
         } else {
-            event.getController().setAnimation(IDLE);
+            event.getController().setAnimation(ANIM_IDLE);
         }
         return PlayState.CONTINUE;
     }
@@ -176,10 +172,10 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
     private <P extends Entity & IAnimatable> PlayState attackPredicate(AnimationEvent<P> event) {
         if (this.isAngry() && this.swinging) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(ATTACK_ANGRY);
+            event.getController().setAnimation(ANIM_ATTACK_ANGRY);
         } else if (this.swinging) {
             event.getController().markNeedsReload();
-            event.getController().setAnimation(ATTACK_NORMAL);
+            event.getController().setAnimation(ANIM_ATTACK_NORMAL);
             this.swinging = false;
         }
         return PlayState.CONTINUE;

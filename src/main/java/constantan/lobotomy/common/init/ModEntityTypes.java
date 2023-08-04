@@ -28,6 +28,7 @@ public class ModEntityTypes {
                     .riskLevel(RiskLevelUtil.TETH)
                     .damageType(DamageTypeUtil.RED)
                     .defense(2.0F, 2.0F, 2.0F, 2.0F)
+                    .qliphothCounter(4)
                     .build());
 
     public static final RegistryObject<EntityType<TheBurrowingHeavenEntity>> THE_BURROWING_HEAVEN = ENTITY_TYPES
@@ -39,6 +40,7 @@ public class ModEntityTypes {
                     .riskLevel(RiskLevelUtil.WAW)
                     .damageType(DamageTypeUtil.BLACK)
                     .defense(0.0F, 1.2F, 0.5F, 1.5F)
+                    .qliphothCounter(3)
                     .build());
 
 

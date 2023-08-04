@@ -2,6 +2,7 @@ package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.client.renderer.ModItemRenderers;
 import constantan.lobotomy.common.util.DamageTypeUtil;
+import constantan.lobotomy.common.util.IDamageType;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.server.level.ServerLevel;
@@ -21,12 +22,12 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public abstract class EgoWeaponItem extends Item implements IEgo {
+public abstract class EgoWeaponItem extends Item implements IEgo , IDamageType {
 
-    public final AnimationFactory factory;
+    private final AnimationFactory factory;
 
-    public final DamageTypeUtil damageType;
-    public final RiskLevelUtil riskLevel;
+    private final DamageTypeUtil damageType;
+    private final RiskLevelUtil riskLevel;
 
     public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeaponItem(Properties pProperties) {
         super(pProperties);
@@ -76,6 +77,7 @@ public abstract class EgoWeaponItem extends Item implements IEgo {
         return this.riskLevel;
     }
 
+    @Override
     public DamageTypeUtil getDamageType() {
         return this.damageType;
     }

@@ -1,6 +1,10 @@
 package constantan.lobotomy.common.util;
 
 import constantan.lobotomy.common.entity.AbnormalityEntity;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -21,6 +25,22 @@ public enum RiskLevelUtil {
         };
     }
 
+    public Component getColoredTextComponent() {
+        MutableComponent component;
+        component = switch (this) {
+            case ZAYIN -> new TextComponent("ZAYIN").withStyle(ChatFormatting.GREEN);
+            case TETH -> new TextComponent("TETH").withStyle(ChatFormatting.AQUA);
+            case HE -> new TextComponent("HE").withStyle(ChatFormatting.YELLOW);
+            case WAW -> new TextComponent("WAW").withStyle(ChatFormatting.DARK_PURPLE);
+            case ALEPH -> new TextComponent("ALEPH").withStyle(ChatFormatting.DARK_RED);
+        };
+        return component;
+    }
+
+    public Component getColoredTextComponentsForTooltip() {
+        return new TextComponent("Risk Level").withStyle(ChatFormatting.GRAY).append(": ").append(this.getColoredTextComponent());
+    }
+
     public static float getDamageRatio(RiskLevelUtil defenderRiskLevel, RiskLevelUtil attackerRiskLevel) {
         return switch (defenderRiskLevel.getLeveInt() - attackerRiskLevel.getLeveInt()) {
             case 4 -> 0.4F;
@@ -32,10 +52,6 @@ public enum RiskLevelUtil {
             case -3 -> 1.5F;
             case -4 -> 2.0F;
         };
-    }
-
-    public static float getDamageRatio(LivingEntity defender, LivingEntity attacker) {
-        return getDamageRatio(getRiskLevel(defender), getRiskLevel(attacker));
     }
 
     public static RiskLevelUtil getRiskLevel(LivingEntity livingEntity) {

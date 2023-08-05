@@ -1,19 +1,22 @@
 package constantan.lobotomy.common.item;
 
-import constantan.lobotomy.common.util.DamageTypeUtil;
-import constantan.lobotomy.common.util.DefenseUtil;
-import constantan.lobotomy.common.util.IDefense;
-import constantan.lobotomy.common.util.RiskLevelUtil;
+import constantan.lobotomy.common.util.*;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.PacketDistributor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.item.GeoArmorItem;
+import software.bernie.geckolib3.network.GeckoLibNetwork;
+import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Map;
 
-public abstract class EgoArmorItem extends GeoArmorItem implements IEgo, IDefense {
+public abstract class EgoArmorItem extends GeoArmorItem implements IEgo, IDefense, ISyncableParent {
 
     private final AnimationFactory factory;
 
@@ -42,8 +45,18 @@ public abstract class EgoArmorItem extends GeoArmorItem implements IEgo, IDefens
         return this.defense;
     }
 
+    @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    public void playAnimation(LivingEntity entity, ItemStack stack, int state) {
+        if (!entity.level.isClientSide && this instanceof ISyncable iSyncable) {
+            int id = GeckoLibUtil.guaranteeIDForStack(stack, (ServerLevel) entity.level);
+            PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity);
+            GeckoLibNetwork.syncAnimation(target, iSyncable, id, state);
+        }
     }
 
     public static class EgoArmorItemProperties extends EgoItemProperties {

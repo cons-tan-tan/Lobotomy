@@ -21,7 +21,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Map;
 
-public abstract class AbnormalityEntity extends Monster implements IRiskLevel, IDefense, IDamageType {
+public abstract class AbnormalityEntity extends Monster implements IRiskLevel, IDefense, IDamageType, IAnimatableParent {
 
     private static final EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData.defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
 
@@ -48,7 +48,6 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
         this.resetQliphothCounter();
     }
 
-    //サブクラスでIAnimatableを実装した場合に使える
     public AnimationFactory getFactory() {
         return this.factory;
     }

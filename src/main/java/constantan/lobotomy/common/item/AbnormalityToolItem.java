@@ -2,17 +2,10 @@ package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.common.util.IAbnormalityTool;
 import constantan.lobotomy.common.util.RiskLevelUtil;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
-
-import java.util.List;
 
 public abstract class AbnormalityToolItem extends Item implements IAbnormalityTool {
 
@@ -32,12 +25,6 @@ public abstract class AbnormalityToolItem extends Item implements IAbnormalityTo
 
     public AnimationFactory getFactory() {
         return this.FACTORY;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(this.riskLevel.getColoredTextComponentsForTooltip());
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 
     @Override

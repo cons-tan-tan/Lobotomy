@@ -6,6 +6,7 @@
   "mixins": [
     "MixinDamageSource",
     "MixinEntityType",
+    "MixinItem",
     "MixinLivingEntity",
     "MixinMob"
   ],

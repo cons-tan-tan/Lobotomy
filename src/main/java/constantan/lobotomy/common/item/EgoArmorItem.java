@@ -4,19 +4,13 @@ import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.IDefense;
 import constantan.lobotomy.common.util.RiskLevelUtil;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.item.GeoArmorItem;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.Map;
 
 public abstract class EgoArmorItem extends GeoArmorItem implements IEgo, IDefense {
@@ -50,12 +44,6 @@ public abstract class EgoArmorItem extends GeoArmorItem implements IEgo, IDefens
 
     public AnimationFactory getFactory() {
         return this.factory;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(this.riskLevel.getColoredTextComponentsForTooltip());
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 
     public static class EgoArmorItemProperties extends EgoItemProperties {

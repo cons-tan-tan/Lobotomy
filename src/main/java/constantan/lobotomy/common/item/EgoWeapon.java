@@ -4,7 +4,7 @@ import constantan.lobotomy.client.renderer.ModItemRenderers;
 import constantan.lobotomy.common.item.util.IEgo;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.IDamageType;
-import constantan.lobotomy.common.util.ISyncableParent;
+import constantan.lobotomy.common.item.util.ISyncableParent;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;

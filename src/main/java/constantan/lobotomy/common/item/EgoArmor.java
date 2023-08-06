@@ -2,6 +2,7 @@ package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.common.item.util.EgoArmorMaterial;
 import constantan.lobotomy.common.item.util.IEgo;
+import constantan.lobotomy.common.item.util.ISyncableParent;
 import constantan.lobotomy.common.util.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;

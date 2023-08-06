@@ -1,7 +1,7 @@
 package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.common.util.IAbnormalityTool;
-import constantan.lobotomy.common.util.ISyncableParent;
+import constantan.lobotomy.common.item.util.ISyncableParent;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;

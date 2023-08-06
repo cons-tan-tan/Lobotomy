@@ -25,11 +25,11 @@ public class ModItems {
     }
 
     public static Item.Properties abnormalityToolItem(RiskLevelUtil riskLevel) {
-        return new AbnormalityToolItem.AbnormalityToolItemProperties().riskLevel(riskLevel).tab(ModSetup.CREATIVE_TAB).stacksTo(1);
+        return new AbnormalityTool.AbnormalityToolItemProperties().riskLevel(riskLevel).tab(ModSetup.CREATIVE_TAB).stacksTo(1);
     }
 
     public static Item.Properties egoWeaponItem(RiskLevelUtil riskLevel, DamageTypeUtil damageType) {
-        return new EgoWeaponItem.EgoWeaponItemProperties().damageType(damageType).riskLevel(riskLevel).tab(ModSetup.CREATIVE_TAB).stacksTo(1);
+        return new EgoWeapon.EgoWeaponItemProperties().damageType(damageType).riskLevel(riskLevel).tab(ModSetup.CREATIVE_TAB).stacksTo(1);
     }
 
     //DEBUG
@@ -41,7 +41,7 @@ public class ModItems {
 
     //ABNORMALITY_TOOL
     public static final RegistryObject<Item> GIANT_TREE_SAP = ITEMS.register(LibItemNames.GIANT_TREE_SAP,
-            () -> new GiantTreeSapItem(abnormalityToolItem(RiskLevelUtil.HE).food((new FoodProperties.Builder()).alwaysEat().build())));
+            () -> new GiantTreeSap(abnormalityToolItem(RiskLevelUtil.HE).food((new FoodProperties.Builder()).alwaysEat().build())));
 
     //ABNORMALITY_SPAWN_EGG
     public static final RegistryObject<Item> PUNISHING_BIRD_SPAWN_EGG = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getSpawnEggName(),
@@ -52,8 +52,8 @@ public class ModItems {
 
     //EGO_WEAPON
     public static final RegistryObject<Item> PEAK_WEAPON = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getWeaponEgoName(),
-            () -> new PeakWeaponItem(egoWeaponItem(RiskLevelUtil.TETH, DamageTypeUtil.RED)));
+            () -> new PeakWeapon(egoWeaponItem(RiskLevelUtil.TETH, DamageTypeUtil.RED)));
 
     public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getWeaponEgoName(),
-            () -> new HeavenWeaponItem(egoWeaponItem(RiskLevelUtil.WAW, DamageTypeUtil.RED)));
+            () -> new HeavenWeapon(egoWeaponItem(RiskLevelUtil.WAW, DamageTypeUtil.RED)));
 }

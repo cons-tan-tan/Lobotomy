@@ -14,12 +14,12 @@ import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public abstract class AbnormalityToolItem extends Item implements IAbnormalityTool, ISyncableParent {
+public abstract class AbnormalityTool extends Item implements IAbnormalityTool, ISyncableParent {
 
     public final AnimationFactory factory;
     public final RiskLevelUtil riskLevel;
 
-    public AbnormalityToolItem(Item.Properties pProperties) {
+    public AbnormalityTool(Item.Properties pProperties) {
         super(pProperties);
 
         this.factory = this instanceof IAnimatable iAnimatable

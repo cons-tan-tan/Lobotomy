@@ -4,7 +4,6 @@ import constantan.lobotomy.common.util.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -16,15 +15,17 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Map;
 
-public abstract class EgoArmorItem extends GeoArmorItem implements IEgo, IDefense, ISyncableParent {
+public abstract class EgoArmor extends GeoArmorItem implements IEgo, IDefense, ISyncableParent {
 
     private final AnimationFactory factory;
 
     private final Map<DamageTypeUtil, Float> defense;
     private final RiskLevelUtil riskLevel;
 
-    public EgoArmorItem(ArmorMaterial materialIn, EquipmentSlot slot, Properties builder) {
-        super(materialIn, slot, builder);
+    public EgoArmor(String materialName, Properties builder) {
+        super(new EgoArmorMaterial(materialName,
+                ((EgoArmorItemProperties) builder).riskLevel,
+                ((EgoArmorItemProperties) builder).defense), EquipmentSlot.CHEST, builder);
 
         this.factory = this instanceof IAnimatable iAnimatable
                 ? GeckoLibUtil.createFactory(iAnimatable)

@@ -26,14 +26,14 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public abstract class EgoWeaponItem extends Item implements IEgo , IDamageType, ISyncableParent {
+public abstract class EgoWeapon extends Item implements IEgo , IDamageType, ISyncableParent {
 
     private final AnimationFactory factory;
 
     private final DamageTypeUtil damageType;
     private final RiskLevelUtil riskLevel;
 
-    public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeaponItem(Properties pProperties) {
+    public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeapon(Properties pProperties) {
         super(pProperties);
 
         this.factory = this instanceof IAnimatable iAnimatable
@@ -92,7 +92,7 @@ public abstract class EgoWeaponItem extends Item implements IEgo , IDamageType, 
         consumer.accept(new IItemRenderProperties() {
             @Override
             public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-                return ModItemRenderers.getRenderer(EgoWeaponItem.this);
+                return ModItemRenderers.getRenderer(EgoWeapon.this);
             }
         });
     }

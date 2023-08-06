@@ -17,7 +17,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class PeakWeaponItem extends EgoRangeWeapon implements IAnimatable, ISyncable {
 
-    protected static final AnimationBuilder FIRE = new AnimationBuilder()
+    protected static final AnimationBuilder ANIM_FIRE = new AnimationBuilder()
             .addAnimation("fire", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
     public static final String ANIM_CONTROLLER_NAME = "controller";
@@ -38,7 +38,7 @@ public class PeakWeaponItem extends EgoRangeWeapon implements IAnimatable, ISync
         controller.markNeedsReload();
         if (state == FIRE_ANIM_STATE) {
             controller.clearAnimationCache();
-            controller.setAnimation(FIRE);
+            controller.setAnimation(ANIM_FIRE);
         }
     }
 

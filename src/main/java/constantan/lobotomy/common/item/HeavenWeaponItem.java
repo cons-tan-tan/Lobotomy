@@ -3,9 +3,9 @@ package constantan.lobotomy.common.item;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
-public class HeavenWeapon extends EgoMeleeWeapon implements IAnimatable {
+public class HeavenWeaponItem extends EgoMeleeWeapon implements IAnimatable {
 
-    public HeavenWeapon(Properties pProperties) {
+    public HeavenWeaponItem(Properties pProperties) {
         super(pProperties);
     }
 

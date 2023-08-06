@@ -12,14 +12,14 @@ import net.minecraft.world.level.Level;
 
 import java.util.Random;
 
-public class GiantTreeSap extends AbnormalityTool {
+public class GiantTreeSapItem extends AbnormalityTool {
 
     public static final int MAX_PERCENTAGE = 60;
     public static final int ADDED_PERCENTAGE = 15;
 
     public static int compensatePercentage = 0;
 
-    public GiantTreeSap(Item.Properties pProperties) {
+    public GiantTreeSapItem(Item.Properties pProperties) {
         super(pProperties);
     }
 

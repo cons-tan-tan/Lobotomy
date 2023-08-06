@@ -41,7 +41,7 @@ public class ModItems {
 
     //ABNORMALITY_TOOL
     public static final RegistryObject<Item> GIANT_TREE_SAP = ITEMS.register(LibItemNames.GIANT_TREE_SAP,
-            () -> new GiantTreeSap(abnormalityToolItem(RiskLevelUtil.HE).food((new FoodProperties.Builder()).alwaysEat().build())));
+            () -> new GiantTreeSapItem(abnormalityToolItem(RiskLevelUtil.HE).food((new FoodProperties.Builder()).alwaysEat().build())));
 
     //ABNORMALITY_SPAWN_EGG
     public static final RegistryObject<Item> PUNISHING_BIRD_SPAWN_EGG = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getSpawnEggName(),
@@ -52,8 +52,8 @@ public class ModItems {
 
     //EGO_WEAPON
     public static final RegistryObject<Item> PEAK_WEAPON = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getWeaponEgoName(),
-            () -> new PeakWeapon(egoWeaponItem(RiskLevelUtil.TETH, DamageTypeUtil.RED)));
+            () -> new PeakWeaponItem(egoWeaponItem(RiskLevelUtil.TETH, DamageTypeUtil.RED)));
 
     public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getWeaponEgoName(),
-            () -> new HeavenWeapon(egoWeaponItem(RiskLevelUtil.WAW, DamageTypeUtil.RED)));
+            () -> new HeavenWeaponItem(egoWeaponItem(RiskLevelUtil.WAW, DamageTypeUtil.RED)));
 }

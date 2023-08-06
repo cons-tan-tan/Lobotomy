@@ -150,7 +150,7 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
     /**
      * 計算は{@link Entity#lookAt(EntityAnchorArgument.Anchor, Vec3)}を参考にした
      */
-    public float getXRadForAnimation(float partialTick) {
+    public float getXRadForAnimation(float partialTick) {//弧度法
         Minecraft mc = Minecraft.getInstance();
         Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
         double d0 = camera.x - this.getPosition(partialTick).x;
@@ -163,7 +163,7 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
     /**
      * 同上
      */
-    public float getYRadForAnimation(float partialTick) {
+    public float getYRadForAnimation(float partialTick) {//弧度法
         Minecraft mc = Minecraft.getInstance();
         Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
         double d0 = camera.x - this.getPosition(partialTick).x;
@@ -171,7 +171,7 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
         return  (float) ((Math.PI / 2) - Mth.atan2(d2, d0) + (this.getYRot() * (Math.PI / 180)));
     }
 
-    public float getYRotForAnimation(float partialTick) {
+    public float getYRotForAnimation(float partialTick) {//度数法
         return (this.getYRadForAnimation(partialTick) * 180.0F / (float) Math.PI) - this.getYRot();
     }
 }

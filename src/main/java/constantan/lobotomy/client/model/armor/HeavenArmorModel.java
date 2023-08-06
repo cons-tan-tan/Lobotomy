@@ -1,6 +1,6 @@
 package constantan.lobotomy.client.model.armor;
 
-import constantan.lobotomy.common.item.HeavenArmorItem;
+import constantan.lobotomy.common.item.ego.HeavenArmorItem;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;

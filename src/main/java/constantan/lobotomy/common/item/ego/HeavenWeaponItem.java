@@ -1,5 +1,6 @@
-package constantan.lobotomy.common.item;
+package constantan.lobotomy.common.item.ego;
 
+import constantan.lobotomy.common.item.EgoMeleeWeapon;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 

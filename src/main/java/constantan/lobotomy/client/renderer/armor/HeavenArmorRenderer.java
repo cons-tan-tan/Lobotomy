@@ -1,7 +1,7 @@
 package constantan.lobotomy.client.renderer.armor;
 
 import constantan.lobotomy.client.model.armor.HeavenArmorModel;
-import constantan.lobotomy.common.item.HeavenArmorItem;
+import constantan.lobotomy.common.item.ego.HeavenArmorItem;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 public class HeavenArmorRenderer extends GeoArmorRenderer<HeavenArmorItem> {

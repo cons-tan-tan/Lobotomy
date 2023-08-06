@@ -1,6 +1,7 @@
-package constantan.lobotomy.common.item;
+package constantan.lobotomy.common.item.abnormality;
 
 import constantan.lobotomy.common.init.ModEffects;
+import constantan.lobotomy.common.item.AbnormalityTool;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;

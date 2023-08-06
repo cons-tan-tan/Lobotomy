@@ -1,5 +1,6 @@
-package constantan.lobotomy.common.item;
+package constantan.lobotomy.common.item.ego;
 
+import constantan.lobotomy.common.item.EgoRangeWeapon;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;

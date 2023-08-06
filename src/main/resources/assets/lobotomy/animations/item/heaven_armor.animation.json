@@ -34,36 +34,6 @@
 				}
 			}
 		},
-		"setup": {
-			"loop": "hold_on_last_frame",
-			"bones": {
-				"base": {
-					"scale": {
-						"vector": [1.005, 1.005, 1.005]
-					}
-				},
-				"base2": {
-					"scale": {
-						"vector": [1.005, 1.005, 1.005]
-					}
-				},
-				"base3": {
-					"scale": {
-						"vector": [1.005, 1.005, 1.005]
-					}
-				},
-				"base4": {
-					"scale": {
-						"vector": [1.005, 1.005, 1.005]
-					}
-				},
-				"base5": {
-					"scale": {
-						"vector": [1.005, 1.005, 1.005]
-					}
-				}
-			}
-		},
 		"hide_leg": {
 			"loop": "hold_on_last_frame",
 			"bones": {

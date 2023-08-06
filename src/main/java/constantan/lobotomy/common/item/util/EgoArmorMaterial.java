@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.item;
+package constantan.lobotomy.common.item.util;
 
 import constantan.lobotomy.common.init.ModItems;
 import constantan.lobotomy.common.util.DamageTypeUtil;

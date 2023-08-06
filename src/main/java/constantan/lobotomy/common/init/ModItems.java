@@ -3,6 +3,11 @@ package constantan.lobotomy.common.init;
 
 import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.item.*;
+import constantan.lobotomy.common.item.AbnormalityTool;
+import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
+import constantan.lobotomy.common.item.EgoWeapon;
+import constantan.lobotomy.common.item.ego.HeavenWeaponItem;
+import constantan.lobotomy.common.item.ego.PeakWeaponItem;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import constantan.lobotomy.lib.LibBlockNames;

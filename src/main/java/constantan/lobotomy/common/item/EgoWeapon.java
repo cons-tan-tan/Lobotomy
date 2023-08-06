@@ -1,6 +1,7 @@
 package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.client.renderer.ModItemRenderers;
+import constantan.lobotomy.common.item.util.IEgo;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.IDamageType;
 import constantan.lobotomy.common.util.ISyncableParent;
@@ -26,7 +27,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public abstract class EgoWeapon extends Item implements IEgo , IDamageType, ISyncableParent {
+public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISyncableParent {
 
     private final AnimationFactory factory;
 

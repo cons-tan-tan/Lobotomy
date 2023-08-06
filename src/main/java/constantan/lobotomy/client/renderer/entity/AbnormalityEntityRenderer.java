@@ -14,7 +14,7 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 public abstract class AbnormalityEntityRenderer<T extends LivingEntity & IAnimatable> extends GeoEntityRenderer<T> {
 
-    protected float wholeScale = 1.0F;
+    protected final float wholeScale;
 
     public AbnormalityEntityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model) {
         this(renderManager, model, 0.0F, 1.0F);

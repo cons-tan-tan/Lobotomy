@@ -34,7 +34,7 @@ public enum RiskLevelUtil {
             case WAW -> new TextComponent("WAW").withStyle(ChatFormatting.DARK_PURPLE);
             case ALEPH -> new TextComponent("ALEPH").withStyle(ChatFormatting.DARK_RED);
         };
-        return component.withStyle(ChatFormatting.ITALIC);
+        return component.withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.BOLD);
     }
 
     public Component getColoredTextComponentsForTooltip() {

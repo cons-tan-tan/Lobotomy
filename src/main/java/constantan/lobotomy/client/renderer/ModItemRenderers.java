@@ -11,14 +11,14 @@ import java.util.Map;
 
 public class ModItemRenderers<T extends Item> {
 
-    private static final Map<Item, BlockEntityWithoutLevelRenderer> map = new HashMap<>();
+    private static final Map<Item, BlockEntityWithoutLevelRenderer> MAP = new HashMap<>();
 
     public static BlockEntityWithoutLevelRenderer getRenderer(Item item) {
-        return map.get(item);
+        return MAP.get(item);
     }
 
     static {
-        map.put(ModItems.PEAK_WEAPON.get(), new EgoWeaponItemRenderer<>(LibEntityResources.PUNISHING_BIRD));
-        map.put(ModItems.HEAVEN_WEAPON.get(), new EgoWeaponItemRenderer<>(LibEntityResources.THE_BURROWING_HEAVEN));
+        MAP.put(ModItems.PEAK_WEAPON.get(), new EgoWeaponItemRenderer<>(LibEntityResources.PUNISHING_BIRD));
+        MAP.put(ModItems.HEAVEN_WEAPON.get(), new EgoWeaponItemRenderer<>(LibEntityResources.THE_BURROWING_HEAVEN));
     }
 }

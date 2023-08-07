@@ -11,15 +11,13 @@ import java.util.function.Supplier;
 
 public class ModArmorRenderers {
 
-    private static final Map<Item, Supplier<EgoArmorRenderer>> map = new HashMap<>();
+    private static final Map<Item, Supplier<EgoArmorRenderer>> MAP = new HashMap<>();
 
     public static void register() {
-        for (Item key : map.keySet()) {
-            EgoArmorRenderer.registerEgoArmorRenderer(key, map.get(key));
-        }
+        MAP.forEach(EgoArmorRenderer::registerEgoArmorRenderer);
     }
 
     static {
-        map.put(ModItems.HEAVEN_ARMOR.get(), () -> new EgoArmorRenderer<>(LibEntityResources.THE_BURROWING_HEAVEN));
+        MAP.put(ModItems.HEAVEN_ARMOR.get(), () -> new EgoArmorRenderer<>(LibEntityResources.THE_BURROWING_HEAVEN));
     }
 }

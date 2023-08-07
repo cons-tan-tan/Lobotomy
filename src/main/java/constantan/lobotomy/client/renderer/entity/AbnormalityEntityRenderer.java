@@ -12,7 +12,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public abstract class AbnormalityEntityRenderer<T extends LivingEntity & IAnimatable> extends GeoEntityRenderer<T> {
+public class AbnormalityEntityRenderer<T extends LivingEntity & IAnimatable> extends GeoEntityRenderer<T> {
 
     protected final float wholeScale;
 

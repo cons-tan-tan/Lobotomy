@@ -46,12 +46,10 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
         super(pEntityType, pLevel);
     }
 
-    public static AttributeSupplier setAttributes() {
-        return AbnormalityEntity.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 800.0F)
-                .add(Attributes.ATTACK_DAMAGE, 150.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.0F)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).build();
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<>(this, "controller",
+                0, this::predicate));
     }
 
     private <P extends Entity & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
@@ -61,6 +59,62 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
             event.getController().setAnimation(ANIM_IDLE);
         }
         return PlayState.CONTINUE;
+    }
+
+    public static AttributeSupplier setAttributes() {
+        return AbnormalityEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 800.0F)
+                .add(Attributes.ATTACK_DAMAGE, 150.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.0F)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).build();
+    }
+
+    /**
+     * 計算は{@link Entity#lookAt(EntityAnchorArgument.Anchor, Vec3)}を参考にした
+     */
+    public float getXRadForAnimation(float partialTick) {//弧度法
+        Minecraft mc = Minecraft.getInstance();
+        Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
+        double d0 = camera.x - this.getPosition(partialTick).x;
+        double d1 = camera.y - (this.getPosition(partialTick).y + (this.getBoundingBox().getYsize() * 159 / 176));
+        double d2 = camera.z - this.getPosition(partialTick).z;
+        double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+        return (float) Mth.atan2(d1, d3);
+    }
+
+    /**
+     * 同上
+     */
+    public float getYRadForAnimation(float partialTick) {//弧度法
+        Minecraft mc = Minecraft.getInstance();
+        Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
+        double d0 = camera.x - this.getPosition(partialTick).x;
+        double d2 = camera.z - this.getPosition(partialTick).z;
+        return  (float) ((Math.PI / 2) - Mth.atan2(d2, d0) + (this.getYRot() * (Math.PI / 180)));
+    }
+
+    public float getYRotForAnimation(float partialTick) {//度数法
+        return (this.getYRadForAnimation(partialTick) * 180.0F / (float) Math.PI) - this.getYRot();
+    }
+
+    public AABB getBoundingBoxForCulling(float partialTick) {
+        Vec3 pos = this.getPosition(1.0F);
+        double x = 2.40625D * Math.cos(this.getYRotForAnimation(partialTick) * Math.PI / 180.0D);
+        double z = 2.40625D * Math.sin(this.getYRotForAnimation(partialTick) * Math.PI / 180.0D);
+        x = Math.max(Math.abs(x), this.getBoundingBox().getXsize() / 2);
+        z = Math.max(Math.abs(z), this.getBoundingBox().getZsize() / 2);
+
+        return new AABB(pos.x - x, pos.y, pos.z - z, pos.x + x, pos.y + 5.03125D, pos.z + z);
+    }
+
+    @Override
+    public AABB getBoundingBoxForCulling() {
+        return getBoundingBoxForCulling(1.0F);
+    }
+
+    @Override
+    public boolean canDoUnblockableAttack() {
+        return true;
     }
 
     @Override
@@ -119,59 +173,5 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
                 }
             }
         }
-    }
-
-    @Override
-    public boolean canDoUnblockableAttack() {
-        return true;
-    }
-
-    @Override
-    public AABB getBoundingBoxForCulling() {
-        return getBoundingBoxForCulling(1.0F);
-    }
-
-    public AABB getBoundingBoxForCulling(float partialTick) {
-        Vec3 pos = this.getPosition(1.0F);
-        double x = 2.40625D * Math.cos(this.getYRotForAnimation(partialTick) * Math.PI / 180.0D);
-        double z = 2.40625D * Math.sin(this.getYRotForAnimation(partialTick) * Math.PI / 180.0D);
-        x = Math.max(Math.abs(x), this.getBoundingBox().getXsize() / 2);
-        z = Math.max(Math.abs(z), this.getBoundingBox().getZsize() / 2);
-
-        return new AABB(pos.x - x, pos.y, pos.z - z, pos.x + x, pos.y + 5.03125D, pos.z + z);
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller",
-                0, this::predicate));
-    }
-
-    /**
-     * 計算は{@link Entity#lookAt(EntityAnchorArgument.Anchor, Vec3)}を参考にした
-     */
-    public float getXRadForAnimation(float partialTick) {//弧度法
-        Minecraft mc = Minecraft.getInstance();
-        Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
-        double d0 = camera.x - this.getPosition(partialTick).x;
-        double d1 = camera.y - (this.getPosition(partialTick).y + (this.getBoundingBox().getYsize() * 159 / 176));
-        double d2 = camera.z - this.getPosition(partialTick).z;
-        double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-        return (float) Mth.atan2(d1, d3);
-    }
-
-    /**
-     * 同上
-     */
-    public float getYRadForAnimation(float partialTick) {//弧度法
-        Minecraft mc = Minecraft.getInstance();
-        Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
-        double d0 = camera.x - this.getPosition(partialTick).x;
-        double d2 = camera.z - this.getPosition(partialTick).z;
-        return  (float) ((Math.PI / 2) - Mth.atan2(d2, d0) + (this.getYRot() * (Math.PI / 180)));
-    }
-
-    public float getYRotForAnimation(float partialTick) {//度数法
-        return (this.getYRadForAnimation(partialTick) * 180.0F / (float) Math.PI) - this.getYRot();
     }
 }

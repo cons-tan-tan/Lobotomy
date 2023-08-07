@@ -1,6 +1,7 @@
 package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.client.renderer.armor.EgoArmorRenderer;
+import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.item.util.EgoArmorMaterial;
 import constantan.lobotomy.common.item.util.IEgo;
 import constantan.lobotomy.common.item.util.ISyncableParent;
@@ -39,7 +40,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
     private final RiskLevelUtil riskLevel;
 
     public EgoArmor(Properties builder) {
-        super(new EgoArmorMaterial((EgoArmorProperties) builder), EquipmentSlot.CHEST, builder);
+        super(new EgoArmorMaterial((EgoArmorProperties) builder), EquipmentSlot.CHEST, builder.tab(ModSetup.CREATIVE_TAB));
 
         this.factory = this instanceof IAnimatable iAnimatable
                 ? GeckoLibUtil.createFactory(iAnimatable)

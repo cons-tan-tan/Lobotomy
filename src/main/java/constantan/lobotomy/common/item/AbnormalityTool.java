@@ -1,5 +1,6 @@
 package constantan.lobotomy.common.item;
 
+import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.util.IAbnormalityTool;
 import constantan.lobotomy.common.item.util.ISyncableParent;
 import constantan.lobotomy.common.util.RiskLevelUtil;
@@ -20,7 +21,7 @@ public abstract class AbnormalityTool extends Item implements IAbnormalityTool, 
     public final RiskLevelUtil riskLevel;
 
     public AbnormalityTool(Item.Properties pProperties) {
-        super(pProperties);
+        super(pProperties.tab(ModSetup.CREATIVE_TAB).stacksTo(1));
 
         this.factory = this instanceof IAnimatable iAnimatable
                 ? GeckoLibUtil.createFactory(iAnimatable)

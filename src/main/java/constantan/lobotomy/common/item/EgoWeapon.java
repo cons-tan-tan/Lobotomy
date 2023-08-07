@@ -1,6 +1,7 @@
 package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.client.renderer.ModItemRenderers;
+import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.item.util.IEgo;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.IDamageType;
@@ -35,7 +36,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     private final RiskLevelUtil riskLevel;
 
     public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeapon(Properties pProperties) {
-        super(pProperties);
+        super(pProperties.tab(ModSetup.CREATIVE_TAB));
 
         this.factory = this instanceof IAnimatable iAnimatable
                 ? GeckoLibUtil.createFactory(iAnimatable)

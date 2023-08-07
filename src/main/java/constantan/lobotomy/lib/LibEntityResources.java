@@ -78,6 +78,10 @@ public class LibEntityResources {
             return this.egoName + "_armor";
         }
 
+        public String getArmorEgoItemName() {
+            return this.egoName + "_armor_item";
+        }
+
         public ResourceLocation getArmorEgoModel() {
             return path("geo/item/" + this.egoName + "_armor.geo.json");
         }

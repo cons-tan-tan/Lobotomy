@@ -6,11 +6,11 @@ import net.minecraft.world.item.Item;
 
 public interface IEgo extends IRiskLevel {
 
-    class EgoItemProperties extends Item.Properties {
+    class EgoProperties extends Item.Properties {
 
         public RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
 
-        public EgoItemProperties riskLevel(RiskLevelUtil riskLevel) {
+        public EgoProperties riskLevel(RiskLevelUtil riskLevel) {
             this.riskLevel = riskLevel;
             return this;
         }

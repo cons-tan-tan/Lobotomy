@@ -6,6 +6,7 @@ import constantan.lobotomy.common.item.*;
 import constantan.lobotomy.common.item.AbnormalityTool;
 import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
 import constantan.lobotomy.common.item.EgoWeapon;
+import constantan.lobotomy.common.item.ego.SimpleEgoArmorItem;
 import constantan.lobotomy.common.item.ego.HeavenWeaponItem;
 import constantan.lobotomy.common.item.ego.PeakWeaponItem;
 import constantan.lobotomy.common.util.DamageTypeUtil;
@@ -34,7 +35,7 @@ public class ModItems {
     }
 
     public static Item.Properties egoWeaponItem(RiskLevelUtil riskLevel, DamageTypeUtil damageType) {
-        return new EgoWeapon.EgoWeaponItemProperties().damageType(damageType).riskLevel(riskLevel).tab(ModSetup.CREATIVE_TAB).stacksTo(1);
+        return new EgoWeapon.EgoWeaponProperties().damageType(damageType).riskLevel(riskLevel).tab(ModSetup.CREATIVE_TAB).stacksTo(1);
     }
 
     //DEBUG
@@ -61,4 +62,12 @@ public class ModItems {
 
     public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getWeaponEgoName(),
             () -> new HeavenWeaponItem(egoWeaponItem(RiskLevelUtil.WAW, DamageTypeUtil.RED)));
+
+    //EGO_ARMOR
+    public static final RegistryObject<Item> HEAVEN_ARMOR = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getArmorEgoName(),
+            () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
+                    .name(LibEntityResources.THE_BURROWING_HEAVEN.getArmorEgoName())
+                    .defense(0.0F,0.0F,0.0F,0.0F)
+                    .riskLevel(RiskLevelUtil.WAW)
+                    .tab(ModSetup.CREATIVE_TAB)));
 }

@@ -3,6 +3,7 @@ package constantan.lobotomy.client;
 import constantan.lobotomy.client.gui.SanityHudOverlay;
 import constantan.lobotomy.client.key.KeyBindings;
 import constantan.lobotomy.client.key.KeyInputHandler;
+import constantan.lobotomy.client.renderer.ModArmorRenderers;
 import constantan.lobotomy.client.renderer.ModEntityRenderers;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,6 +18,7 @@ public class ClientSetup {
 
     public static void init(final FMLClientSetupEvent event) {
         ModEntityRenderers.register();
+        ModArmorRenderers.register();
 
         MinecraftForge.EVENT_BUS.addListener(KeyInputHandler::onKeyInput);
         KeyBindings.init();

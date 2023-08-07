@@ -45,7 +45,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
             GeckoLibNetwork.registerSyncable((T) this);
         }
 
-        EgoWeaponItemProperties egoWeaponItemProperties = (EgoWeaponItemProperties) pProperties;
+        EgoWeaponProperties egoWeaponItemProperties = (EgoWeaponProperties) pProperties;
         this.riskLevel = egoWeaponItemProperties.riskLevel;
         this.damageType = egoWeaponItemProperties.damageType;
     }
@@ -98,11 +98,11 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         });
     }
 
-    public static class EgoWeaponItemProperties extends EgoItemProperties {
+    public static class EgoWeaponProperties extends EgoProperties {
 
         DamageTypeUtil damageType = DamageTypeUtil.RED;
 
-        public EgoWeaponItemProperties damageType(DamageTypeUtil damageType) {
+        public EgoWeaponProperties damageType(DamageTypeUtil damageType) {
             this.damageType = damageType;
             return this;
         }

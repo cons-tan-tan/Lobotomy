@@ -1,6 +1,7 @@
 package constantan.lobotomy.common.item.util;
 
 import constantan.lobotomy.common.init.ModItems;
+import constantan.lobotomy.common.item.EgoArmor;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.sounds.SoundEvent;
@@ -24,8 +25,11 @@ public class EgoArmorMaterial implements ArmorMaterial {
     private final float knockbackResistance;
     private final LazyLoadedValue<Ingredient> repairIngredient;
 
-    public EgoArmorMaterial(String materialName, RiskLevelUtil riskLevel, Map<DamageTypeUtil, Float> defense) {
-        this.name = materialName;
+    public EgoArmorMaterial(EgoArmor.EgoArmorProperties egoArmorProperties) {
+        RiskLevelUtil riskLevel = egoArmorProperties.riskLevel;
+        Map<DamageTypeUtil, Float> defense = egoArmorProperties.defense;
+
+        this.name = egoArmorProperties.materialName;
         this.durabilityMultiplier = 5;
         this.slotProtections = new int[]{1, 1, 5, 1};
         this.enchantmentValue = 1;

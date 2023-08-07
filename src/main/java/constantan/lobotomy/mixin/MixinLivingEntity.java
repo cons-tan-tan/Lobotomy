@@ -1,11 +1,11 @@
 package constantan.lobotomy.mixin;
 
 import constantan.lobotomy.common.entity.AbnormalityEntity;
-import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import constantan.lobotomy.common.sanity.PlayerSanityProvider;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
+import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;

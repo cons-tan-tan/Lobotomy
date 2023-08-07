@@ -2,7 +2,10 @@ package constantan.lobotomy.client.model.armor;
 
 import constantan.lobotomy.lib.LibEntityResources;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -44,5 +47,16 @@ public class EgoArmorModel<T extends Item & IAnimatable> extends AnimatedGeoMode
 
         leftArm.setScaleY(1.1F);
         leftArm.setScaleZ(1.1F);
+
+
+        if (animationEvent.getExtraDataOfType(LivingEntity.class).get(0) instanceof LivingEntity livingEntity) {
+            if (livingEntity.getItemBySlot(EquipmentSlot.LEGS) != ItemStack.EMPTY) {
+                IBone rightLeg = this.getAnimationProcessor().getBone("armorRightLeg");
+                IBone leftLeg = this.getAnimationProcessor().getBone("armorLeftLeg");
+
+                rightLeg.setHidden(true);
+                leftLeg.setHidden(true);
+            }
+        }
     }
 }

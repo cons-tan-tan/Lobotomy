@@ -10,8 +10,13 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class SimpleEgoArmorItem extends EgoArmor implements IAnimatable {
 
+    private final boolean hasIdleAnim;
+
     public SimpleEgoArmorItem(Properties builder) {
         super(builder);
+
+        SimpleEgoArmorProperties simpleEgoArmorProperties = (SimpleEgoArmorProperties) builder;
+        this.hasIdleAnim = simpleEgoArmorProperties.hasIdleAnim;
     }
 
     @Override
@@ -20,7 +25,19 @@ public class SimpleEgoArmorItem extends EgoArmor implements IAnimatable {
     }
 
     private <P extends Item & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        event.getController().setAnimation(ANIM_IDLE);
+        if (this.hasIdleAnim) {
+            event.getController().setAnimation(ANIM_IDLE);
+        }
         return PlayState.CONTINUE;
+    }
+
+    public static class SimpleEgoArmorProperties extends EgoArmorProperties {
+
+        boolean hasIdleAnim;
+
+        public SimpleEgoArmorProperties idleAnim() {
+            this.hasIdleAnim = true;
+            return this;
+        }
     }
 }

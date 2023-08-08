@@ -101,7 +101,13 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
 
     public static class EgoWeaponProperties extends EgoProperties {
 
+        RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         DamageTypeUtil damageType = DamageTypeUtil.RED;
+
+        public EgoProperties riskLevel(RiskLevelUtil riskLevel) {
+            this.riskLevel = riskLevel;
+            return this;
+        }
 
         public EgoWeaponProperties damageType(DamageTypeUtil damageType) {
             this.damageType = damageType;

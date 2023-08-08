@@ -40,7 +40,10 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
     private final RiskLevelUtil riskLevel;
 
     public EgoArmor(Properties builder) {
-        super(new EgoArmorMaterial((EgoArmorProperties) builder), EquipmentSlot.CHEST, builder.tab(ModSetup.CREATIVE_TAB));
+        super(new EgoArmorMaterial(
+                ((EgoArmorProperties) builder).riskLevel,
+                ((EgoArmorProperties) builder).defense
+        ), EquipmentSlot.CHEST, builder.tab(ModSetup.CREATIVE_TAB));
 
         this.factory = this instanceof IAnimatable iAnimatable
                 ? GeckoLibUtil.createFactory(iAnimatable)
@@ -97,17 +100,16 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
     public static class EgoArmorProperties extends EgoProperties {
 
-        public Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;
+        RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
+        Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;
 
-        public String materialName;
-
-        public EgoArmorProperties defense(float red, float white, float black, float pale) {
-            this.defense = DefenseUtil.createDefense(red, white, black, pale);
+        public EgoProperties riskLevel(RiskLevelUtil riskLevel) {
+            this.riskLevel = riskLevel;
             return this;
         }
 
-        public EgoArmorProperties name(String materialName) {
-            this.materialName = materialName;
+        public EgoArmorProperties defense(float red, float white, float black, float pale) {
+            this.defense = DefenseUtil.createDefense(red, white, black, pale);
             return this;
         }
     }

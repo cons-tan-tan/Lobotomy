@@ -1,7 +1,6 @@
 package constantan.lobotomy.common.item.util;
 
 import constantan.lobotomy.common.init.ModItems;
-import constantan.lobotomy.common.item.EgoArmor;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.sounds.SoundEvent;
@@ -16,7 +15,7 @@ import java.util.Map;
 public class EgoArmorMaterial implements ArmorMaterial {
 
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
-    private final String name;
+    private static final String NAME = "ego_armor_material_name";
     private final int durabilityMultiplier;
     private final int[] slotProtections;
     private final int enchantmentValue;
@@ -25,17 +24,14 @@ public class EgoArmorMaterial implements ArmorMaterial {
     private final float knockbackResistance;
     private final LazyLoadedValue<Ingredient> repairIngredient;
 
-    public EgoArmorMaterial(EgoArmor.EgoArmorProperties egoArmorProperties) {
-        RiskLevelUtil riskLevel = egoArmorProperties.riskLevel;
-        Map<DamageTypeUtil, Float> defense = egoArmorProperties.defense;
+    public EgoArmorMaterial(RiskLevelUtil riskLevel, Map<DamageTypeUtil, Float> defense) {
 
-        this.name = egoArmorProperties.materialName;
         this.durabilityMultiplier = 5;
-        this.slotProtections = new int[]{1, 1, 5, 1};
+        this.slotProtections = new int[]{1, 1, riskLevel.getLevelInt() * 2, 1};
         this.enchantmentValue = 1;
         this.sound = SoundEvents.ARMOR_EQUIP_LEATHER;
-        this.toughness = 0.0F;
-        this.knockbackResistance = 0.0F;
+        this.toughness = riskLevel.getLevelInt() - 1;
+        this.knockbackResistance = riskLevel == RiskLevelUtil.ALEPH ? 0.2F : 0.0F;
         this.repairIngredient = new LazyLoadedValue<>(() -> Ingredient.of(ModItems.LOBOTOMY_DEBUG_ITEM.get()));
     }
 
@@ -66,7 +62,7 @@ public class EgoArmorMaterial implements ArmorMaterial {
 
     @Override
     public String getName() {
-        return this.name;
+        return this.NAME;
     }
 
     @Override

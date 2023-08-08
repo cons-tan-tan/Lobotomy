@@ -33,21 +33,6 @@
 					}
 				}
 			}
-		},
-		"hide_leg": {
-			"loop": "hold_on_last_frame",
-			"bones": {
-				"armorLeftLeg": {
-					"scale": {
-						"vector": [0, 0, 0]
-					}
-				},
-				"armorRightLeg": {
-					"scale": {
-						"vector": [0, 0, 0]
-					}
-				}
-			}
 		}
 	},
 	"geckolib_format_version": 2

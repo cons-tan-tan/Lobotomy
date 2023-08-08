@@ -19,5 +19,6 @@ public class ModArmorRenderers {
 
     static {
         MAP.put(ModItems.HEAVEN_ARMOR.get(), () -> new EgoArmorRenderer<>(LibEntityResources.THE_BURROWING_HEAVEN));
+        MAP.put(ModItems.PEAK_ARMOR.get(), () -> new EgoArmorRenderer<>(LibEntityResources.PUNISHING_BIRD));
     }
 }

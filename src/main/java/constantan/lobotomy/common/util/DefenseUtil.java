@@ -1,6 +1,8 @@
 package constantan.lobotomy.common.util;
 
 import constantan.lobotomy.common.entity.AbnormalityEntity;
+import constantan.lobotomy.common.item.EgoArmor;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -22,9 +24,9 @@ public class DefenseUtil {
         if (livingEntity instanceof AbnormalityEntity abnormalityEntity) {
             return abnormalityEntity.getAbnormalDefense();
         } if (livingEntity instanceof Player player) {
-
-            //PlayerのスーツEGOの耐性を取得
-
+            if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof EgoArmor egoArmor) {
+                return egoArmor.getAbnormalDefense();
+            }
         }
         return getLivingEntityDefense(livingEntity);
     }

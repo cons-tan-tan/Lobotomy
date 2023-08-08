@@ -17,7 +17,7 @@ public enum RiskLevelUtil {
     WAW,
     ALEPH;
 
-    public int getLeveInt() {
+    public int getLevelInt() {
         return switch (this) {
             case ZAYIN -> 1;
             case TETH -> 2;
@@ -44,7 +44,7 @@ public enum RiskLevelUtil {
     }
 
     public static float getDamageRatio(RiskLevelUtil defenderRiskLevel, RiskLevelUtil attackerRiskLevel) {
-        return switch (defenderRiskLevel.getLeveInt() - attackerRiskLevel.getLeveInt()) {
+        return switch (defenderRiskLevel.getLevelInt() - attackerRiskLevel.getLevelInt()) {
             case 4 -> 0.4F;
             case 3 -> 0.6F;
             case 2 -> 0.7F;

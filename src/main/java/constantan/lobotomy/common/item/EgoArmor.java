@@ -64,7 +64,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
         TextComponent component = (TextComponent) new TextComponent("Multiplier:").withStyle(ChatFormatting.GRAY);
         for (DamageTypeUtil damageType : DamageTypeUtil.values()) {
-            String s = String.format("%.1f", this.defense.get(damageType));
+            String s = String.format("%.1f", egoArmorItemProperties.defense.get(damageType));
             component.append(" ");
             component.append(new TextComponent(s).withStyle(damageType.getColor()));
         }

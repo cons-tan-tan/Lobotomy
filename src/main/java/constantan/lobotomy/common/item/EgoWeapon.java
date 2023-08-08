@@ -36,7 +36,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     private final RiskLevelUtil riskLevel;
 
     public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeapon(Properties pProperties) {
-        super(pProperties.tab(ModSetup.CREATIVE_TAB));
+        super(pProperties.tab(ModSetup.CREATIVE_TAB).stacksTo(1));
 
         this.factory = this instanceof IAnimatable iAnimatable
                 ? GeckoLibUtil.createFactory(iAnimatable)

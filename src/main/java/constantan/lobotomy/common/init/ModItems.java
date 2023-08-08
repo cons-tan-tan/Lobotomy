@@ -64,6 +64,6 @@ public class ModItems {
     public static final RegistryObject<Item> HEAVEN_ARMOR = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getArmorEgoItemName(),
             () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
                     .name(LibEntityResources.THE_BURROWING_HEAVEN.getArmorEgoName())
-                    .defense(0.0F,0.0F,0.0F,0.0F)
+                    .defense(1.2F,0.8F,0.6F,1.5F)
                     .riskLevel(RiskLevelUtil.WAW)));
 }

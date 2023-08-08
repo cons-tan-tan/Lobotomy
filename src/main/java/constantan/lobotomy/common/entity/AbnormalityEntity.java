@@ -106,7 +106,8 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        //これが読み込まれるのはコンストラクタ前なのでgetMaxQliphothCounterは使えない
+        //これが読み込まれるのは親クラスのEntity
+        // this.abnormalityTypeがnullなのでgetMaxQliphothCounterは使えない
         //とりあえず初期値は0
         //コンストラクタでabnormalityTypeを初期化した後クリフォトカウンターもリセットする
         this.getEntityData().define(QLIPHOTH_COUNTER, 0);

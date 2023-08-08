@@ -46,7 +46,8 @@ public class ModItems {
 
     //ABNORMALITY_TOOL
     public static final RegistryObject<Item> GIANT_TREE_SAP = ITEMS.register(LibItemNames.GIANT_TREE_SAP,
-            () -> new GiantTreeSapItem(new AbnormalityTool.AbnormalityToolItemProperties().riskLevel(RiskLevelUtil.HE)));
+            () -> new GiantTreeSapItem(new AbnormalityTool.AbnormalityToolItemProperties()
+                    .riskLevel(RiskLevelUtil.HE)));
 
     //EGO_WEAPON
     public static final RegistryObject<Item> PEAK_WEAPON = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getWeaponEgoName(),

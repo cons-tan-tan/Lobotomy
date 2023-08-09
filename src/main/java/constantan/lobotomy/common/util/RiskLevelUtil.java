@@ -27,7 +27,7 @@ public enum RiskLevelUtil {
         };
     }
 
-    public Component getColoredTextComponent() {
+    public MutableComponent getColoredTextComponent() {
         MutableComponent component;
         component = switch (this) {
             case ZAYIN -> new TextComponent("ZAYIN").withStyle(ChatFormatting.GREEN);

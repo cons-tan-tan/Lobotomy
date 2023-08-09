@@ -67,6 +67,14 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         return new Random().nextInt(this.minDamageAmount - 1, this.maxDamageAmount);
     }
 
+    public int getMinDamageAmount() {
+        return this.minDamageAmount;
+    }
+
+    public int getMaxDamageAmount() {
+        return this.maxDamageAmount;
+    }
+
     @Override
     public AnimationFactory getFactory() {
         return this.factory;

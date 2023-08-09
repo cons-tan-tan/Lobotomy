@@ -2,7 +2,7 @@ package constantan.lobotomy.common.item;
 
 public abstract class EgoMeleeWeapon extends EgoWeapon {
 
-    public EgoMeleeWeapon(Properties pProperties) {
-        super(pProperties);
+    public EgoMeleeWeapon(int minDamage, int maxDamage, Properties pProperties) {
+        super(minDamage, maxDamage, pProperties);
     }
 }

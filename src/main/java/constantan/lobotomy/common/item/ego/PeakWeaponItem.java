@@ -23,8 +23,8 @@ public class PeakWeaponItem extends EgoRangeWeapon implements IAnimatable, ISync
     public static final String ANIM_CONTROLLER_NAME = "controller";
     public static final int FIRE_ANIM_STATE = 0;
 
-    public PeakWeaponItem(Properties pProperties) {
-        super(pProperties);
+    public PeakWeaponItem(int minDamage, int maxDamage, Properties pProperties) {
+        super(minDamage, maxDamage, pProperties);
     }
 
     @Override

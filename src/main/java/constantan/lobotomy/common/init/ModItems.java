@@ -50,12 +50,12 @@ public class ModItems {
 
     //EGO_WEAPON
     public static final RegistryObject<Item> PEAK_WEAPON = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getWeaponEgoName(),
-            () -> new PeakWeaponItem(new EgoWeapon.EgoWeaponProperties()
+            () -> new PeakWeaponItem(2, 3, new EgoWeapon.EgoWeaponProperties()
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.TETH)));
 
     public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getWeaponEgoName(),
-            () -> new HeavenWeaponItem(new EgoWeapon.EgoWeaponProperties()
+            () -> new HeavenWeaponItem(8, 16, new EgoWeapon.EgoWeaponProperties()
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.WAW)));
 

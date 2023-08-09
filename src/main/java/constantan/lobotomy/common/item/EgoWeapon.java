@@ -26,6 +26,7 @@ import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.Random;
 import java.util.function.Consumer;
 
 public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISyncableParent {
@@ -34,8 +35,10 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
 
     private final DamageTypeUtil damageType;
     private final RiskLevelUtil riskLevel;
+    private final int minDamageAmount;
+    private final int maxDamageAmount;
 
-    public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeapon(Properties pProperties) {
+    public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeapon(int minDamage, int maxDamage, Properties pProperties) {
         super(pProperties.tab(ModSetup.CREATIVE_TAB).stacksTo(1));
 
         this.factory = this instanceof IAnimatable iAnimatable
@@ -49,11 +52,18 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         EgoWeaponProperties egoWeaponItemProperties = (EgoWeaponProperties) pProperties;
         this.riskLevel = egoWeaponItemProperties.riskLevel;
         this.damageType = egoWeaponItemProperties.damageType;
+
+        this.minDamageAmount = minDamage;
+        this.maxDamageAmount = maxDamage;
     }
 
     public void playAnimation(LivingEntity entity, InteractionHand hand, int state) {
         ItemStack stack = entity.getItemInHand(hand);
         playAnimation(entity, stack, state);
+    }
+
+    public int getRangedRandomDamage() {
+        return new Random().nextInt(this.minDamageAmount - 1, this.maxDamageAmount);
     }
 
     @Override

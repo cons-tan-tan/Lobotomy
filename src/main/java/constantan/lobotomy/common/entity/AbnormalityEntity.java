@@ -2,14 +2,12 @@ package constantan.lobotomy.common.entity;
 
 import constantan.lobotomy.common.init.ModEntityTypes;
 import constantan.lobotomy.common.util.*;
-import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import constantan.lobotomy.common.util.mixin.IMixinEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -33,7 +31,6 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     private final AnimationFactory factory;
 
     private final IMixinEntityType<?> abnormalityType;
-    private final IMixinDamageSource abnormalDamageSource;
 
     public AbnormalityEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -43,7 +40,6 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
                 : null;
 
         this.abnormalityType = ModEntityTypes.abnormalityEntityType(pEntityType);
-        this.abnormalDamageSource = (IMixinDamageSource) (Object) DamageSource.mobAttack(this);
 
         this.resetQliphothCounter();
     }
@@ -93,10 +89,6 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
 
     public void subQliphothCounter(int sub) {
         this.setQliphothCounter(this.getQliphothCounter() - sub);
-    }
-
-    public DamageSource getAbnormalDamageSource(DamageTypeUtil damageType, boolean blockable) {
-        return (DamageSource) (Object) this.abnormalDamageSource.riskLevel(this.getRiskLevel()).damageType(damageType).Blockable(blockable);
     }
 
     public boolean canDoUnblockableAttack() {

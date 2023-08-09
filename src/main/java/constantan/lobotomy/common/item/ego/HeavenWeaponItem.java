@@ -6,8 +6,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 
 public class HeavenWeaponItem extends EgoMeleeWeapon implements IAnimatable {
 
-    public HeavenWeaponItem(Properties pProperties) {
-        super(pProperties);
+    public HeavenWeaponItem(int minDamage, int maxDamage, Properties pProperties) {
+        super(minDamage, maxDamage, pProperties);
     }
 
     @Override

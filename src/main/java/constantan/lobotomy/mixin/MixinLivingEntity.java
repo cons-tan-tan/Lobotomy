@@ -1,6 +1,7 @@
 package constantan.lobotomy.mixin;
 
 import constantan.lobotomy.common.entity.AbnormalityEntity;
+import constantan.lobotomy.common.item.EgoMeleeWeapon;
 import constantan.lobotomy.common.sanity.PlayerSanityProvider;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.DefenseUtil;
@@ -8,7 +9,10 @@ import constantan.lobotomy.common.util.RiskLevelUtil;
 import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -106,6 +110,16 @@ public abstract class MixinLivingEntity {
         IMixinDamageSource damageSource = (IMixinDamageSource) (Object) pDamageSource;
         if (damageSource.hasRiskLevel()) {
             cir.setReturnValue(pDamageAmount);
+        }
+    }
+
+    @Inject(method = "getAttributeValue", at = @At("HEAD"), cancellable = true)
+    private void getAttributeValue_Head(Attribute pAttribute, CallbackInfoReturnable<Double> cir) {
+        if (pAttribute == Attributes.ATTACK_DAMAGE) {
+            LivingEntity self = (LivingEntity) (Object) this;
+            if (self.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
+                cir.setReturnValue(self.getAttributes().getValue(pAttribute) + egoMeleeWeapon.getRangedRandomDamage());
+            }
         }
     }
 }

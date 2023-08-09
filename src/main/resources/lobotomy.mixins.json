@@ -7,8 +7,7 @@
     "MixinDamageSource",
     "MixinEntityType",
     "MixinItem",
-    "MixinLivingEntity",
-    "MixinMob"
+    "MixinLivingEntity"
   ],
   "client": [
   ],

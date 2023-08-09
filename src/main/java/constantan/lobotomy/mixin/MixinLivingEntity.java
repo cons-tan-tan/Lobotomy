@@ -2,7 +2,7 @@ package constantan.lobotomy.mixin;
 
 import constantan.lobotomy.common.entity.AbnormalityEntity;
 import constantan.lobotomy.common.item.EgoMeleeWeapon;
-import constantan.lobotomy.common.sanity.PlayerSanityProvider;
+import constantan.lobotomy.common.capability.sanity.PlayerSanityProvider;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;

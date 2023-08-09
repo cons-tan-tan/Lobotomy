@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.network.packet.sanity;
 
-import constantan.lobotomy.common.sanity.PlayerSanityProvider;
+import constantan.lobotomy.common.capability.sanity.PlayerSanityProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;

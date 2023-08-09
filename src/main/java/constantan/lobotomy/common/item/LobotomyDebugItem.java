@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.item;
 
-import constantan.lobotomy.common.sanity.PlayerSanityProvider;
+import constantan.lobotomy.common.capability.sanity.PlayerSanityProvider;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

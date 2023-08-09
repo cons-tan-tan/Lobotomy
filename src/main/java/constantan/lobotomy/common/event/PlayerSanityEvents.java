@@ -1,7 +1,7 @@
 package constantan.lobotomy.common.event;
 
-import constantan.lobotomy.common.sanity.PlayerSanity;
-import constantan.lobotomy.common.sanity.PlayerSanityProvider;
+import constantan.lobotomy.common.capability.sanity.PlayerSanity;
+import constantan.lobotomy.common.capability.sanity.PlayerSanityProvider;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

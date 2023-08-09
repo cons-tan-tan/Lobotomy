@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.sanity;
+package constantan.lobotomy.common.capability.sanity;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.sanity;
+package constantan.lobotomy.common.capability.sanity;
 
 import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.common.network.packet.sanity.SyncSanityS2CPacket;

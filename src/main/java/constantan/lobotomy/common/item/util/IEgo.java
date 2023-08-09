@@ -9,5 +9,7 @@ public interface IEgo extends IRiskLevel {
     abstract class EgoProperties extends Item.Properties {
 
         public abstract EgoProperties riskLevel(RiskLevelUtil riskLevel);
+
+        public abstract EgoProperties idleAnim();
     }
 }

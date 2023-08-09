@@ -3,12 +3,13 @@ package constantan.lobotomy.common.init;
 
 import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.item.AbnormalityTool;
+import constantan.lobotomy.common.item.EgoArmor;
 import constantan.lobotomy.common.item.EgoWeapon;
 import constantan.lobotomy.common.item.LobotomyDebugItem;
 import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
-import constantan.lobotomy.common.item.ego.HeavenWeaponItem;
 import constantan.lobotomy.common.item.ego.PeakWeaponItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoArmorItem;
+import constantan.lobotomy.common.item.ego.SimpleEgoMeleeWeaponItem;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import constantan.lobotomy.lib.LibBlockNames;
@@ -55,19 +56,19 @@ public class ModItems {
                     .riskLevel(RiskLevelUtil.TETH)));
 
     public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getWeaponEgoName(),
-            () -> new HeavenWeaponItem(8, 16, new EgoWeapon.EgoWeaponProperties()
+            () -> new SimpleEgoMeleeWeaponItem(8, 16, new EgoWeapon.EgoWeaponProperties()
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.WAW)));
 
     //EGO_ARMOR
     public static final RegistryObject<Item> PEAK_ARMOR = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getArmorEgoName(),
-            () -> new SimpleEgoArmorItem(new SimpleEgoArmorItem.SimpleEgoArmorProperties()
+            () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
                     .defense(0.7F, 0.8F, 1.2F, 2.0F)
                     .riskLevel(RiskLevelUtil.TETH)));
 
     public static final RegistryObject<Item> HEAVEN_ARMOR = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getArmorEgoName(),
-            () -> new SimpleEgoArmorItem(new SimpleEgoArmorItem.SimpleEgoArmorProperties()
-                    .idleAnim()
+            () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
                     .defense(1.2F,0.8F,0.6F,1.5F)
-                    .riskLevel(RiskLevelUtil.WAW)));
+                    .riskLevel(RiskLevelUtil.WAW)
+                    .idleAnim()));
 }

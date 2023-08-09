@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.item.ego;
 
-import constantan.lobotomy.common.item.EgoArmor;
+import constantan.lobotomy.common.item.EgoMeleeWeapon;
 import net.minecraft.world.item.Item;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -8,10 +8,10 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
-public class SimpleEgoArmorItem extends EgoArmor implements IAnimatable {
+public class SimpleEgoMeleeWeaponItem extends EgoMeleeWeapon implements IAnimatable {
 
-    public SimpleEgoArmorItem(Properties builder) {
-        super(builder);
+    public SimpleEgoMeleeWeaponItem(int minDamage, int maxDamage, Properties pProperties) {
+        super(minDamage, maxDamage, pProperties);
     }
 
     @Override

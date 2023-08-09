@@ -23,8 +23,6 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
 
     private static final EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData.defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
 
-    protected static final AnimationBuilder ANIM_IDLE = new AnimationBuilder()
-            .addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
     protected static final AnimationBuilder ANIM_FLY = new AnimationBuilder()
             .addAnimation("fly", ILoopType.EDefaultLoopTypes.LOOP);
 

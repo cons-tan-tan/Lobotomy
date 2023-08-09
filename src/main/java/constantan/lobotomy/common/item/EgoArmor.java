@@ -25,8 +25,6 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
@@ -38,13 +36,11 @@ import java.util.function.Consumer;
 
 public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyncableParent {
 
-    protected static final AnimationBuilder ANIM_IDLE = new AnimationBuilder()
-            .addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
-
     private final AnimationFactory factory;
 
     private final Map<DamageTypeUtil, Float> defense;
     private final RiskLevelUtil riskLevel;
+    protected final boolean hasIdleAnim;
 
     private final TextComponent defenseMultiplierTextComponent;
 
@@ -61,6 +57,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         EgoArmorProperties egoArmorItemProperties = (EgoArmorProperties) builder;
         this.riskLevel = egoArmorItemProperties.riskLevel;
         this.defense = egoArmorItemProperties.defense;
+        this.hasIdleAnim = egoArmorItemProperties.idleAnim;
 
         TextComponent component = (TextComponent) new TextComponent("Multiplier:").withStyle(ChatFormatting.GRAY);
         for (DamageTypeUtil damageType : DamageTypeUtil.values()) {
@@ -125,9 +122,17 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
         RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;
+        boolean idleAnim;
 
-        public EgoProperties riskLevel(RiskLevelUtil riskLevel) {
+        @Override
+        public EgoArmorProperties riskLevel(RiskLevelUtil riskLevel) {
             this.riskLevel = riskLevel;
+            return this;
+        }
+
+        @Override
+        public EgoArmorProperties idleAnim() {
+            this.idleAnim = true;
             return this;
         }
 

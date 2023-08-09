@@ -33,10 +33,11 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
 
     private final AnimationFactory factory;
 
-    private final DamageTypeUtil damageType;
-    private final RiskLevelUtil riskLevel;
     private final int minDamageAmount;
     private final int maxDamageAmount;
+    private final DamageTypeUtil damageType;
+    private final RiskLevelUtil riskLevel;
+    protected final boolean hasIdleAnim;
 
     public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeapon(int minDamage, int maxDamage, Properties pProperties) {
         super(pProperties.tab(ModSetup.CREATIVE_TAB).stacksTo(1));
@@ -54,6 +55,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         EgoWeaponProperties egoWeaponItemProperties = (EgoWeaponProperties) pProperties;
         this.riskLevel = egoWeaponItemProperties.riskLevel;
         this.damageType = egoWeaponItemProperties.damageType;
+        this.hasIdleAnim = egoWeaponItemProperties.idleAnim;
     }
 
     public void playAnimation(LivingEntity entity, InteractionHand hand, int state) {
@@ -112,9 +114,17 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
 
         RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         DamageTypeUtil damageType = DamageTypeUtil.RED;
+        boolean idleAnim;
 
-        public EgoProperties riskLevel(RiskLevelUtil riskLevel) {
+        @Override
+        public EgoWeaponProperties riskLevel(RiskLevelUtil riskLevel) {
             this.riskLevel = riskLevel;
+            return this;
+        }
+
+        @Override
+        public EgoWeaponProperties idleAnim() {
+            this.idleAnim = true;
             return this;
         }
 

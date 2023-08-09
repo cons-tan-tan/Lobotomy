@@ -19,7 +19,7 @@ public class MixinItemStack {
     @ModifyVariable(method = "getTooltipLines", at = @At(value = "INVOKE",
             target = "Ljava/util/Map$Entry;getValue()Ljava/lang/Object;",
             shift = At.Shift.BEFORE), name = "list")
-    private List<Component> getTooltipLines(List<Component> list) {
+    private List<Component> getTooltipLines_Before_getValue(List<Component> list) {
         if (list.get(list.size() - 1).equals((new TranslatableComponent("item.modifiers." + EquipmentSlot.MAINHAND.getName())).withStyle(ChatFormatting.GRAY))
                 && ((ItemStack) (Object) this).getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
             list.add(new TextComponent(" ").append(egoMeleeWeapon.getDamageType().getColoredTextComponent().append(" (" + egoMeleeWeapon.getMinDamageAmount() + "-" + egoMeleeWeapon.getMaxDamageAmount() + ")").append(new TextComponent(" Attack Damage").withStyle(ChatFormatting.DARK_GREEN))));

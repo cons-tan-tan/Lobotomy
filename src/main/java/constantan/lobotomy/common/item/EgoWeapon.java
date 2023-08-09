@@ -40,6 +40,8 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
 
     public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeapon(int minDamage, int maxDamage, Properties pProperties) {
         super(pProperties.tab(ModSetup.CREATIVE_TAB).stacksTo(1));
+        this.minDamageAmount = minDamage;
+        this.maxDamageAmount = maxDamage;
 
         this.factory = this instanceof IAnimatable iAnimatable
                 ? GeckoLibUtil.createFactory(iAnimatable)
@@ -52,9 +54,6 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         EgoWeaponProperties egoWeaponItemProperties = (EgoWeaponProperties) pProperties;
         this.riskLevel = egoWeaponItemProperties.riskLevel;
         this.damageType = egoWeaponItemProperties.damageType;
-
-        this.minDamageAmount = minDamage;
-        this.maxDamageAmount = maxDamage;
     }
 
     public void playAnimation(LivingEntity entity, InteractionHand hand, int state) {

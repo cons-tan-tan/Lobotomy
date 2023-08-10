@@ -1,6 +1,7 @@
 package constantan.lobotomy.mixin;
 
 import constantan.lobotomy.common.item.EgoMeleeWeapon;
+import constantan.lobotomy.common.item.EgoRangeWeapon;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -15,6 +16,18 @@ import java.util.List;
 
 @Mixin(ItemStack.class)
 public class MixinItemStack {
+
+    @ModifyVariable(method = "getTooltipLines", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/EquipmentSlot;values()[Lnet/minecraft/world/entity/EquipmentSlot;",
+            shift = At.Shift.BEFORE), name = "list")
+    private List<Component> getTooltipLines_Before_values(List<Component> list) {
+        if (((ItemStack) (Object) this).getItem() instanceof EgoRangeWeapon egoRangeWeapon) {
+            list.add(TextComponent.EMPTY);
+            list.add(new TextComponent("When Hit Projectile:").withStyle(ChatFormatting.GRAY));
+            list.add(new TextComponent(" ").append(egoRangeWeapon.getDamageType().getColoredTextComponent().append(" (" + egoRangeWeapon.getMinDamageAmount() + "-" + egoRangeWeapon.getMaxDamageAmount() + ")").append(new TextComponent(" Projectile Damage").withStyle(ChatFormatting.GOLD))));
+        }
+        return list;
+    }
 
     @ModifyVariable(method = "getTooltipLines", at = @At(value = "INVOKE",
             target = "Ljava/util/Map$Entry;getValue()Ljava/lang/Object;",

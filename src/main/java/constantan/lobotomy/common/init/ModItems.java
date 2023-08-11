@@ -41,6 +41,9 @@ public class ModItems {
     public static final RegistryObject<Item> PUNISHING_BIRD_SPAWN_EGG = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getSpawnEggName(),
             () -> new ForgeSpawnEggItem(ModEntityTypes.PUNISHING_BIRD, 0xffffff, 0xadc5f0, basicItem()));
 
+    public static final RegistryObject<Item> JUDGEMENT_BIRD_SPAWN_EGG = ITEMS.register(LibEntityResources.JUDGEMENT_BIRD.getSpawnEggName(),
+            () -> new ForgeSpawnEggItem(ModEntityTypes.JUDGEMENT_BIRD, 0x222222, 0xe8e8e8, basicItem()));
+
     public static final RegistryObject<Item> THE_BURROWING_HEAVEN_SPAWN_EGG = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getSpawnEggName(),
             () -> new ForgeSpawnEggItem(ModEntityTypes.THE_BURROWING_HEAVEN, 0xb40a1a, 0xe4af50, basicItem()));
 

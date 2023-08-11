@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 public class LibEntityResources {
 
     public static final EntityResourceData PUNISHING_BIRD = new EntityResourceData("punishing_bird").egoName("peak");
+    public static final EntityResourceData JUDGEMENT_BIRD = new EntityResourceData("judgement_bird").egoName("justitia");
     public static final EntityResourceData THE_BURROWING_HEAVEN = new EntityResourceData("the_burrowing_heaven").egoName("heaven");
 
 

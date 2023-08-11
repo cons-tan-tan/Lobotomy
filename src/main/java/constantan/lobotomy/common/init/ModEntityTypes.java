@@ -1,5 +1,6 @@
 package constantan.lobotomy.common.init;
 
+import constantan.lobotomy.common.entity.JudgementBirdEntity;
 import constantan.lobotomy.common.entity.PunishingBirdEntity;
 import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
 import constantan.lobotomy.common.util.DamageTypeUtil;
@@ -21,32 +22,45 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<PunishingBirdEntity>> PUNISHING_BIRD = ENTITY_TYPES
             .register(LibEntityResources.PUNISHING_BIRD.getName(),
-            () -> abnormalityEntityType(EntityType.Builder
-                    .of(PunishingBirdEntity::new, MobCategory.MONSTER)
-                    .sized(0.4F, 0.65F)
-                    .build(LibEntityResources.PUNISHING_BIRD.getBuild()))
-                    .riskLevel(RiskLevelUtil.TETH)
-                    .damageType(DamageTypeUtil.RED)
-                    .defense(2.0F, 2.0F, 2.0F, 2.0F)
-                    .qliphothCounter(4)
-                    .build());
+                    () -> abnormalityEntityType(EntityType.Builder
+                            .of(PunishingBirdEntity::new, MobCategory.MONSTER)
+                            .sized(0.4F, 0.65F)
+                            .build(LibEntityResources.PUNISHING_BIRD.getBuild()))
+                            .riskLevel(RiskLevelUtil.TETH)
+                            .damageType(DamageTypeUtil.RED)
+                            .defense(2.0F, 2.0F, 2.0F, 2.0F)
+                            .qliphothCounter(4)
+                            .build());
+
+    public static final RegistryObject<EntityType<JudgementBirdEntity>> JUDGEMENT_BIRD = ENTITY_TYPES
+            .register(LibEntityResources.JUDGEMENT_BIRD.getName(),
+                    () -> abnormalityEntityType(EntityType.Builder
+                            .of(JudgementBirdEntity::new, MobCategory.MONSTER)
+                            .sized(0.4F, 0.65F)
+                            .build(LibEntityResources.JUDGEMENT_BIRD.getBuild()))
+                            .riskLevel(RiskLevelUtil.WAW)
+                            .damageType(DamageTypeUtil.PALE)
+                            .defense(0.8F, 0.8F, 0.8F, 2.0F)
+                            .qliphothCounter(2)
+                            .build());
 
     public static final RegistryObject<EntityType<TheBurrowingHeavenEntity>> THE_BURROWING_HEAVEN = ENTITY_TYPES
             .register(LibEntityResources.THE_BURROWING_HEAVEN.getName(),
-            () -> abnormalityEntityType(EntityType.Builder
-                    .of(TheBurrowingHeavenEntity::new, MobCategory.MONSTER)
-                    .sized(0.6F, 2.75F)
-                    .build(LibEntityResources.THE_BURROWING_HEAVEN.getBuild()))
-                    .riskLevel(RiskLevelUtil.WAW)
-                    .damageType(DamageTypeUtil.BLACK)
-                    .defense(0.0F, 1.2F, 0.5F, 1.5F)
-                    .qliphothCounter(3)
-                    .build());
+                    () -> abnormalityEntityType(EntityType.Builder
+                            .of(TheBurrowingHeavenEntity::new, MobCategory.MONSTER)
+                            .sized(0.6F, 2.75F)
+                            .build(LibEntityResources.THE_BURROWING_HEAVEN.getBuild()))
+                            .riskLevel(RiskLevelUtil.WAW)
+                            .damageType(DamageTypeUtil.BLACK)
+                            .defense(0.0F, 1.2F, 0.5F, 1.5F)
+                            .qliphothCounter(3)
+                            .build());
 
 
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.PUNISHING_BIRD.get(), PunishingBirdEntity.setAttributes());
         event.put(ModEntityTypes.THE_BURROWING_HEAVEN.get(), TheBurrowingHeavenEntity.setAttributes());
+        event.put(ModEntityTypes.JUDGEMENT_BIRD.get(), JudgementBirdEntity.setAttributes());
     }
 
 

@@ -1,0 +1,26 @@
+{
+  "itemGroup.lobotomy": "Lobotomy Mod",
+
+
+  "word.lobotomy.risk_level": "危険ランク",
+
+  "item.lobotomy.giant_tree_sap": "巨木の樹液",
+  "item.lobotomy.punishing_bird_spawn_egg": "Punishing Bird Spawn Egg",
+
+  "item.modifier.lobotomy.projectile": "発射物が命中したとき",
+
+  "entity.lobotomy.punishing_bird": "罰鳥",
+
+  "tooltip.lobotomy.press_shift.tooltip": "§eShift§rキーで詳細を表示",
+  "tooltip.lobotomy.risk_level": "%1$s：%2$s",
+
+  "tooltip.lobotomy.giant_tree_sap.tooltip": "aaa",
+  "tooltip.lobotomy.giant_tree_sap.tooltip.shift": "bbb",
+
+  "death.attack.lobotomy.giant_tree_sap": "%1$sは借りていたものを返した",
+
+  "effect.lobotomy.owing": "Owing",
+
+  "attribute.lobotomy.name.ego_armor.defense_multiplier": "ダメージ倍率",
+  "attribute.lobotomy.modifier.equals.defense_multiplier": "%2$s　%1$s"
+}

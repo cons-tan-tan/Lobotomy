@@ -64,7 +64,8 @@ public class DefenseUtil {
             }
         }
 
-        return (TextComponent) new TextComponent(" ").append(new TranslatableComponent("attribute.lobotomy.modifier.equals.defense_multiplier",
+        return (TextComponent) new TextComponent(" ").append(
+                new TranslatableComponent("attribute.lobotomy.modifier.equals.defense_multiplier",
                 tooltip, new TranslatableComponent("attribute.lobotomy.name.ego_armor.defense_multiplier").withStyle(ChatFormatting.BLUE)));
     }
 }

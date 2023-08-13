@@ -13,5 +13,8 @@
 
   "death.attack.lobotomy.giant_tree_sap": "%1$s returned what %1$s has borrowed",
 
-  "effect.lobotomy.owing": "Owing"
+  "effect.lobotomy.owing": "Owing",
+
+  "attribute.lobotomy.name.ego_armor.defense_multiplier": "Defense Multiplier",
+  "attribute.lobotomy.modifier.equals.defense_multiplier": "%1$s %2$s"
 }

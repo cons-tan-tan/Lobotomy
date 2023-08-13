@@ -9,9 +9,8 @@ import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.IDefense;
 import constantan.lobotomy.common.util.RiskLevelUtil;
-import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -19,18 +18,14 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -42,7 +37,8 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
     private final RiskLevelUtil riskLevel;
     protected final boolean hasIdleAnim;
 
-    private final TextComponent defenseMultiplierTextComponent;
+    private final TextComponent defenseMultiplierTooltip;
+    private final TextComponent highlightedDefenseMultiplierTooltip;
 
     public EgoArmor(Properties builder) {
         super(new EgoArmorMaterial(
@@ -59,13 +55,8 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         this.defense = egoArmorItemProperties.defense;
         this.hasIdleAnim = egoArmorItemProperties.idleAnim;
 
-        TextComponent component = (TextComponent) new TextComponent("Multiplier:").withStyle(ChatFormatting.GRAY);
-        for (DamageTypeUtil damageType : DamageTypeUtil.values()) {
-            String s = String.format("%.1f", egoArmorItemProperties.defense.get(damageType));
-            component.append(" ");
-            component.append(new TextComponent(s).withStyle(damageType.getColor()));
-        }
-        this.defenseMultiplierTextComponent = component;
+        this.defenseMultiplierTooltip = DefenseUtil.getDefenseMultiplierTextComponent(egoArmorItemProperties.defense);
+        this.highlightedDefenseMultiplierTooltip = DefenseUtil.getDefenseMultiplierTextComponent(egoArmorItemProperties.defense, true);
     }
 
     @Override
@@ -92,10 +83,12 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         }
     }
 
-    @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(this.defenseMultiplierTextComponent);
+    public TextComponent getDefenseMultiplierTooltip() {
+        if (Screen.hasShiftDown()) {
+            return this.highlightedDefenseMultiplierTooltip;
+        } else {
+            return this.defenseMultiplierTooltip;
+        }
     }
 
     @Override

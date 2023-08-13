@@ -2,6 +2,10 @@ package constantan.lobotomy.common.util;
 
 import constantan.lobotomy.common.entity.AbnormalityEntity;
 import constantan.lobotomy.common.item.EgoArmor;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,5 +33,38 @@ public class DefenseUtil {
             }
         }
         return getLivingEntityDefense(livingEntity);
+    }
+
+    public static TextComponent getDefenseMultiplierTextComponent(Map<DamageTypeUtil, Float> defense) {
+        return getDefenseMultiplierTextComponent(defense, false);
+    }
+
+    public static TextComponent getDefenseMultiplierTextComponent(Map<DamageTypeUtil, Float> defense, boolean isHighlighted) {
+        TextComponent tooltip = new TextComponent("");
+
+        for (DamageTypeUtil damageType : DamageTypeUtil.values()) {
+            float multiplier = defense.get(damageType);
+            String s = String.format("%.1f", multiplier);
+            MutableComponent component = new TextComponent(s).withStyle(damageType.getColor());
+
+            if (isHighlighted) {
+                if (multiplier > 1) {
+                    tooltip.append(component.copy().withStyle(ChatFormatting.BOLD));
+                } else if (multiplier <= 0) {
+                    tooltip.append(component.copy().withStyle(ChatFormatting.UNDERLINE));
+                } else {
+                    tooltip.append(component.copy());
+                }
+            } else {
+                tooltip.append(component.copy());
+            }
+
+            if (damageType != DamageTypeUtil.PALE) {
+                tooltip.append(" ");
+            }
+        }
+
+        return (TextComponent) new TextComponent(" ").append(new TranslatableComponent("attribute.lobotomy.modifier.equals.defense_multiplier",
+                tooltip, new TranslatableComponent("attribute.lobotomy.name.ego_armor.defense_multiplier").withStyle(ChatFormatting.BLUE)));
     }
 }

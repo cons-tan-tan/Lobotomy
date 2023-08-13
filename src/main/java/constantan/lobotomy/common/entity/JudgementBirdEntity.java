@@ -1,6 +1,7 @@
 package constantan.lobotomy.common.entity;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -13,10 +14,14 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
+import java.util.Random;
+
 public class JudgementBirdEntity extends AbnormalityEntity implements IAnimatable {
 
     private static final AnimationBuilder ANIM_ATTACK = new AnimationBuilder()
             .addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+
+    private static final int ATTACK_DAMAGE_RANDOM_RANGE = 10;
 
     public JudgementBirdEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -44,5 +49,13 @@ public class JudgementBirdEntity extends AbnormalityEntity implements IAnimatabl
                 .add(Attributes.MAX_HEALTH, 800)
                 .add(Attributes.ATTACK_DAMAGE, 30)
                 .add(Attributes.MOVEMENT_SPEED, 0.1F).build();
+    }
+
+    @Override
+    public double getAttributeValue(Attribute pAttribute) {
+        if (pAttribute == Attributes.ATTACK_DAMAGE) {
+            return super.getAttributeValue(pAttribute) + new Random().nextInt(ATTACK_DAMAGE_RANDOM_RANGE + 1);
+        }
+        return super.getAttributeValue(pAttribute);
     }
 }

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(Item.class)
-public class MixinItem {
+public abstract class MixinItem {
 
     @Inject(method = "appendHoverText", at = @At("HEAD"))
     private void appendHoverText_Head(ItemStack pStack, Level pLevel,

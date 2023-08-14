@@ -27,10 +27,10 @@ public class EgoArmorMaterial implements ArmorMaterial {
     public EgoArmorMaterial(RiskLevelUtil riskLevel, Map<DamageTypeUtil, Float> defense) {
 
         this.durabilityMultiplier = 5;
-        this.slotProtections = new int[]{1, 1, riskLevel.getLevelInt() * 2, 1};
+        this.slotProtections = new int[]{1, 1, riskLevel.getLevel() * 2, 1};
         this.enchantmentValue = 1;
         this.sound = SoundEvents.ARMOR_EQUIP_LEATHER;
-        this.toughness = riskLevel.getLevelInt() - 1;
+        this.toughness = riskLevel.getLevel() - 1;
         this.knockbackResistance = riskLevel == RiskLevelUtil.ALEPH ? 0.2F : 0.0F;
         this.repairIngredient = new LazyLoadedValue<>(() -> Ingredient.of(ModItems.LOBOTOMY_DEBUG_ITEM.get()));
     }

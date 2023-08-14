@@ -9,6 +9,7 @@ import constantan.lobotomy.common.item.util.ISyncableParent;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,6 +38,9 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     private final int maxDamageAmount;
     private final DamageTypeUtil damageType;
     private final RiskLevelUtil riskLevel;
+
+    private final TextComponent abnormalDamageTooltip;
+
     protected final boolean hasIdleAnim;
 
     public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeapon(int minDamage, int maxDamage, Properties pProperties) {
@@ -56,6 +60,8 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         this.riskLevel = egoWeaponItemProperties.riskLevel;
         this.damageType = egoWeaponItemProperties.damageType;
         this.hasIdleAnim = egoWeaponItemProperties.idleAnim;
+
+        this.abnormalDamageTooltip = this.getDamageType().getColoredTextComponentWithValue(minDamage, maxDamage, this instanceof EgoRangeWeapon);
     }
 
     public void playAnimation(LivingEntity entity, InteractionHand hand, int state) {
@@ -97,6 +103,10 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     @Override
     public DamageTypeUtil getDamageType() {
         return this.damageType;
+    }
+
+    public TextComponent getAbnormalDamageTooltip(ItemStack itemStack) {
+        return this.abnormalDamageTooltip;
     }
 
     /**

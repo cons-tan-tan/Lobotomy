@@ -1,32 +1,34 @@
 package constantan.lobotomy.common.util;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public enum DamageTypeUtil {
-    RED,
-    WHITE,
-    BLACK,
-    PALE;
+    RED(ChatFormatting.DARK_RED),
+    WHITE(ChatFormatting.WHITE),
+    BLACK(ChatFormatting.DARK_GRAY),
+    PALE(ChatFormatting.DARK_AQUA);
 
-    public ChatFormatting getColor() {
-        return switch (this) {
-            case RED ->  ChatFormatting.DARK_RED;
-            case WHITE -> ChatFormatting.WHITE;
-            case BLACK -> ChatFormatting.DARK_GRAY;
-            case PALE -> ChatFormatting.DARK_AQUA;
-        };
+    final ChatFormatting color;
+
+    DamageTypeUtil(ChatFormatting color) {
+        this.color = color;
     }
 
-    public MutableComponent getColoredTextComponent() {
-        MutableComponent component;
-        component = switch (this) {
-            case RED -> new TextComponent("RED").withStyle(this.getColor());
-            case WHITE -> new TextComponent("WHITE").withStyle(this.getColor());
-            case BLACK -> new TextComponent("BLACK").withStyle(this.getColor());
-            case PALE -> new TextComponent("PALE").withStyle(this.getColor());
-        };
-        return component;
+    public ChatFormatting getColor() {
+        return this.color;
+    }
+
+    public TextComponent getColoredTextComponent() {
+        return (TextComponent) new TextComponent(this.name()).withStyle(this.getColor());
+    }
+
+    public TextComponent getColoredTextComponentWithValue(int min, int max, boolean isProjectile) {
+        return (TextComponent) new TextComponent("").append(new TranslatableComponent("attribute.modifier.equals.0",
+                new TextComponent(this.name()).withStyle(this.getColor()).append("(" + min + "-" + max + ")"),
+                isProjectile
+                        ? new TranslatableComponent("attribute.lobotomy.name.ego_armor.projectile_damage").withStyle(ChatFormatting.GOLD)
+                        : new TranslatableComponent("attribute.name.generic.attack_damage").withStyle(ChatFormatting.DARK_GREEN)));
     }
 }

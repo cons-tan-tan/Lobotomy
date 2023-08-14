@@ -2,12 +2,18 @@
   "itemGroup.lobotomy": "Lobotomy Mod",
 
 
+  "word.lobotomy.risk_level": "Risk Level",
+
   "item.lobotomy.giant_tree_sap": "Giant Tree Sap",
   "item.lobotomy.punishing_bird_spawn_egg": "Punishing Bird Spawn Egg",
+
+  "item.modifier.lobotomy.projectile": "When Hit Projectile:",
 
   "entity.lobotomy.punishing_bird": "Punishing Bird",
 
   "tooltip.lobotomy.press_shift.tooltip": "Press §eShift§r to show details",
+  "tooltip.lobotomy.risk_level": "%1$s: %2$s",
+
   "tooltip.lobotomy.giant_tree_sap.tooltip": "aaa",
   "tooltip.lobotomy.giant_tree_sap.tooltip.shift": "bbb",
 
@@ -16,5 +22,5 @@
   "effect.lobotomy.owing": "Owing",
 
   "attribute.lobotomy.name.ego_armor.defense_multiplier": "Defense Multiplier",
-  "attribute.lobotomy.modifier.equals.defense_multiplier": "%1$s %2$s"
+  "attribute.lobotomy.name.ego_armor.projectile_damage": "Projectile Damage"
 }

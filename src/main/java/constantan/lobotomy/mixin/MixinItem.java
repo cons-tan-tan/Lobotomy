@@ -21,7 +21,7 @@ public abstract class MixinItem {
                                       List<Component> pTooltipComponents, TooltipFlag pIsAdvanced, CallbackInfo ci) {
         Item self = (Item) (Object) this;
         if (self instanceof IRiskLevel iRiskLevel) {
-            pTooltipComponents.add(iRiskLevel.getRiskLevel().getColoredTextComponentsForTooltip());
+            pTooltipComponents.add(iRiskLevel.getRiskLevel().getColoredTextComponent());
         }
     }
 }

@@ -2,76 +2,32 @@
   "parent": "forge:item/default",
   "loader": "forge:separate-perspective",
   "base": {
-    "credit": "Made with Blockbench",
-    "parent": "builtin/entity",
-    "texture_size": [
-      128,
-      128
-    ],
-    "gui_light": "front",
-    "display": {
-      "thirdperson_righthand": {
-        "translation": [
-          0,
-          -3.25,
-          -1.25
-        ],
-        "scale": [
-          0.2,
-          0.2,
-          0.2
-        ]
-      },
-      "thirdperson_lefthand": {
-        "translation": [
-          0,
-          -3.25,
-          -1.25
-        ],
-        "scale": [
-          0.2,
-          0.2,
-          0.2
-        ]
-      },
-      "firstperson_righthand": {
-        "translation": [
-          0,
-          -3.25,
-          -2.25
-        ],
-        "scale": [
-          0.3,
-          0.3,
-          0.3
-        ]
-      },
-      "firstperson_lefthand": {
-        "translation": [
-          0,
-          -3.25,
-          -2.25
-        ],
-        "scale": [
-          0.3,
-          0.3,
-          0.3
-        ]
-      }
-    }
+    "parent": "lobotomy:item/peak_weapon_in_hand"
   },
   "perspectives": {
-    "gui": {
-      "parent": "lobotomy:item/peak_weapon_2d"
-    },
     "head": {
-      "parent": "lobotomy:item/peak_weapon_2d"
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "lobotomy:item/peak_weapon_gui"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "lobotomy:item/peak_weapon_gui"
+      }
     },
     "ground": {
-      "parent": "lobotomy:item/peak_weapon_2d"
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "lobotomy:item/peak_weapon_gui"
+      }
     },
     "fixed": {
-      "parent": "lobotomy:item/peak_weapon_2d"
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "lobotomy:item/peak_weapon_gui"
+      }
     }
   }
 }

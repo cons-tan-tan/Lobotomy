@@ -1,107 +1,116 @@
 {
   "credit": "Made with Blockbench",
-  "parent": "builtin/entity",
-  "texture_size": [
-    128,
-    128
-  ],
-  "gui_light": "front",
-  "display": {
-    "thirdperson_righthand": {
-      "translation": [
-        0,
-        -3.25,
-        -1.25
-      ],
-      "scale": [
-        0.2,
-        0.2,
-        0.2
-      ]
-    },
-    "thirdperson_lefthand": {
-      "translation": [
-        0,
-        -3.25,
-        -1.25
-      ],
-      "scale": [
-        0.2,
-        0.2,
-        0.2
-      ]
-    },
-    "firstperson_righthand": {
-      "translation": [
-        0,
-        -3.25,
-        -2.25
-      ],
-      "scale": [
-        0.3,
-        0.3,
-        0.3
-      ]
-    },
-    "firstperson_lefthand": {
-      "translation": [
-        0,
-        -3.25,
-        -2.25
-      ],
-      "scale": [
-        0.3,
-        0.3,
-        0.3
-      ]
-    },
-    "ground": {
-      "translation": [
-        0,
-        -6.5,
-        0
-      ]
-    },
+  "parent": "forge:item/default",
+  "loader": "forge:separate-perspective",
+  "base": {
+    "parent": "builtin/entity",
+    "texture_size": [
+      128,
+      128
+    ],
+    "gui_light": "front",
+    "display": {
+      "thirdperson_righthand": {
+        "translation": [
+          0,
+          -3.25,
+          -1.25
+        ],
+        "scale": [
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      "thirdperson_lefthand": {
+        "translation": [
+          0,
+          -3.25,
+          -1.25
+        ],
+        "scale": [
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      "firstperson_righthand": {
+        "translation": [
+          0,
+          -3.25,
+          -2.25
+        ],
+        "scale": [
+          0.3,
+          0.3,
+          0.3
+        ]
+      },
+      "firstperson_lefthand": {
+        "translation": [
+          0,
+          -3.25,
+          -2.25
+        ],
+        "scale": [
+          0.3,
+          0.3,
+          0.3
+        ]
+      },
+      "ground": {
+        "translation": [
+          0,
+          -6.5,
+          0
+        ]
+      },
+      "gui": {
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "translation": [
+          0.25,
+          -8.25,
+          -4.75
+        ],
+        "scale": [
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "head": {
+        "translation": [
+          0,
+          4,
+          -2.25
+        ],
+        "scale": [
+          0.3,
+          0.3,
+          0.3
+        ]
+      },
+      "fixed": {
+        "rotation": [
+          0,
+          -90,
+          0
+        ],
+        "translation": [
+          -1,
+          -16.75,
+          -4.75
+        ]
+      }
+    }
+  },
+  "perspectives": {
     "gui": {
-      "rotation": [
-        0,
-        90,
-        0
-      ],
-      "translation": [
-        0.25,
-        -8.25,
-        -4.75
-      ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
-      ]
-    },
-    "head": {
-      "translation": [
-        0,
-        4,
-        -2.25
-      ],
-      "scale": [
-        0.3,
-        0.3,
-        0.3
-      ]
-    },
-    "fixed": {
-      "rotation": [
-        0,
-        -90,
-        0
-      ],
-      "translation": [
-        -1,
-        -16.75,
-        -4.75
-      ]
+      "parent": "minecraft:item/apple"
     }
   }
 }

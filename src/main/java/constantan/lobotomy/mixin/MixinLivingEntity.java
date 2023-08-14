@@ -14,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -117,8 +118,9 @@ public abstract class MixinLivingEntity {
     private void getAttributeValue_Head(Attribute pAttribute, CallbackInfoReturnable<Double> cir) {
         if (pAttribute == Attributes.ATTACK_DAMAGE) {
             LivingEntity self = (LivingEntity) (Object) this;
-            if (self.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
-                cir.setReturnValue(self.getAttributes().getValue(pAttribute) + egoMeleeWeapon.getRangedRandomDamage());
+            ItemStack itemStack = self.getItemBySlot(EquipmentSlot.MAINHAND);
+            if (itemStack.getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
+                cir.setReturnValue(self.getAttributes().getValue(pAttribute) + egoMeleeWeapon.getRangedRandomDamage(itemStack));
             }
         }
     }

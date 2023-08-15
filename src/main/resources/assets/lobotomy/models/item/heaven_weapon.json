@@ -5,25 +5,7 @@
     "parent": "lobotomy:item/heaven_weapon_in_hand"
   },
   "perspectives": {
-    "head": {
-      "parent": "minecraft:item/generated",
-      "textures": {
-        "layer0": "lobotomy:item/heaven_weapon_gui"
-      }
-    },
     "gui": {
-      "parent": "minecraft:item/generated",
-      "textures": {
-        "layer0": "lobotomy:item/heaven_weapon_gui"
-      }
-    },
-    "ground": {
-      "parent": "minecraft:item/generated",
-      "textures": {
-        "layer0": "lobotomy:item/heaven_weapon_gui"
-      }
-    },
-    "fixed": {
       "parent": "minecraft:item/generated",
       "textures": {
         "layer0": "lobotomy:item/heaven_weapon_gui"

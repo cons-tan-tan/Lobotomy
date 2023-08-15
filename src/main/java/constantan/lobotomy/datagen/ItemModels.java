@@ -29,8 +29,8 @@ public class ItemModels extends ItemModelProvider {
 //        simpleItem(ModItems.PEAK_ARMOR.get());
 //        simpleItem(ModItems.HEAVEN_ARMOR.get());
 
-        egoWeaponItem(ModItems.PEAK_WEAPON.get());
-        egoWeaponItem(ModItems.HEAVEN_WEAPON.get());
+        multiModelItem(ModItems.PEAK_WEAPON.get());
+        multiModelItem(ModItems.HEAVEN_WEAPON.get());
     }
 
     private ItemModelBuilder simpleItem(Item item) {
@@ -44,17 +44,14 @@ public class ItemModels extends ItemModelProvider {
                 new ResourceLocation("item/template_spawn_egg"));
     }
 
-    private SeparatePerspectiveModelBuilder<ItemModelBuilder> egoWeaponItem(Item item) {
+    private SeparatePerspectiveModelBuilder<ItemModelBuilder> multiModelItem(Item item) {
 
         BiFunction<ItemModelBuilder, ExistingFileHelper, ? extends CustomLoaderBuilder<ItemModelBuilder>> BiFunction = new BiFunction<>() {
             @Override
             public CustomLoaderBuilder<ItemModelBuilder> apply(ItemModelBuilder itemModelBuilder, ExistingFileHelper existingFileHelper) {
                 return SeparatePerspectiveModelBuilder.begin(itemModelBuilder, existingFileHelper)
-                        .base(egoWeaponInHandItem(item))
-                        .perspective(ItemTransforms.TransformType.HEAD, egoWeaponGuiItem(item))
-                        .perspective(ItemTransforms.TransformType.GUI, egoWeaponGuiItem(item))
-                        .perspective(ItemTransforms.TransformType.GROUND, egoWeaponGuiItem(item))
-                        .perspective(ItemTransforms.TransformType.FIXED, egoWeaponGuiItem(item));
+                        .base(modelInHandItem(item))
+                        .perspective(ItemTransforms.TransformType.GUI, modelGuiItem(item));
             }
         };
 
@@ -63,11 +60,11 @@ public class ItemModels extends ItemModelProvider {
                 .customLoader(BiFunction);
     }
 
-    private ItemModelBuilder egoWeaponInHandItem(Item item) {
+    private ItemModelBuilder modelInHandItem(Item item) {
         return withExistingParent("1" + item.toString(), new ResourceLocation(LibMisc.MOD_ID, "item/" + item.toString() + "_in_hand"));
     }
 
-    private ItemModelBuilder egoWeaponGuiItem(Item item) {
+    private ItemModelBuilder modelGuiItem(Item item) {
         return withExistingParent("0" + item.toString(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LibMisc.MOD_ID, "item/" + item.getRegistryName().getPath() + "_gui"));

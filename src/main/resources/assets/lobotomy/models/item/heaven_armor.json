@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "lobotomy:item/heaven_armor"
+    "layer0": "lobotomy:item/heaven_armor_gui"
   }
 }

@@ -16,6 +16,10 @@ public enum DamageTypeUtil {
         this.color = color;
     }
 
+    public boolean canAffectSanity() {
+        return this == WHITE || this == BLACK;
+    }
+
     public ChatFormatting getColor() {
         return this.color;
     }

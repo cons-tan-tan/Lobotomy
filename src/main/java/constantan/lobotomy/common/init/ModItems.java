@@ -10,11 +10,9 @@ import constantan.lobotomy.common.item.ego.SimpleEgoArmorItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoMeleeWeaponItem;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
-import constantan.lobotomy.lib.LibBlockNames;
 import constantan.lobotomy.lib.LibEntityResources;
 import constantan.lobotomy.lib.LibItemNames;
 import constantan.lobotomy.lib.LibMisc;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -30,9 +28,6 @@ public class ModItems {
     //DEBUG
     public static final RegistryObject<Item> LOBOTOMY_DEBUG_ITEM = ITEMS.register("lobotomy_debug_item",
             () -> new LobotomyDebugItem(basicItem().stacksTo(1)));
-
-    public static final RegistryObject<Item> FACTORY_BLOCK = ITEMS.register(LibBlockNames.FACTORY_BLOCK,
-            () -> new BlockItem(ModBlocks.FACTORY_BLOCK.get(), basicItem()));
 
     //ABNORMALITY_SPAWN_EGG
     public static final RegistryObject<Item> PUNISHING_BIRD_SPAWN_EGG = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getSpawnEggName(),

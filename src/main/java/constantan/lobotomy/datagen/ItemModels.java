@@ -26,7 +26,8 @@ public class ItemModels extends ItemModelProvider {
         spawnEggItem(ModItems.JUDGEMENT_BIRD_SPAWN_EGG.get());
         spawnEggItem(ModItems.THE_BURROWING_HEAVEN_SPAWN_EGG.get());
 
-//        simpleItem(ModItems.PEAK_ARMOR.get());
+        armorItem(ModItems.PEAK_ARMOR.get());
+        armorItem(ModItems.JUSTITIA_ARMOR.get());
         armorItem(ModItems.HEAVEN_ARMOR.get());
 
         multiModelItem(ModItems.PEAK_WEAPON.get());

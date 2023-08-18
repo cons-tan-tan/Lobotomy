@@ -1,0 +1,15 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:separate-perspective",
+  "base": {
+    "parent": "lobotomy:item/justitia_weapon_in_hand"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "lobotomy:item/justitia_weapon_gui"
+      }
+    }
+  }
+}

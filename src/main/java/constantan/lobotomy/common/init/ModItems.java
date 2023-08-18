@@ -55,6 +55,11 @@ public class ModItems {
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.TETH)));
 
+    public static final RegistryObject<Item> JUSTITIA_WEAPON = ITEMS.register(LibEntityResources.JUDGEMENT_BIRD.getWeaponEgoName(),
+            () -> new SimpleEgoMeleeWeaponItem(2, 4, new EgoWeapon.EgoWeaponProperties()
+                    .damageType(DamageTypeUtil.PALE)
+                    .riskLevel(RiskLevelUtil.ALEPH)));
+
     public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getWeaponEgoName(),
             () -> new SimpleEgoMeleeWeaponItem(8, 16, new EgoWeapon.EgoWeaponProperties()
                     .damageType(DamageTypeUtil.RED)

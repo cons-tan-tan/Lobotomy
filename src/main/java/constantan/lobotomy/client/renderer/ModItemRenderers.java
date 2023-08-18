@@ -19,6 +19,7 @@ public class ModItemRenderers<T extends Item> {
 
     static {
         MAP.put(ModItems.PEAK_WEAPON.get(), new EgoWeaponItemRenderer<>(LibEntityResources.PUNISHING_BIRD));
+        MAP.put(ModItems.JUSTITIA_WEAPON.get(), new EgoWeaponItemRenderer<>(LibEntityResources.JUDGEMENT_BIRD));
         MAP.put(ModItems.HEAVEN_WEAPON.get(), new EgoWeaponItemRenderer<>(LibEntityResources.THE_BURROWING_HEAVEN));
     }
 }

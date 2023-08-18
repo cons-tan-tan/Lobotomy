@@ -27,9 +27,10 @@ public class ItemModels extends ItemModelProvider {
         spawnEggItem(ModItems.THE_BURROWING_HEAVEN_SPAWN_EGG.get());
 
 //        simpleItem(ModItems.PEAK_ARMOR.get());
-//        simpleItem(ModItems.HEAVEN_ARMOR.get());
+        armorItem(ModItems.HEAVEN_ARMOR.get());
 
         multiModelItem(ModItems.PEAK_WEAPON.get());
+        multiModelItem(ModItems.JUSTITIA_WEAPON.get());
         multiModelItem(ModItems.HEAVEN_WEAPON.get());
     }
 
@@ -44,14 +45,20 @@ public class ItemModels extends ItemModelProvider {
                 new ResourceLocation("item/template_spawn_egg"));
     }
 
+    private ItemModelBuilder armorItem(Item item) {
+        return withExistingParent(item.getRegistryName().getPath(),
+                new ResourceLocation("item/generated")).texture("layer0",
+                new ResourceLocation(LibMisc.MOD_ID, "item/" + item.getRegistryName().getPath() + "_gui"));
+    }
+
     private SeparatePerspectiveModelBuilder<ItemModelBuilder> multiModelItem(Item item) {
 
         BiFunction<ItemModelBuilder, ExistingFileHelper, ? extends CustomLoaderBuilder<ItemModelBuilder>> BiFunction = new BiFunction<>() {
             @Override
             public CustomLoaderBuilder<ItemModelBuilder> apply(ItemModelBuilder itemModelBuilder, ExistingFileHelper existingFileHelper) {
                 return SeparatePerspectiveModelBuilder.begin(itemModelBuilder, existingFileHelper)
-                        .base(modelInHandItem(item))
-                        .perspective(ItemTransforms.TransformType.GUI, modelGuiItem(item));
+                        .base(multiModelInHandItem(item))
+                        .perspective(ItemTransforms.TransformType.GUI, multiModelGuiItem(item));
             }
         };
 
@@ -60,11 +67,11 @@ public class ItemModels extends ItemModelProvider {
                 .customLoader(BiFunction);
     }
 
-    private ItemModelBuilder modelInHandItem(Item item) {
+    private ItemModelBuilder multiModelInHandItem(Item item) {
         return withExistingParent("1" + item.toString(), new ResourceLocation(LibMisc.MOD_ID, "item/" + item.toString() + "_in_hand"));
     }
 
-    private ItemModelBuilder modelGuiItem(Item item) {
+    private ItemModelBuilder multiModelGuiItem(Item item) {
         return withExistingParent("0" + item.toString(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LibMisc.MOD_ID, "item/" + item.getRegistryName().getPath() + "_gui"));

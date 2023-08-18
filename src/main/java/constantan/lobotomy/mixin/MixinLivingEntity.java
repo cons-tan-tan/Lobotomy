@@ -70,7 +70,7 @@ public abstract class MixinLivingEntity {
             float defenseRatio = defenseMap.get(damageType);
 
             float ratio = riskLevelRatio * defenseRatio;
-            float calculatedDamageAmount = (damageType == DamageTypeUtil.PALE
+            float calculatedDamageAmount = (!(self instanceof AbnormalityEntity) && damageType == DamageTypeUtil.PALE
                     ? Math.abs(pAmount * ratio * 0.01F * self.getMaxHealth())
                     : Math.abs(pAmount * ratio));
 
@@ -89,11 +89,7 @@ public abstract class MixinLivingEntity {
                             player.heal(calculatedDamageAmount);
                         }
                     } else {
-                        if (damageType == DamageTypeUtil.PALE && !(self instanceof AbnormalityEntity)) {
-                            self.heal(calculatedDamageAmount);//Abnormalityでない場合Paleの割合ダメージの分回復する
-                        } else {
-                            self.heal(Math.abs(pAmount * ratio));//Abnormalityは額面通りのダメージ
-                        }
+                        self.heal(calculatedDamageAmount);
                     }
                 }
                 return 0.0F;

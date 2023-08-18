@@ -73,6 +73,12 @@ public class ModItems {
                     .defense(0.7F, 0.8F, 1.2F, 2.0F)
                     .riskLevel(RiskLevelUtil.TETH)));
 
+    public static final RegistryObject<Item> JUSTITIA_ARMOR = ITEMS.register(LibEntityResources.JUDGEMENT_BIRD.getArmorEgoName(),
+            () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
+                    .suitTexture(LibEntityResources.JUDGEMENT_BIRD.getSuitEgoTexture())
+                    .defense(0.5F, 0.5F, 0.5F, 0.5F)
+                    .riskLevel(RiskLevelUtil.ALEPH)));
+
     public static final RegistryObject<Item> HEAVEN_ARMOR = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getArmorEgoName(),
             () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
                     .suitTexture(LibEntityResources.THE_BURROWING_HEAVEN.getSuitEgoTexture())

@@ -7,6 +7,7 @@ import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.DefenseUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -25,6 +27,10 @@ import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
+
+    @Shadow public abstract void readAdditionalSaveData(CompoundTag pCompound);
+
+    @Shadow protected abstract int calculateFallDamage(float pFallDistance, float pDamageMultiplier);
 
     @Inject(method = "isDamageSourceBlocked", at = @At("HEAD"), cancellable = true)
     private void isDamageSourceBlocked_Head(DamageSource pDamageSource, CallbackInfoReturnable<Boolean> cir) {
@@ -91,6 +97,15 @@ public abstract class MixinLivingEntity {
                     }
                 }
                 return 0.0F;
+            }
+
+            if (damageType.canAffectSanity() && self instanceof Player player) {
+                player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
+                    sanity.addSanityWithSync((int) -calculatedDamageAmount, (ServerPlayer) player);
+                });
+                if (damageType == DamageTypeUtil.WHITE) {
+                    return 0.0F;
+                }
             }
 
             return calculatedDamageAmount;

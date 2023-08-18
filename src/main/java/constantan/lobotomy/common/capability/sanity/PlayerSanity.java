@@ -7,14 +7,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 
 public class PlayerSanity {
-    private final int MIN_SANITY = 0;
-    private final int DEFAULT_SANITY = 20;
+    public static final int MIN_SANITY = 0;
+    public static final int DEFAULT_SANITY = 20;
 
     private int sanity;
     private int maxSanity;
 
     public PlayerSanity() {
-        this.maxSanity = this.DEFAULT_SANITY;
+        this.maxSanity = DEFAULT_SANITY;
         this.sanity = this.maxSanity;
     }
 
@@ -27,7 +27,7 @@ public class PlayerSanity {
     }
 
     public int getMinSanity() {
-        return this.MIN_SANITY;
+        return MIN_SANITY;
     }
 
 
@@ -39,7 +39,7 @@ public class PlayerSanity {
      */
     public boolean setSanity(int sanity) {
         if (sanity == this.sanity) return false;
-        this.sanity = Mth.clamp(sanity, this.MIN_SANITY, this.maxSanity);
+        this.sanity = Mth.clamp(sanity, MIN_SANITY, this.maxSanity);
         return true;
     }
 
@@ -70,7 +70,7 @@ public class PlayerSanity {
 
     private boolean setMaxSanity(int max_sanity) {
         if (max_sanity == this.maxSanity) return false;
-        this.maxSanity = Math.max(max_sanity, this.MIN_SANITY + 1);
+        this.maxSanity = Math.max(max_sanity, MIN_SANITY + 1);
         return true;
     }
 

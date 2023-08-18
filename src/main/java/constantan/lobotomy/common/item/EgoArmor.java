@@ -1,5 +1,6 @@
 package constantan.lobotomy.common.item;
 
+import constantan.lobotomy.client.layer.EgoSuitLayer;
 import constantan.lobotomy.client.renderer.armor.EgoArmorRenderer;
 import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.item.util.EgoArmorMaterial;
@@ -27,7 +28,9 @@ import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyncableParent {
@@ -37,6 +40,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
     private final Map<DamageTypeUtil, Float> defense;
     private final RiskLevelUtil riskLevel;
     private final ResourceLocation suitTexture;
+    private final Set<EgoSuitLayer.SuitInnerPart> innerPartSet;
     protected final boolean hasIdleAnim;
 
     private final TextComponent defenseMultiplierTooltip;
@@ -56,6 +60,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         this.riskLevel = egoArmorItemProperties.riskLevel;
         this.defense = egoArmorItemProperties.defense;
         this.suitTexture = egoArmorItemProperties.suitTexture;
+        this.innerPartSet = new HashSet<>(egoArmorItemProperties.innerPartSet);
         this.hasIdleAnim = egoArmorItemProperties.idleAnim;
 
         this.defenseMultiplierTooltip = DefenseUtil.getDefenseMultiplierTextComponent(egoArmorItemProperties.defense);
@@ -102,6 +107,14 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         return this.suitTexture;
     }
 
+    public boolean hasInnerPart() {
+        return !this.innerPartSet.isEmpty();
+    }
+
+    public Set<EgoSuitLayer.SuitInnerPart> getInnerPartSet() {
+        return this.innerPartSet;
+    }
+
     @Override
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         super.initializeClient(consumer);
@@ -132,6 +145,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;
         ResourceLocation suitTexture;
+        Set<EgoSuitLayer.SuitInnerPart> innerPartSet = new HashSet<>();
         boolean idleAnim;
 
         @Override
@@ -153,6 +167,11 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
         public EgoArmorProperties suitTexture(ResourceLocation suit) {
             this.suitTexture = suit;
+            return this;
+        }
+
+        public EgoArmorProperties suitInnerPart(EgoSuitLayer.SuitInnerPart suitInnerPart) {
+            this.innerPartSet.add(suitInnerPart);
             return this;
         }
     }

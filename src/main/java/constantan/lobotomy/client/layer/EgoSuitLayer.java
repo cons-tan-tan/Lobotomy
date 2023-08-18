@@ -3,7 +3,6 @@ package constantan.lobotomy.client.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import constantan.lobotomy.common.item.EgoArmor;
-import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -12,10 +11,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
 
 public class EgoSuitLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
@@ -28,7 +26,8 @@ public class EgoSuitLayer<T extends LivingEntity, M extends EntityModel<T>> exte
 
     @Override
     public void render(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTick, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-        if (shouldRender(pLivingEntity)) {
+        Item item = pLivingEntity.getItemBySlot(EquipmentSlot.CHEST).getItem();
+        if (item instanceof EgoArmor egoArmor && egoArmor.hasSuitTexture()) {
             this.getParentModel().copyPropertiesTo(model);
 
             this.model.head.visible = false;
@@ -38,6 +37,12 @@ public class EgoSuitLayer<T extends LivingEntity, M extends EntityModel<T>> exte
             this.model.leftLeg.visible = false;
             this.model.rightLeg.visible = false;
 
+            if (egoArmor.hasInnerPart()) {
+                for (SuitInnerPart part: egoArmor.getInnerPartSet()) {
+                    this.setVisibility(part);
+                }
+            }
+
             HumanoidModel<?> parentPlayerModel = (HumanoidModel<?>) this.getParentModel();
             this.model.crouching = parentPlayerModel.crouching;
             this.model.rightArmPose = parentPlayerModel.rightArmPose;
@@ -46,24 +51,28 @@ public class EgoSuitLayer<T extends LivingEntity, M extends EntityModel<T>> exte
             this.model.prepareMobModel(pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTick);
             this.model.setupAnim(pLivingEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
 
-            VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(pLivingEntity)));
+            VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(egoArmor.getSuitTexture()));
             this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1.0F);
         }
     }
 
-    private static boolean shouldRender(LivingEntity livingEntity) {
-        ItemStack stack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
-        if (stack.getItem() instanceof EgoArmor egoArmor && egoArmor.hasSuitTexture()) {
-            return true;
+    public void setVisibility(SuitInnerPart part) {
+        switch (part) {
+            case HEAD -> this.model.head.visible = true;
+            case BODY -> this.model.body.visible = true;
+            case RIGHT_ARM -> this.model.rightArm.visible = true;
+            case LEFT_ARM -> this.model.leftArm.visible = true;
+            case RIGHT_LEG -> this.model.rightLeg.visible = true;
+            case LEFT_LEG -> this.model.leftLeg.visible = true;
         }
-        return false;
     }
 
-    @Override
-    protected ResourceLocation getTextureLocation(T pEntity) {
-        if (pEntity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof EgoArmor egoArmor) {
-            return egoArmor.getSuitTexture();
-        }
-        return new ResourceLocation(LibMisc.MOD_ID, "textures/armor/heaven_suit.png");
+    public enum SuitInnerPart {
+        HEAD,
+        BODY,
+        RIGHT_ARM,
+        LEFT_ARM,
+        RIGHT_LEG,
+        LEFT_LEG
     }
 }

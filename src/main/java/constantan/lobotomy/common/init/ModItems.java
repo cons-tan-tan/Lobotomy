@@ -1,6 +1,7 @@
 package constantan.lobotomy.common.init;
 
 
+import constantan.lobotomy.client.layer.EgoSuitLayer;
 import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.item.AbnormalityTool;
 import constantan.lobotomy.common.item.EgoArmor;
@@ -67,6 +68,7 @@ public class ModItems {
     public static final RegistryObject<Item> PEAK_ARMOR = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getArmorEgoName(),
             () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
                     .suitTexture(LibEntityResources.PUNISHING_BIRD.getSuitEgoTexture())
+                    .suitInnerPart(EgoSuitLayer.SuitInnerPart.LEFT_ARM)
                     .defense(0.7F, 0.8F, 1.2F, 2.0F)
                     .riskLevel(RiskLevelUtil.TETH)));
 

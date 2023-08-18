@@ -52,16 +52,8 @@
 						{"origin": [-5, 15, -3], "size": [2, 1, 6], "uv": [55, 40]},
 						{"origin": [-5, 14, -3], "size": [3, 1, 6], "uv": [16, 44]},
 						{"origin": [-5, 13, -3], "size": [4, 1, 6], "uv": [48, 0]},
-						{"origin": [-4.5, 16.5, -2.5], "size": [9, 1, 5], "inflate": 0.1, "uv": [35, 24]},
-						{"origin": [-4.5, 19.5, -2.5], "size": [9, 1, 5], "inflate": 0.1, "uv": [26, 18]}
-					]
-				},
-				{
-					"name": "base",
-					"parent": "armorBody",
-					"pivot": [15, 18.8, 0],
-					"cubes": [
-						{"origin": [-4.5, 11.5, -2.5], "size": [9, 13, 5], "inflate": 0.01, "uv": [0, 0]}
+						{"origin": [-4.5, 16.5, -2.5], "size": [9, 1, 5], "uv": [35, 24]},
+						{"origin": [-4.5, 19.5, -2.5], "size": [9, 1, 5], "uv": [26, 18]}
 					]
 				},
 				{
@@ -72,14 +64,6 @@
 					"name": "armorRightArm",
 					"parent": "bipedRightArm",
 					"pivot": [-4, 22, 0]
-				},
-				{
-					"name": "base3",
-					"parent": "armorRightArm",
-					"pivot": [-6, 18.5, 0],
-					"cubes": [
-						{"origin": [-8.5, 11.5, -2.5], "size": [5, 13, 5], "uv": [35, 39]}
-					]
 				},
 				{
 					"name": "other3",
@@ -99,25 +83,12 @@
 					"pivot": [4, 22, 0]
 				},
 				{
-					"name": "base2",
-					"parent": "armorLeftArm",
-					"pivot": [6, 18, 0],
-					"cubes": [
-						{"origin": [3.5, 11.5, -2.5], "size": [5, 13, 5], "uv": [20, 26]}
-					]
-				},
-				{
 					"name": "other2",
 					"parent": "armorLeftArm",
 					"pivot": [20, 30, 0],
 					"cubes": [
 						{"origin": [6, 22, -3], "size": [3, 3, 6], "uv": [40, 30]}
 					]
-				},
-				{
-					"name": "under",
-					"parent": "armorLeftArm",
-					"pivot": [4, 22, 0]
 				},
 				{
 					"name": "bipedLeftLeg",
@@ -127,14 +98,6 @@
 					"name": "armorLeftLeg",
 					"parent": "bipedLeftLeg",
 					"pivot": [-2, 12, 0]
-				},
-				{
-					"name": "base4",
-					"parent": "armorLeftLeg",
-					"pivot": [2, 6, 0],
-					"cubes": [
-						{"origin": [-0.5, -0.5, -2.5], "size": [5, 13, 5], "uv": [28, 0]}
-					]
 				},
 				{
 					"name": "other4",
@@ -158,14 +121,6 @@
 					"name": "armorRightLeg",
 					"parent": "bipedRightLeg",
 					"pivot": [2, 12, 0]
-				},
-				{
-					"name": "base5",
-					"parent": "armorRightLeg",
-					"pivot": [-10, 6, 0],
-					"cubes": [
-						{"origin": [-4.5, -0.5, -2.5], "size": [5, 13, 5], "uv": [0, 26]}
-					]
 				},
 				{
 					"name": "other5",

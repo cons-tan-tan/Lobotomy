@@ -90,5 +90,9 @@ public class LibEntityResources {
         public ResourceLocation getArmorEgoTexture() {
             return path("textures/armor/" + this.egoName + "_armor.png");
         }
+
+        public ResourceLocation getSuitEgoTexture() {
+            return path("textures/armor/" + this.egoName + "_suit.png");
+        }
     }
 }

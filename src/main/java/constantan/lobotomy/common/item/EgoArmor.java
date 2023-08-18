@@ -12,6 +12,7 @@ import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -35,6 +36,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
     private final Map<DamageTypeUtil, Float> defense;
     private final RiskLevelUtil riskLevel;
+    private final ResourceLocation suitTexture;
     protected final boolean hasIdleAnim;
 
     private final TextComponent defenseMultiplierTooltip;
@@ -53,6 +55,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         EgoArmorProperties egoArmorItemProperties = (EgoArmorProperties) builder;
         this.riskLevel = egoArmorItemProperties.riskLevel;
         this.defense = egoArmorItemProperties.defense;
+        this.suitTexture = egoArmorItemProperties.suitTexture;
         this.hasIdleAnim = egoArmorItemProperties.idleAnim;
 
         this.defenseMultiplierTooltip = DefenseUtil.getDefenseMultiplierTextComponent(egoArmorItemProperties.defense);
@@ -91,30 +94,44 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         }
     }
 
+    public boolean hasSuitTexture() {
+        return this.suitTexture != null;
+    }
+
+    public ResourceLocation getSuitTexture() {
+        return this.suitTexture;
+    }
+
     @Override
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         super.initializeClient(consumer);
-        consumer.accept(new IItemRenderProperties() {
-            @Override
-            public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack,
-                                                  EquipmentSlot armorSlot, HumanoidModel<?> _default) {
-                return (HumanoidModel<?>) EgoArmorRenderer.getEgoArmorRenderer(EgoArmor.this, entityLiving)
-                        .applyEntityStats(_default).setCurrentItem(entityLiving, itemStack, armorSlot)
-                        .applySlot(armorSlot);
-            }
-        });
+        if (this instanceof IAnimatable) {
+            consumer.accept(new IItemRenderProperties() {
+                @Override
+                public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack,
+                                                      EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+                    return (HumanoidModel<?>) EgoArmorRenderer.getEgoArmorRenderer(EgoArmor.this, entityLiving)
+                            .applyEntityStats(_default).setCurrentItem(entityLiving, itemStack, armorSlot)
+                            .applySlot(armorSlot);
+                }
+            });
+        }
     }
 
     @Override
     public final String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        EgoArmorRenderer renderer = EgoArmorRenderer.getEgoArmorRenderer(EgoArmor.this, entity);
-        return renderer.getTextureLocation((ArmorItem) stack.getItem()).toString();
+        if (this instanceof IAnimatable) {
+            EgoArmorRenderer renderer = EgoArmorRenderer.getEgoArmorRenderer(EgoArmor.this, entity);
+            return renderer.getTextureLocation(this).toString();
+        }
+        return super.getArmorTexture(stack, entity, slot, type);
     }
 
     public static class EgoArmorProperties extends EgoProperties {
 
         RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;
+        ResourceLocation suitTexture;
         boolean idleAnim;
 
         @Override
@@ -131,6 +148,11 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
         public EgoArmorProperties defense(float red, float white, float black, float pale) {
             this.defense = DefenseUtil.createDefense(red, white, black, pale);
+            return this;
+        }
+
+        public EgoArmorProperties suitTexture(ResourceLocation suit) {
+            this.suitTexture = suit;
             return this;
         }
     }

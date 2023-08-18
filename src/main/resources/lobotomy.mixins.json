@@ -11,6 +11,8 @@
     "MixinLivingEntity"
   ],
   "client": [
+    "MixinHumanoidModel",
+    "MixinPlayerRenderer"
   ],
   "minVersion": "0.8"
 }

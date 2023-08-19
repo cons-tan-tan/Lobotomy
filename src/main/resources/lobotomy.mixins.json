@@ -11,6 +11,7 @@
     "MixinLivingEntity"
   ],
   "client": [
+    "MixinArmorStandRenderer",
     "MixinHumanoidModel",
     "MixinPlayerRenderer"
   ],

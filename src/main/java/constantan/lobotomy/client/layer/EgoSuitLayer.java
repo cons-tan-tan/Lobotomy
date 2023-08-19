@@ -13,6 +13,8 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 
 public class EgoSuitLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
@@ -43,13 +45,29 @@ public class EgoSuitLayer<T extends LivingEntity, M extends EntityModel<T>> exte
                 }
             }
 
-            HumanoidModel<?> parentPlayerModel = (HumanoidModel<?>) this.getParentModel();
-            this.model.crouching = parentPlayerModel.crouching;
-            this.model.rightArmPose = parentPlayerModel.rightArmPose;
-            this.model.leftArmPose = parentPlayerModel.leftArmPose;
+            HumanoidModel<?> parentModel = (HumanoidModel<?>) this.getParentModel();
+            if (pLivingEntity instanceof Player) {
+                this.model.crouching = parentModel.crouching;
+                this.model.rightArmPose = parentModel.rightArmPose;
+                this.model.leftArmPose = parentModel.leftArmPose;
 
-            this.model.prepareMobModel(pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTick);
-            this.model.setupAnim(pLivingEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+                this.model.prepareMobModel(pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTick);
+                this.model.setupAnim(pLivingEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+
+            } else if (pLivingEntity instanceof ArmorStand) {
+                this.model.head.copyFrom(parentModel.head);
+                this.model.body.copyFrom(parentModel.body);
+                this.model.rightArm.copyFrom(parentModel.rightArm);
+                this.model.leftArm.copyFrom(parentModel.leftArm);
+                this.model.rightLeg.copyFrom(parentModel.rightLeg);
+                this.model.leftLeg.copyFrom(parentModel.leftLeg);
+                this.model.hat.copyFrom(parentModel.hat);
+                this.model.jacket.copyFrom(this.model.body);
+                this.model.rightSleeve.copyFrom(this.model.rightArm);
+                this.model.leftSleeve.copyFrom(this.model.leftArm);
+                this.model.rightPants.copyFrom(this.model.rightLeg);
+                this.model.leftPants.copyFrom(this.model.leftLeg);
+            }
 
             VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(egoArmor.getSuitTexture()));
             this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1.0F);

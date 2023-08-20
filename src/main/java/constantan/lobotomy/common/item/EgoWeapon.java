@@ -69,15 +69,15 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         playAnimation(entity, stack, state);
     }
 
-    public int getRangedRandomDamage(ItemStack itemStack) {
+    public int getRangedRandomDamage(ItemStack stack) {
         return new Random().nextInt(this.minDamageAmount - 1, this.maxDamageAmount);
     }
 
-    public int getMinDamageAmount() {
+    public int getMinDamageAmount(ItemStack stack) {
         return this.minDamageAmount;
     }
 
-    public int getMaxDamageAmount() {
+    public int getMaxDamageAmount(ItemStack stack) {
         return this.maxDamageAmount;
     }
 
@@ -105,7 +105,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         return this.damageType;
     }
 
-    public TextComponent getAbnormalDamageTooltip(ItemStack itemStack) {
+    public TextComponent getAbnormalDamageTooltip(ItemStack stack) {
         return this.abnormalDamageTooltip;
     }
 

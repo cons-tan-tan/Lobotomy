@@ -8,6 +8,7 @@ import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
 import constantan.lobotomy.common.item.ego.PeakWeaponItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoArmorItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoMeleeWeaponItem;
+import constantan.lobotomy.common.item.util.EgoMeleeWeaponType;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import constantan.lobotomy.lib.LibEntityResources;
@@ -51,12 +52,14 @@ public class ModItems {
                     .riskLevel(RiskLevelUtil.TETH)));
 
     public static final RegistryObject<Item> JUSTITIA_WEAPON = ITEMS.register(LibEntityResources.JUDGEMENT_BIRD.getWeaponEgoName(),
-            () -> new SimpleEgoMeleeWeaponItem(2, 4, new EgoWeapon.EgoWeaponProperties()
+            () -> new SimpleEgoMeleeWeaponItem(2, 4, new EgoMeleeWeapon.EgoMeleeWeaponProperties()
+                    .weaponType(EgoMeleeWeaponType.SWORD)
                     .damageType(DamageTypeUtil.PALE)
                     .riskLevel(RiskLevelUtil.ALEPH)));
 
     public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getWeaponEgoName(),
-            () -> new SimpleEgoMeleeWeaponItem(8, 16, new EgoWeapon.EgoWeaponProperties()
+            () -> new SimpleEgoMeleeWeaponItem(8, 16, new EgoMeleeWeapon.EgoMeleeWeaponProperties()
+                    .weaponType(EgoMeleeWeaponType.SPEAR)
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.WAW)));
 

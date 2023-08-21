@@ -4,7 +4,7 @@ import constantan.lobotomy.common.entity.PunishingBirdEntity;
 import constantan.lobotomy.lib.LibEntityResources;
 import net.minecraft.resources.ResourceLocation;
 
-public class PunishingBirdModel extends AbnormalityEntityModel<PunishingBirdEntity> {
+public class PunishingBirdModel extends AbnormalityModel<PunishingBirdEntity> {
 
     public PunishingBirdModel(LibEntityResources.EntityResourceData entityResourceData) {
         super(entityResourceData);

@@ -5,7 +5,7 @@ import constantan.lobotomy.lib.LibEntityResources;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 
-public class TheBurrowingHeavenModel extends AbnormalityEntityModel<TheBurrowingHeavenEntity> {
+public class TheBurrowingHeavenModel extends AbnormalityModel<TheBurrowingHeavenEntity> {
 
     public TheBurrowingHeavenModel(LibEntityResources.EntityResourceData entityResourceData) {
         super(entityResourceData);

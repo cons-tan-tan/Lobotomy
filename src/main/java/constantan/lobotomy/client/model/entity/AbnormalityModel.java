@@ -6,11 +6,11 @@ import net.minecraft.world.entity.Entity;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class AbnormalityEntityModel<T extends Entity & IAnimatable> extends AnimatedGeoModel<T> {
+public class AbnormalityModel<T extends Entity & IAnimatable> extends AnimatedGeoModel<T> {
 
     protected final LibEntityResources.EntityResourceData entityResourceData;
 
-    public AbnormalityEntityModel(LibEntityResources.EntityResourceData entityResourceData) {
+    public AbnormalityModel(LibEntityResources.EntityResourceData entityResourceData) {
         super();
         this.entityResourceData = entityResourceData;
     }

@@ -12,19 +12,19 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class AbnormalityEntityRenderer<T extends LivingEntity & IAnimatable> extends GeoEntityRenderer<T> {
+public class AbnormalityRenderer<T extends LivingEntity & IAnimatable> extends GeoEntityRenderer<T> {
 
     protected final float wholeScale;
 
-    public AbnormalityEntityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model) {
+    public AbnormalityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model) {
         this(renderManager, model, 0.0F, 1.0F);
     }
 
-    public AbnormalityEntityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model, float shadowRadius) {
+    public AbnormalityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model, float shadowRadius) {
         this(renderManager, model, shadowRadius, 1.0F);
     }
 
-    public AbnormalityEntityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model, float shadowRadius, float scale) {
+    public AbnormalityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model, float shadowRadius, float scale) {
         super(renderManager, model);
         this.shadowRadius = shadowRadius;
         this.wholeScale = scale;

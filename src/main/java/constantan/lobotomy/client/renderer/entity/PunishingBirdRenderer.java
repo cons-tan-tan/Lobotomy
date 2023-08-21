@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 
-public class PunishingBirdRenderer extends AbnormalityEntityRenderer<PunishingBirdEntity> {
+public class PunishingBirdRenderer extends AbnormalityRenderer<PunishingBirdEntity> {
 
     public PunishingBirdRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new PunishingBirdModel(LibEntityResources.PUNISHING_BIRD), 0.3F, 0.4F);

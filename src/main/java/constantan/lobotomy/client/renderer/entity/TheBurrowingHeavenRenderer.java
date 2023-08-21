@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 
-public class TheBurrowingHeavenRenderer extends AbnormalityEntityRenderer<TheBurrowingHeavenEntity> {
+public class TheBurrowingHeavenRenderer extends AbnormalityRenderer<TheBurrowingHeavenEntity> {
 
     public TheBurrowingHeavenRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new TheBurrowingHeavenModel(LibEntityResources.THE_BURROWING_HEAVEN), 0.5F, 1.5F);

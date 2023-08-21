@@ -7,17 +7,17 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.layer.LayerGlowingAreasGeo;
 
-public class GlowingEntityRenderer<T extends AbnormalityEntity & IAnimatable> extends AbnormalityEntityRenderer<T> {
+public class GlowingAbnormalityRenderer<T extends AbnormalityEntity & IAnimatable> extends AbnormalityRenderer<T> {
 
-    public GlowingEntityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model) {
+    public GlowingAbnormalityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model) {
         this(renderManager, model, 0.0F, 1.0F);
     }
 
-    public GlowingEntityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model, float shadowRadius) {
+    public GlowingAbnormalityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model, float shadowRadius) {
         this(renderManager, model, shadowRadius, 1.0F);
     }
 
-    public GlowingEntityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model, float shadowRadius, float scale) {
+    public GlowingAbnormalityRenderer(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> model, float shadowRadius, float scale) {
         super(renderManager, model, shadowRadius, scale);
 
         addLayer(new LayerGlowingAreasGeo<T>(this,

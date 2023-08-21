@@ -11,9 +11,7 @@
     "MixinLivingEntity"
   ],
   "client": [
-    "MixinArmorStandRenderer",
-    "MixinHumanoidModel",
-    "MixinPlayerRenderer"
+    "MixinHumanoidModel"
   ],
   "minVersion": "0.8"
 }

@@ -6,10 +6,20 @@
 
   "item.lobotomy.giant_tree_sap": "Giant Tree Sap",
   "item.lobotomy.punishing_bird_spawn_egg": "Punishing Bird Spawn Egg",
+  "item.lobotomy.judgement_bird_spawn_egg": "Judgement Spawn Egg",
+  "item.lobotomy.the_burrowing_heaven_spawn_egg": "The Burrowing Heaven Spawn Egg",
+  "item.lobotomy.peak_weapon": "Peak",
+  "item.lobotomy.justitia_weapon": "Justitia",
+  "item.lobotomy.heaven_weapon": "Heaven",
+  "item.lobotomy.peak_armor": "Peak",
+  "item.lobotomy.justitia_armor": "Justitia",
+  "item.lobotomy.heaven_armor": "Heaven",
 
   "item.modifier.lobotomy.projectile": "When Hit Projectile:",
 
   "entity.lobotomy.punishing_bird": "Punishing Bird",
+  "entity.lobotomy.judgement_bird": "Judgement Bird",
+  "entity.lobotomy.the_burrowing_heaven": "The Burrowing Heaven",
 
   "tooltip.lobotomy.press_shift.tooltip": "Press §eShift§r to show details",
   "tooltip.lobotomy.risk_level": "%1$s: %2$s",

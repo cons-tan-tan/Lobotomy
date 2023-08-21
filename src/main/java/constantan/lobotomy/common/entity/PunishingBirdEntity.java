@@ -267,6 +267,9 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
     }
 
 
+    /**
+     * 攻撃中のモデルの向きを視線方向に固定
+     */
     private static class PunishingBirdBodyRotationControl extends BodyRotationControl {
 
         private final PunishingBirdEntity owner;
@@ -286,6 +289,10 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
         }
     }
 
+
+    /**
+     * 攻撃中の視線を固定
+     */
     private static class PunishingBirdLookControl extends LookControl {
 
         private final PunishingBirdEntity owner;

@@ -101,7 +101,7 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
     private static DamageSource getAbnormalDamageSource(String damageTypeId, LivingEntity livingEntity,
                                                         RiskLevelUtil riskLevel, DamageTypeUtil damageType, boolean blockable) {
         EntityDamageSource base = new EntityDamageSource(damageTypeId, livingEntity);
-        IMixinDamageSource iMixinDamageSource = ((IMixinDamageSource) (Object) base)
+        IMixinDamageSource iMixinDamageSource = ((IMixinDamageSource) base)
                 .riskLevel(riskLevel).damageType(damageType).Blockable(blockable);
         return (DamageSource) iMixinDamageSource;
     }

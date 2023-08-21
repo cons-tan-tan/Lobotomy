@@ -23,7 +23,6 @@ public abstract class MixinHumanoidModel<T extends LivingEntity> {
 
     @Inject(method = "poseRightArm", at = @At("HEAD"), cancellable = true)
     private void poseRightArm(T pLivingEntity, CallbackInfo ci) {
-        HumanoidModel<?> self = (HumanoidModel<?>) (Object) this;
         if (pLivingEntity instanceof Player player) {
             if (player.getMainArm() == HumanoidArm.RIGHT) {
                 ItemStack stack = player.getMainHandItem();

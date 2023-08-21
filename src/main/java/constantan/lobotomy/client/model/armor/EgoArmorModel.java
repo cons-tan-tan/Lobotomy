@@ -43,16 +43,6 @@ public class EgoArmorModel<T extends Item & IAnimatable> extends AnimatedGeoMode
     public void setCustomAnimations(T animatable, int instanceId, AnimationEvent animationEvent) {
         super.setCustomAnimations(animatable, instanceId, animationEvent);
 
-        IBone rightArm = this.getAnimationProcessor().getBone("armorRightArm");
-        IBone leftArm = this.getAnimationProcessor().getBone("armorLeftArm");
-
-        rightArm.setScaleY(1.1F);
-        rightArm.setScaleZ(1.1F);
-
-        leftArm.setScaleY(1.1F);
-        leftArm.setScaleZ(1.1F);
-
-
         if (animationEvent.getExtraDataOfType(LivingEntity.class).get(0) instanceof LivingEntity livingEntity) {
             if (livingEntity.getItemBySlot(EquipmentSlot.LEGS) != ItemStack.EMPTY) {
                 IBone rightLeg = this.getAnimationProcessor().getBone("armorRightLeg");

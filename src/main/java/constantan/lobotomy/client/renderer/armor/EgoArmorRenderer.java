@@ -23,8 +23,11 @@ public class EgoArmorRenderer<T extends ArmorItem & IAnimatable> extends GeoArmo
 
     protected T assignedItem = null;
 
+    public EgoArmorModel<?> egoArmorModel;
+
     public EgoArmorRenderer(LibEntityResources.EntityResourceData entityResourceData) {
         super(new EgoArmorModel<>(entityResourceData));
+        this.egoArmorModel = (EgoArmorModel<?>) this.getGeoModelProvider();
     }
 
     @Override

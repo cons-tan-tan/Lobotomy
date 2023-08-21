@@ -1,4 +1,4 @@
-package constantan.lobotomy.client.layer;
+package constantan.lobotomy.client.renderer.entity.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -69,7 +69,7 @@ public class EgoSuitLayer<T extends LivingEntity, M extends EntityModel<T>> exte
                 this.model.leftPants.copyFrom(this.model.leftLeg);
             }
 
-            VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(egoArmor.getSuitTexture()));
+            VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(egoArmor.getSuitTexture(pLivingEntity)));
             this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1.0F);
         }
     }

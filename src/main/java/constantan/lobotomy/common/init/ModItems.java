@@ -1,7 +1,7 @@
 package constantan.lobotomy.common.init;
 
 
-import constantan.lobotomy.client.layer.EgoSuitLayer;
+import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
 import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.item.*;
 import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
@@ -66,20 +66,17 @@ public class ModItems {
     //EGO_ARMOR
     public static final RegistryObject<Item> PEAK_ARMOR = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getArmorEgoName(),
             () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
-                    .suitTexture(LibEntityResources.PUNISHING_BIRD.getSuitEgoTexture())
                     .suitInnerPart(EgoSuitLayer.SuitInnerPart.LEFT_ARM)
                     .defense(0.7F, 0.8F, 1.2F, 2.0F)
                     .riskLevel(RiskLevelUtil.TETH)));
 
     public static final RegistryObject<Item> JUSTITIA_ARMOR = ITEMS.register(LibEntityResources.JUDGEMENT_BIRD.getArmorEgoName(),
             () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
-                    .suitTexture(LibEntityResources.JUDGEMENT_BIRD.getSuitEgoTexture())
                     .defense(0.5F, 0.5F, 0.5F, 0.5F)
                     .riskLevel(RiskLevelUtil.ALEPH)));
 
     public static final RegistryObject<Item> HEAVEN_ARMOR = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getArmorEgoName(),
             () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
-                    .suitTexture(LibEntityResources.THE_BURROWING_HEAVEN.getSuitEgoTexture())
                     .defense(1.2F,0.8F,0.6F,1.5F)
                     .riskLevel(RiskLevelUtil.WAW)
                     .idleAnim()));

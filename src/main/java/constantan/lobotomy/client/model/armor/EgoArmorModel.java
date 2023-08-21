@@ -35,6 +35,10 @@ public class EgoArmorModel<T extends Item & IAnimatable> extends AnimatedGeoMode
         return entityResourceData.getArmorEgoAnimation();
     }
 
+    public ResourceLocation getSuitTextureLocation(T object) {
+        return entityResourceData.getSuitEgoTexture();
+    }
+
     @Override
     public void setCustomAnimations(T animatable, int instanceId, AnimationEvent animationEvent) {
         super.setCustomAnimations(animatable, instanceId, animationEvent);

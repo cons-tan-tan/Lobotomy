@@ -3,7 +3,7 @@ package constantan.lobotomy.client;
 import constantan.lobotomy.client.gui.SanityHudOverlay;
 import constantan.lobotomy.client.key.KeyBindings;
 import constantan.lobotomy.client.key.KeyInputHandler;
-import constantan.lobotomy.client.layer.EgoSuitLayer;
+import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
 import constantan.lobotomy.client.renderer.ModArmorRenderers;
 import constantan.lobotomy.client.renderer.ModEntityRenderers;
 import constantan.lobotomy.lib.LibMisc;

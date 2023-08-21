@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.item;
 
-import constantan.lobotomy.client.layer.EgoSuitLayer;
+import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
 import constantan.lobotomy.client.renderer.armor.EgoArmorRenderer;
 import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.item.util.EgoArmorMaterial;
@@ -28,6 +28,7 @@ import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -37,9 +38,9 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
     private final AnimationFactory factory;
 
-    private final Map<DamageTypeUtil, Float> defense;
     private final RiskLevelUtil riskLevel;
-    private final ResourceLocation suitTexture;
+    private final Map<DamageTypeUtil, Float> defense;
+    private final boolean suitTexture;
     private final Set<EgoSuitLayer.SuitInnerPart> innerPartSet;
     protected final boolean hasIdleAnim;
 
@@ -100,10 +101,6 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
     }
 
     public boolean hasSuitTexture() {
-        return this.suitTexture != null;
-    }
-
-    public ResourceLocation getSuitTexture() {
         return this.suitTexture;
     }
 
@@ -113,6 +110,15 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
     public Set<EgoSuitLayer.SuitInnerPart> getInnerPartSet() {
         return this.innerPartSet;
+    }
+
+    @Nullable
+    public ResourceLocation getSuitTexture(LivingEntity livingEntity) {
+        if (this instanceof IAnimatable) {
+            EgoArmorRenderer renderer = EgoArmorRenderer.getEgoArmorRenderer(this, livingEntity);
+            return renderer.egoArmorModel.getSuitTextureLocation(this);
+        }
+        return null;
     }
 
     @Override
@@ -144,7 +150,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
         RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;
-        ResourceLocation suitTexture;
+        boolean suitTexture = true;
         Set<EgoSuitLayer.SuitInnerPart> innerPartSet = new HashSet<>();
         boolean idleAnim;
 
@@ -165,8 +171,8 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
             return this;
         }
 
-        public EgoArmorProperties suitTexture(ResourceLocation suit) {
-            this.suitTexture = suit;
+        public EgoArmorProperties noSuitTexture() {
+            this.suitTexture = false;
             return this;
         }
 

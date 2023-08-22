@@ -33,6 +33,8 @@ public class ItemModels extends ItemModelProvider {
         multiModelItem(ModItems.PEAK_WEAPON.get());
         multiModelItem(ModItems.JUSTITIA_WEAPON.get());
         multiModelItem(ModItems.HEAVEN_WEAPON.get());
+
+        multiModelItem(ModItems.GIANT_TREE_SAP.get());
     }
 
     private ItemModelBuilder simpleItem(Item item) {

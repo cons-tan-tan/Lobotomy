@@ -1,19 +1,24 @@
 package constantan.lobotomy.common.item;
 
+import constantan.lobotomy.client.renderer.ModItemRenderers;
 import constantan.lobotomy.common.ModSetup;
-import constantan.lobotomy.common.util.IAbnormalityTool;
 import constantan.lobotomy.common.item.util.ISyncableParent;
+import constantan.lobotomy.common.util.IAbnormalityTool;
 import constantan.lobotomy.common.util.RiskLevelUtil;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.network.PacketDistributor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import java.util.function.Consumer;
 
 public abstract class AbnormalityTool extends Item implements IAbnormalityTool, ISyncableParent {
 
@@ -48,6 +53,19 @@ public abstract class AbnormalityTool extends Item implements IAbnormalityTool, 
     @Override
     public RiskLevelUtil getRiskLevel() {
         return this.riskLevel;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+        super.initializeClient(consumer);
+        if (this instanceof IAnimatable) {
+            consumer.accept(new IItemRenderProperties() {
+                @Override
+                public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+                    return ModItemRenderers.getRenderer(AbnormalityTool.this);
+                }
+            });
+        }
     }
 
     public static class AbnormalityToolItemProperties extends Item.Properties {

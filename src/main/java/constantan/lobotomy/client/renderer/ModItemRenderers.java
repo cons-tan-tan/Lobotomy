@@ -1,5 +1,6 @@
 package constantan.lobotomy.client.renderer;
 
+import constantan.lobotomy.client.renderer.item.AbnormalityToolItemRenderer;
 import constantan.lobotomy.client.renderer.item.EgoWeaponItemRenderer;
 import constantan.lobotomy.common.init.ModItems;
 import constantan.lobotomy.lib.LibAbnormality;
@@ -21,5 +22,6 @@ public class ModItemRenderers<T extends Item> {
         MAP.put(ModItems.PEAK_WEAPON.get(), new EgoWeaponItemRenderer<>(LibAbnormality.PUNISHING_BIRD));
         MAP.put(ModItems.JUSTITIA_WEAPON.get(), new EgoWeaponItemRenderer<>(LibAbnormality.JUDGEMENT_BIRD));
         MAP.put(ModItems.HEAVEN_WEAPON.get(), new EgoWeaponItemRenderer<>(LibAbnormality.THE_BURROWING_HEAVEN));
+        MAP.put(ModItems.GIANT_TREE_SAP.get(), new AbnormalityToolItemRenderer<>(LibAbnormality.GIANT_TREE_SAP));
     }
 }

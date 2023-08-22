@@ -120,12 +120,14 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     @Override
     public void initializeClient(Consumer<IItemRenderProperties> consumer) {
         super.initializeClient(consumer);
-        consumer.accept(new IItemRenderProperties() {
-            @Override
-            public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-                return ModItemRenderers.getRenderer(EgoWeapon.this);
-            }
-        });
+        if (this instanceof IAnimatable) {
+            consumer.accept(new IItemRenderProperties() {
+                @Override
+                public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+                    return ModItemRenderers.getRenderer(EgoWeapon.this);
+                }
+            });
+        }
     }
 
     public static class EgoWeaponProperties extends EgoProperties {

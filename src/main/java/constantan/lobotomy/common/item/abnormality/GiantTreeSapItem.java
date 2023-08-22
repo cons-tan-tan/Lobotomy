@@ -11,10 +11,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.Random;
 
-public class GiantTreeSapItem extends AbnormalityTool {
+public class GiantTreeSapItem extends AbnormalityTool implements IAnimatable {
 
     public static final int MAX_PERCENTAGE = 60;
     public static final int ADDED_PERCENTAGE = 15;
@@ -23,6 +25,10 @@ public class GiantTreeSapItem extends AbnormalityTool {
 
     public GiantTreeSapItem(Item.Properties pProperties) {
         super(pProperties.food((new FoodProperties.Builder()).alwaysEat().build()));
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
     }
 
     @Override

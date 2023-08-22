@@ -8,11 +8,13 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.EffectRenderer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class OwingEffect extends MobEffect {
@@ -24,7 +26,7 @@ public class OwingEffect extends MobEffect {
 
     public void compensate(PotionEvent event) {
         if (event.getEntityLiving() instanceof Player player && !player.getLevel().isClientSide && event.getPotionEffect().getEffect() == this) {
-            player.hurt(ModDamageSource.GIANT_TREE_SAP, player.getMaxHealth());//即死
+            player.hurt(ModDamageSource.GIANT_TREE_SAP, player.getHealth());//即死
         }
     }
 
@@ -39,8 +41,8 @@ public class OwingEffect extends MobEffect {
     }
 
     @Override
-    public boolean isDurationEffectTick(int i, int j) {
-        return true;
+    public List<ItemStack> getCurativeItems() {
+        return List.of();
     }
 
     @Override
@@ -53,12 +55,10 @@ public class OwingEffect extends MobEffect {
 
             @Override
             public void renderInventoryEffect(MobEffectInstance effectInstance, EffectRenderingInventoryScreen<?> gui, PoseStack poseStack, int x, int y, float z) {
-
             }
 
             @Override
             public void renderHUDEffect(MobEffectInstance effectInstance, GuiComponent gui, PoseStack poseStack, int x, int y, float z, float alpha) {
-
             }
         });
     }

@@ -10,5 +10,5 @@ public class ModDamageSource extends DamageSource {
         super(LibMisc.MOD_ID + "." + damageSource);
     }
 
-    public static final DamageSource GIANT_TREE_SAP = (new ModDamageSource(LibAbnormality.GIANT_TREE_SAP.name()).bypassArmor());
+    public static final DamageSource GIANT_TREE_SAP = (new ModDamageSource(LibAbnormality.GIANT_TREE_SAP.name()).bypassArmor().bypassMagic());
 }

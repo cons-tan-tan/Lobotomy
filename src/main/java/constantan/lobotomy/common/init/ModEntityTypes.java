@@ -65,6 +65,6 @@ public class ModEntityTypes {
 
 
     public static <T extends Entity> IMixinEntityType<T> abnormalityEntityType(EntityType<T> entityType) {
-        return (IMixinEntityType<T>) (Object) entityType;
+        return (IMixinEntityType<T>) entityType;
     }
 }

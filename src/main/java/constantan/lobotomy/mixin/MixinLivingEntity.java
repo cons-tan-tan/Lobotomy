@@ -12,10 +12,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -26,9 +28,13 @@ import java.util.Map;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
 
+    @Shadow public abstract ItemStack getItemBySlot(EquipmentSlot pSlot);
+
+    @Shadow public abstract AttributeMap getAttributes();
+
     @Inject(method = "isDamageSourceBlocked", at = @At("HEAD"), cancellable = true)
     private void isDamageSourceBlocked_Head(DamageSource pDamageSource, CallbackInfoReturnable<Boolean> cir) {
-        IMixinDamageSource damageSource = (IMixinDamageSource) (Object) pDamageSource;
+        IMixinDamageSource damageSource = (IMixinDamageSource) pDamageSource;
         if (!damageSource.isBlockable()) {
             cir.setReturnValue(false);
         }
@@ -40,7 +46,7 @@ public abstract class MixinLivingEntity {
     private float hurt_Before_isDamageSourceBlocked(float pAmount, DamageSource pSource) {
         LivingEntity self = (LivingEntity) (Object) this;
         boolean isShieldAvailable = self.isDamageSourceBlocked(pSource);
-        IMixinDamageSource damageSource = (IMixinDamageSource) (Object) pSource;
+        IMixinDamageSource damageSource = (IMixinDamageSource) pSource;
         if (damageSource.hasRiskLevel()) {
             RiskLevelUtil attackerRiskLevel = damageSource.getRiskLevel();
             RiskLevelUtil defenderRiskLevel;
@@ -105,7 +111,7 @@ public abstract class MixinLivingEntity {
 
     @Inject(method = "getDamageAfterArmorAbsorb", at = @At("HEAD"), cancellable = true)
     private void getDamageAfterArmorAbsorb_Head(DamageSource pDamageSource, float pDamageAmount, CallbackInfoReturnable<Float> cir) {
-        IMixinDamageSource damageSource = (IMixinDamageSource) (Object) pDamageSource;
+        IMixinDamageSource damageSource = (IMixinDamageSource) pDamageSource;
         if (damageSource.hasRiskLevel()) {
             cir.setReturnValue(pDamageAmount);
         }
@@ -113,7 +119,7 @@ public abstract class MixinLivingEntity {
 
     @Inject(method = "getDamageAfterMagicAbsorb", at = @At("HEAD"), cancellable = true)
     private void getDamageAfterMagicAbsorb_Head(DamageSource pDamageSource, float pDamageAmount, CallbackInfoReturnable<Float> cir) {
-        IMixinDamageSource damageSource = (IMixinDamageSource) (Object) pDamageSource;
+        IMixinDamageSource damageSource = (IMixinDamageSource) pDamageSource;
         if (damageSource.hasRiskLevel()) {
             cir.setReturnValue(pDamageAmount);
         }
@@ -122,10 +128,9 @@ public abstract class MixinLivingEntity {
     @Inject(method = "getAttributeValue", at = @At("HEAD"), cancellable = true)
     private void getAttributeValue_Head(Attribute pAttribute, CallbackInfoReturnable<Double> cir) {
         if (pAttribute == Attributes.ATTACK_DAMAGE) {
-            LivingEntity self = (LivingEntity) (Object) this;
-            ItemStack itemStack = self.getItemBySlot(EquipmentSlot.MAINHAND);
+            ItemStack itemStack = this.getItemBySlot(EquipmentSlot.MAINHAND);
             if (itemStack.getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
-                cir.setReturnValue(self.getAttributes().getValue(pAttribute) + egoMeleeWeapon.getRangedRandomDamage(itemStack));
+                cir.setReturnValue(this.getAttributes().getValue(pAttribute) + egoMeleeWeapon.getRangedRandomDamage(itemStack));
             }
         }
     }

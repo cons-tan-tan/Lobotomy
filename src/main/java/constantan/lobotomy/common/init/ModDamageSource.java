@@ -1,7 +1,6 @@
 package constantan.lobotomy.common.init;
 
-import constantan.lobotomy.lib.LibBlockNames;
-import constantan.lobotomy.lib.LibItemNames;
+import constantan.lobotomy.lib.LibAbnormality;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.world.damagesource.DamageSource;
 
@@ -11,5 +10,5 @@ public class ModDamageSource extends DamageSource {
         super(LibMisc.MOD_ID + "." + damageSource);
     }
 
-    public static final DamageSource GIANT_TREE_SAP = (new ModDamageSource(LibItemNames.GIANT_TREE_SAP).bypassArmor());
+    public static final DamageSource GIANT_TREE_SAP = (new ModDamageSource(LibAbnormality.GIANT_TREE_SAP.name()).bypassArmor());
 }

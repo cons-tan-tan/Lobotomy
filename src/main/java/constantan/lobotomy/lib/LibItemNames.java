@@ -2,7 +2,5 @@ package constantan.lobotomy.lib;
 
 public class LibItemNames {
 
-    public static final String GIANT_TREE_SAP = "giant_tree_sap";
-
-    public static final String PEAK_WEAPON = "peak_weapon";
+    public static final String LOBOTOMY_DEBUG_ITEM = "lobotomy_debug_item";
 }

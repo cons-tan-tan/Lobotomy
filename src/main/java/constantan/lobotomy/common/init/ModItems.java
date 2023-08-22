@@ -27,7 +27,7 @@ public class ModItems {
     }
 
     //DEBUG
-    public static final RegistryObject<Item> LOBOTOMY_DEBUG_ITEM = ITEMS.register("lobotomy_debug_item",
+    public static final RegistryObject<Item> LOBOTOMY_DEBUG_ITEM = ITEMS.register(LibItemNames.LOBOTOMY_DEBUG_ITEM,
             () -> new LobotomyDebugItem(basicItem().stacksTo(1)));
 
     //ABNORMALITY_SPAWN_EGG
@@ -41,7 +41,7 @@ public class ModItems {
             () -> new AbnormalitySpawnEggItem(ModEntityTypes.THE_BURROWING_HEAVEN, 0xb40a1a, 0xe4af50));
 
     //ABNORMALITY_TOOL
-    public static final RegistryObject<Item> GIANT_TREE_SAP = ITEMS.register(LibItemNames.GIANT_TREE_SAP,
+    public static final RegistryObject<Item> GIANT_TREE_SAP = ITEMS.register(LibAbnormality.GIANT_TREE_SAP.name(),
             () -> new GiantTreeSapItem(new AbnormalityTool.AbnormalityToolItemProperties()
                     .riskLevel(RiskLevelUtil.HE)));
 

@@ -1,6 +1,6 @@
 package constantan.lobotomy.client.model.armor;
 
-import constantan.lobotomy.lib.LibEntityResources;
+import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,9 +13,9 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class EgoArmorModel<T extends Item & IAnimatable> extends AnimatedGeoModel<T> {
 
-    protected final LibEntityResources.EntityResourceData entityResourceData;
+    protected final LibAbnormality.EntityResourceData entityResourceData;
 
-    public EgoArmorModel(LibEntityResources.EntityResourceData entityResourceData) {
+    public EgoArmorModel(LibAbnormality.EntityResourceData entityResourceData) {
         super();
         this.entityResourceData = entityResourceData;
     }

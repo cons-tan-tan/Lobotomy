@@ -2,7 +2,7 @@ package constantan.lobotomy.client.renderer;
 
 import constantan.lobotomy.client.renderer.armor.EgoArmorRenderer;
 import constantan.lobotomy.common.init.ModItems;
-import constantan.lobotomy.lib.LibEntityResources;
+import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
@@ -18,8 +18,8 @@ public class ModArmorRenderers {
     }
 
     static {
-        MAP.put(ModItems.HEAVEN_ARMOR.get(), () -> new EgoArmorRenderer<>(LibEntityResources.THE_BURROWING_HEAVEN));
-        MAP.put(ModItems.JUSTITIA_ARMOR.get(), () -> new EgoArmorRenderer<>(LibEntityResources.JUDGEMENT_BIRD));
-        MAP.put(ModItems.PEAK_ARMOR.get(), () -> new EgoArmorRenderer<>(LibEntityResources.PUNISHING_BIRD));
+        MAP.put(ModItems.HEAVEN_ARMOR.get(), () -> new EgoArmorRenderer<>(LibAbnormality.THE_BURROWING_HEAVEN));
+        MAP.put(ModItems.JUSTITIA_ARMOR.get(), () -> new EgoArmorRenderer<>(LibAbnormality.JUDGEMENT_BIRD));
+        MAP.put(ModItems.PEAK_ARMOR.get(), () -> new EgoArmorRenderer<>(LibAbnormality.PUNISHING_BIRD));
     }
 }

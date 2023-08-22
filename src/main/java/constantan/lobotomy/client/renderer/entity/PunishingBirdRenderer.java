@@ -3,7 +3,7 @@ package constantan.lobotomy.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import constantan.lobotomy.client.model.entity.PunishingBirdModel;
 import constantan.lobotomy.common.entity.PunishingBirdEntity;
-import constantan.lobotomy.lib.LibEntityResources;
+import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,7 +14,7 @@ import net.minecraft.world.phys.AABB;
 public class PunishingBirdRenderer extends AbnormalityRenderer<PunishingBirdEntity> {
 
     public PunishingBirdRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new PunishingBirdModel(LibEntityResources.PUNISHING_BIRD), 0.3F, 0.4F);
+        super(renderManager, new PunishingBirdModel(LibAbnormality.PUNISHING_BIRD), 0.3F, 0.4F);
     }
 
     @Override

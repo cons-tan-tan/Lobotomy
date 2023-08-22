@@ -1,13 +1,13 @@
 package constantan.lobotomy.client.model.entity;
 
 import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
-import constantan.lobotomy.lib.LibEntityResources;
+import constantan.lobotomy.lib.LibAbnormality;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 
 public class TheBurrowingHeavenModel extends AbnormalityModel<TheBurrowingHeavenEntity> {
 
-    public TheBurrowingHeavenModel(LibEntityResources.EntityResourceData entityResourceData) {
+    public TheBurrowingHeavenModel(LibAbnormality.EntityResourceData entityResourceData) {
         super(entityResourceData);
     }
 

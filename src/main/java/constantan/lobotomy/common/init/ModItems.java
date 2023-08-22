@@ -11,7 +11,7 @@ import constantan.lobotomy.common.item.ego.SimpleEgoMeleeWeaponItem;
 import constantan.lobotomy.common.item.util.EgoMeleeWeaponType;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
-import constantan.lobotomy.lib.LibEntityResources;
+import constantan.lobotomy.lib.LibAbnormality;
 import constantan.lobotomy.lib.LibItemNames;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.world.item.Item;
@@ -31,13 +31,13 @@ public class ModItems {
             () -> new LobotomyDebugItem(basicItem().stacksTo(1)));
 
     //ABNORMALITY_SPAWN_EGG
-    public static final RegistryObject<Item> PUNISHING_BIRD_SPAWN_EGG = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getSpawnEggName(),
+    public static final RegistryObject<Item> PUNISHING_BIRD_SPAWN_EGG = ITEMS.register(LibAbnormality.PUNISHING_BIRD.getSpawnEggName(),
             () -> new AbnormalitySpawnEggItem(ModEntityTypes.PUNISHING_BIRD, 0xffffff, 0xadc5f0));
 
-    public static final RegistryObject<Item> JUDGEMENT_BIRD_SPAWN_EGG = ITEMS.register(LibEntityResources.JUDGEMENT_BIRD.getSpawnEggName(),
+    public static final RegistryObject<Item> JUDGEMENT_BIRD_SPAWN_EGG = ITEMS.register(LibAbnormality.JUDGEMENT_BIRD.getSpawnEggName(),
             () -> new AbnormalitySpawnEggItem(ModEntityTypes.JUDGEMENT_BIRD, 0x222222, 0xe8e8e8));
 
-    public static final RegistryObject<Item> THE_BURROWING_HEAVEN_SPAWN_EGG = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getSpawnEggName(),
+    public static final RegistryObject<Item> THE_BURROWING_HEAVEN_SPAWN_EGG = ITEMS.register(LibAbnormality.THE_BURROWING_HEAVEN.getSpawnEggName(),
             () -> new AbnormalitySpawnEggItem(ModEntityTypes.THE_BURROWING_HEAVEN, 0xb40a1a, 0xe4af50));
 
     //ABNORMALITY_TOOL
@@ -46,36 +46,36 @@ public class ModItems {
                     .riskLevel(RiskLevelUtil.HE)));
 
     //EGO_WEAPON
-    public static final RegistryObject<Item> PEAK_WEAPON = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getWeaponEgoName(),
+    public static final RegistryObject<Item> PEAK_WEAPON = ITEMS.register(LibAbnormality.PUNISHING_BIRD.getWeaponEgoName(),
             () -> new PeakWeaponItem(2, 3, new EgoWeapon.EgoWeaponProperties()
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.TETH)));
 
-    public static final RegistryObject<Item> JUSTITIA_WEAPON = ITEMS.register(LibEntityResources.JUDGEMENT_BIRD.getWeaponEgoName(),
+    public static final RegistryObject<Item> JUSTITIA_WEAPON = ITEMS.register(LibAbnormality.JUDGEMENT_BIRD.getWeaponEgoName(),
             () -> new SimpleEgoMeleeWeaponItem(2, 4, new EgoMeleeWeapon.EgoMeleeWeaponProperties()
                     .weaponType(EgoMeleeWeaponType.SWORD)
                     .damageType(DamageTypeUtil.PALE)
                     .riskLevel(RiskLevelUtil.ALEPH)));
 
-    public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getWeaponEgoName(),
+    public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibAbnormality.THE_BURROWING_HEAVEN.getWeaponEgoName(),
             () -> new SimpleEgoMeleeWeaponItem(8, 16, new EgoMeleeWeapon.EgoMeleeWeaponProperties()
                     .weaponType(EgoMeleeWeaponType.SPEAR)
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.WAW)));
 
     //EGO_ARMOR
-    public static final RegistryObject<Item> PEAK_ARMOR = ITEMS.register(LibEntityResources.PUNISHING_BIRD.getArmorEgoName(),
+    public static final RegistryObject<Item> PEAK_ARMOR = ITEMS.register(LibAbnormality.PUNISHING_BIRD.getArmorEgoName(),
             () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
                     .suitInnerPart(EgoSuitLayer.SuitInnerPart.LEFT_ARM)
                     .defense(0.7F, 0.8F, 1.2F, 2.0F)
                     .riskLevel(RiskLevelUtil.TETH)));
 
-    public static final RegistryObject<Item> JUSTITIA_ARMOR = ITEMS.register(LibEntityResources.JUDGEMENT_BIRD.getArmorEgoName(),
+    public static final RegistryObject<Item> JUSTITIA_ARMOR = ITEMS.register(LibAbnormality.JUDGEMENT_BIRD.getArmorEgoName(),
             () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
                     .defense(0.5F, 0.5F, 0.5F, 0.5F)
                     .riskLevel(RiskLevelUtil.ALEPH)));
 
-    public static final RegistryObject<Item> HEAVEN_ARMOR = ITEMS.register(LibEntityResources.THE_BURROWING_HEAVEN.getArmorEgoName(),
+    public static final RegistryObject<Item> HEAVEN_ARMOR = ITEMS.register(LibAbnormality.THE_BURROWING_HEAVEN.getArmorEgoName(),
             () -> new SimpleEgoArmorItem(new EgoArmor.EgoArmorProperties()
                     .defense(1.2F,0.8F,0.6F,1.5F)
                     .riskLevel(RiskLevelUtil.WAW)

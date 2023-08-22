@@ -3,7 +3,7 @@ package constantan.lobotomy.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import constantan.lobotomy.client.model.entity.TheBurrowingHeavenModel;
 import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
-import constantan.lobotomy.lib.LibEntityResources;
+import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,7 +15,7 @@ import net.minecraft.world.phys.AABB;
 public class TheBurrowingHeavenRenderer extends AbnormalityRenderer<TheBurrowingHeavenEntity> {
 
     public TheBurrowingHeavenRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new TheBurrowingHeavenModel(LibEntityResources.THE_BURROWING_HEAVEN), 0.5F, 1.5F);
+        super(renderManager, new TheBurrowingHeavenModel(LibAbnormality.THE_BURROWING_HEAVEN), 0.5F, 1.5F);
     }
 
     @Override

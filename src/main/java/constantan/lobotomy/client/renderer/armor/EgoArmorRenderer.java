@@ -1,7 +1,7 @@
 package constantan.lobotomy.client.renderer.armor;
 
 import constantan.lobotomy.client.model.armor.EgoArmorModel;
-import constantan.lobotomy.lib.LibEntityResources;
+import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
@@ -25,7 +25,7 @@ public class EgoArmorRenderer<T extends ArmorItem & IAnimatable> extends GeoArmo
 
     public EgoArmorModel<?> egoArmorModel;
 
-    public EgoArmorRenderer(LibEntityResources.EntityResourceData entityResourceData) {
+    public EgoArmorRenderer(LibAbnormality.EntityResourceData entityResourceData) {
         super(new EgoArmorModel<>(entityResourceData));
         this.egoArmorModel = (EgoArmorModel<?>) this.getGeoModelProvider();
     }

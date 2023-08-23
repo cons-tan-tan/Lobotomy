@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
@@ -107,6 +108,15 @@ public abstract class MixinLivingEntity {
             return calculatedDamageAmount;
         }
         return pAmount;
+    }
+
+    @Redirect(method = "hurt", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDD)V"))
+    private void hurt_before_knockback2(LivingEntity livingEntity, double pStrength, double pX, double pZ, DamageSource damageSource) {
+        if (damageSource.getEntity() instanceof AbnormalityEntity abnormality && !abnormality.canDoKnockbackAttack()) {
+            return;
+        }
+        livingEntity.knockback(pStrength, pX, pZ);
     }
 
     @Inject(method = "getDamageAfterArmorAbsorb", at = @At("HEAD"), cancellable = true)

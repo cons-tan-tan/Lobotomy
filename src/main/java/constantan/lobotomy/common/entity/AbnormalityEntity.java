@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -91,8 +92,20 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
         this.setQliphothCounter(this.getQliphothCounter() - sub);
     }
 
+    public boolean canDoKnockbackAttack() {
+        return true;
+    }
+
     public boolean canDoUnblockableAttack() {
         return false;
+    }
+
+    @Override
+    protected void blockedByShield(LivingEntity pDefender) {
+        if (pDefender instanceof AbnormalityEntity abnormality && !abnormality.canDoKnockbackAttack()) {
+            return;
+        }
+        super.blockedByShield(pDefender);
     }
 
     @Override

@@ -16,8 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -25,9 +23,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import java.util.Random;
 
 public class JudgementBirdEntity extends AbnormalityEntity implements IAnimatable {
-
-    private static final AnimationBuilder ANIM_ATTACK = new AnimationBuilder()
-            .addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
     private static final int ATTACK_DAMAGE_RANDOM_RANGE = 10;
 

@@ -28,6 +28,8 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
             .addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
     protected static final AnimationBuilder ANIM_FLY = new AnimationBuilder()
             .addAnimation("fly", ILoopType.EDefaultLoopTypes.LOOP);
+    protected static final AnimationBuilder ANIM_ATTACK = new AnimationBuilder()
+            .addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
     private final AnimationFactory factory;
 

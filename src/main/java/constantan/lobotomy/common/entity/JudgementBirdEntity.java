@@ -1,9 +1,9 @@
 package constantan.lobotomy.common.entity;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -11,9 +11,7 @@ import net.minecraft.world.entity.ai.behavior.EntityTracker;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
-import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
@@ -37,19 +35,28 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.List;
 
-public class JudgementBirdEntity extends AbnormalityEntity implements IAnimatable, SmartBrainOwner<JudgementBirdEntity> {
+public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBirdEntity> implements IAnimatable {
 
     private static final int ATTACK_DAMAGE_RANDOM_RANGE = 10;
+
+    private static final int WAIT_ANIM_TICK = 85;
+    private static final int ATTACK_OCCUR_TICK = 75;
 
     public JudgementBirdEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     @Override
+    public void swing(InteractionHand pHand, boolean pUpdateSelf) {
+        super.swing(pHand, pUpdateSelf);
+        this.setAttackTick(WAIT_ANIM_TICK + 1);
+    }
+
+    @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "body_controller", 0, event -> {
-            if (this.swinging) {
-                event.getController().setAnimation(ANIM_ATTACK);
+            if (this.getAttackTick() > 0) {
+                return PlayState.STOP;
             } else if (this.isOnGround() && event.isMoving()) {
                 event.getController().setAnimation(ANIM_WALK);
             } else {
@@ -57,16 +64,14 @@ public class JudgementBirdEntity extends AbnormalityEntity implements IAnimatabl
             }
             return PlayState.CONTINUE;
         }));
-    }
-
-    @Override
-    protected Brain.Provider<?> brainProvider() {
-        return new SmartBrainProvider<>(this);
-    }
-
-    @Override
-    protected void customServerAiStep() {
-        this.tickBrain(this);
+        data.addAnimationController(new AnimationController<>(this, "attack_controller", 0, event -> {
+            if (this.getAttackTick() == WAIT_ANIM_TICK) {
+                event.getController().markNeedsReload();
+                event.getController().setAnimation(ANIM_ATTACK);
+                return PlayState.CONTINUE;
+            }
+            return PlayState.CONTINUE;
+        }));
     }
 
     @Override
@@ -80,15 +85,18 @@ public class JudgementBirdEntity extends AbnormalityEntity implements IAnimatabl
     @Override
     public BrainActivityGroup<JudgementBirdEntity> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
-                new LookAtTarget<>(),
-                new MoveToWalkTarget<>()
+                new LookAtTarget<JudgementBirdEntity>()
+                        .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
+                        .stopIf(judgementBird -> judgementBird.getAttackTick() > 0),
+                new MoveToWalkTarget<JudgementBirdEntity>()
+                        .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
         );
     }
 
     @Override
     public BrainActivityGroup<JudgementBirdEntity> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<JudgementBirdEntity>(//ここのジェネリクスは無いとコンパイル通らない
+                new FirstApplicableBehaviour<JudgementBirdEntity>(//ここのジェネリクスを省略するとコンパイル通らない
                         new TargetOrRetaliate<>(),
                         new SetPlayerLookTarget<>(){
                             @Override
@@ -100,7 +108,8 @@ public class JudgementBirdEntity extends AbnormalityEntity implements IAnimatabl
                         new SetRandomLookTarget<>()
                 ), new OneRandomBehaviour<>(
                         new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(livingEntity -> livingEntity.getRandom().nextInt(200, 600))
+                        new Idle<>()
+                                .runFor(livingEntity -> livingEntity.getRandom().nextInt(200, 400))
                 ));
     }
 
@@ -109,7 +118,8 @@ public class JudgementBirdEntity extends AbnormalityEntity implements IAnimatabl
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
-                new AnimatableMeleeAttack<>(40)
+                new AnimatableMeleeAttack<JudgementBirdEntity>(ATTACK_OCCUR_TICK + 1)
+                        .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
         );
     }
 

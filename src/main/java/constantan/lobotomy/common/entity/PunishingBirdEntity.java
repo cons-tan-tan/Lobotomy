@@ -1,5 +1,6 @@
 package constantan.lobotomy.common.entity;
 
+import constantan.lobotomy.LobotomyMod;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -41,7 +42,6 @@ import java.util.UUID;
 public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatable {
 
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.INT);
 
     private static final AnimationBuilder ANIM_ATTACK_NORMAL = new AnimationBuilder()
             .addAnimation("attack_normal", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
@@ -127,12 +127,11 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
     public void tick() {
         super.tick();
         if (!this.level.isClientSide()) {
-            this.setAttackTick(Math.max(this.getAttackTick() - 1, 0));
             if (this.getAttackTick() == 0) {
                 this.resetFlyingSpeed();
             }
             this.setRestTick(Math.max(this.getRestTick() - 1, 0));
-            if (this.isAngry() && this.getRestTick() == 0) {
+            if (this.isAngry() && this.getRestTick() == 0 && this.getAttackTick() == 0) {
                 this.calmDown();
             }
         }
@@ -190,13 +189,15 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
     }
 
     private <P extends Entity & IAnimatable> PlayState attackPredicate(AnimationEvent<P> event) {
-        if (this.isAngry() && this.swinging) {
-            event.getController().markNeedsReload();
-            event.getController().setAnimation(ANIM_ATTACK_ANGRY);
+        if (this.isAngry()) {
+            if (this.getAttackTick() == 29) {
+                LobotomyMod.logger.info("Aaaaaaaa!!!!");
+                event.getController().markNeedsReload();
+                event.getController().setAnimation(ANIM_ATTACK_ANGRY);
+            }
         } else if (this.swinging) {
             event.getController().markNeedsReload();
             event.getController().setAnimation(ANIM_ATTACK_NORMAL);
-            this.swinging = false;
         }
         return PlayState.CONTINUE;
     }
@@ -213,7 +214,6 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.getEntityData().define(IS_ANGRY, false);
-        this.getEntityData().define(ATTACK_TICK, WAIT_ANIMATION_TICK);
     }
 
     public boolean isAngry() {
@@ -222,18 +222,6 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
 
     public void setAngry(boolean flag) {
         this.getEntityData().set(IS_ANGRY, flag);
-    }
-
-    public int getAttackTick() {
-        return this.getEntityData().get(ATTACK_TICK);
-    }
-
-    private void setAttackTick(int tick) {
-        this.getEntityData().set(ATTACK_TICK, tick);
-    }
-
-    public void startAttackAnim() {
-        this.getEntityData().set(ATTACK_TICK, WAIT_ANIMATION_TICK);
     }
 
     public int getRestTick() {
@@ -374,7 +362,7 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
             List<LivingEntity> listInAttackRange = this.owner.level.getEntitiesOfClass(LivingEntity.class, attackRange);
             List<LivingEntity> listInReadyRange = this.owner.level.getEntitiesOfClass(LivingEntity.class, attackRange.inflate(-0.5F));
 
-            if (this.isPunishing && this.owner.getAttackTick() == 5 && listInAttackRange.contains(pEnemy)) {
+            if (this.isPunishing && this.owner.getAttackTick() == 9 && listInAttackRange.contains(pEnemy)) {
                 for (LivingEntity livingEntity : listInAttackRange) {
                     if (livingEntity != this.owner) this.owner.doHurtTarget(livingEntity);
                 }
@@ -383,7 +371,7 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
 
             if (!this.isPunishing && listInReadyRange.contains(pEnemy)) {
                 this.owner.swing(InteractionHand.MAIN_HAND);
-                this.owner.startAttackAnim();
+                this.owner.setAttackTick(30);
                 this.owner.stopFlyingSpeed();
                 this.isPunishing = true;
             }

@@ -23,6 +23,7 @@ import java.util.Map;
 public abstract class AbnormalityEntity extends Monster implements IRiskLevel, IDefense, IDamageType, IAnimatableParent {
 
     private static final EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData.defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
 
     protected static final AnimationBuilder ANIM_WALK = new AnimationBuilder()
             .addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
@@ -31,8 +32,9 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     protected static final AnimationBuilder ANIM_ATTACK = new AnimationBuilder()
             .addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
-    private final AnimationFactory factory;
+    private static final String QLIPHOTH_COUNTER_NAME = "qliphoth_counter";
 
+    private final AnimationFactory factory;
     private final IMixinEntityType<?> abnormalityType;
 
     public AbnormalityEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
@@ -71,7 +73,7 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     }
 
     public boolean hasQliphothCounter() {
-        return this.getQliphothCounter() != 0;
+        return this.getMaxQliphothCounter() != 0;
     }
 
     public int getQliphothCounter() {
@@ -79,35 +81,69 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     }
 
     public void setQliphothCounter(int counterValue) {
-        this.getEntityData().set(QLIPHOTH_COUNTER, Mth.clamp(counterValue, 0, this.getMaxQliphothCounter()));
+        if (this.level.isClientSide) {
+            this.getEntityData().set(QLIPHOTH_COUNTER, Mth.clamp(counterValue, 0, this.getMaxQliphothCounter()));
+        }
     }
 
     public void resetQliphothCounter() {
-        this.setQliphothCounter(this.getMaxQliphothCounter());
+        if (this.level.isClientSide) {
+            this.setQliphothCounter(this.getMaxQliphothCounter());
+        }
     }
 
     public void addQliphothCounter(int add) {
-        this.setQliphothCounter(this.getQliphothCounter() + add);
+        if (this.level.isClientSide) {
+            this.setQliphothCounter(this.getQliphothCounter() + add);
+        }
     }
 
     public void subQliphothCounter(int sub) {
-        this.setQliphothCounter(this.getQliphothCounter() - sub);
+        if (this.level.isClientSide) {
+            this.setQliphothCounter(this.getQliphothCounter() - sub);
+        }
     }
 
+    public int getAttackTick() {
+        return this.getEntityData().get(ATTACK_TICK);
+    }
+
+    public void setAttackTick(int tick) {
+        if (!this.level.isClientSide) {
+            this.getEntityData().set(ATTACK_TICK, tick);
+        }
+    }
+
+    /**
+     * 攻撃したLivingEntityにノックバックを発生させるか<br>
+     * デフォルトはtrue<br>
+     * 攻撃毎に参照<br>
+     * 盾で防いだ場合のノックバックの有無でも参照{@link AbnormalityEntity#blockedByShield(LivingEntity)}
+     */
     public boolean canDoKnockbackAttack() {
         return true;
     }
 
+    /**
+     * 攻撃を盾で防げるか<br>
+     * デフォルトはfalse<br>
+     * 攻撃毎に参照
+     */
     public boolean canDoUnblockableAttack() {
         return false;
     }
 
     @Override
     protected void blockedByShield(LivingEntity pDefender) {
-        if (pDefender instanceof AbnormalityEntity abnormality && !abnormality.canDoKnockbackAttack()) {
-            return;
+        if (this.canDoKnockbackAttack()) {
+            super.blockedByShield(pDefender);
         }
-        super.blockedByShield(pDefender);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.setAttackTick(Math.max(this.getAttackTick() - 1, 0));
     }
 
     @Override
@@ -118,17 +154,18 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
         //とりあえず初期値は0
         //コンストラクタでabnormalityTypeを初期化した後クリフォトカウンターもリセットする
         this.getEntityData().define(QLIPHOTH_COUNTER, 0);
+        this.getEntityData().define(ATTACK_TICK, 0);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putInt("qliphoth_counter", this.getQliphothCounter());
+        pCompound.putInt(QLIPHOTH_COUNTER_NAME, this.getQliphothCounter());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.setQliphothCounter(pCompound.getInt("qliphoth_counter"));
+        this.setQliphothCounter(pCompound.getInt(QLIPHOTH_COUNTER_NAME));
     }
 }

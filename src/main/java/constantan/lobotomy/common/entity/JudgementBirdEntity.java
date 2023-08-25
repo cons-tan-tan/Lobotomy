@@ -1,14 +1,12 @@
 package constantan.lobotomy.common.entity;
 
+import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.behavior.EntityTracker;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
@@ -21,13 +19,11 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
-import net.tslat.smartbrainlib.util.BrainUtils;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -95,16 +91,11 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
 
     @Override
     public BrainActivityGroup<JudgementBirdEntity> getIdleTasks() {
-        return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<JudgementBirdEntity>(//ここのジェネリクスを省略するとコンパイル通らない
+        return BrainActivityGroup.<JudgementBirdEntity>idleTasks(//ここのジェネリクスを省略するとコンパイル通らない
+                new FirstApplicableBehaviour<>(
                         new TargetOrRetaliate<>(),
-                        new SetPlayerLookTarget<>(){
-                            @Override
-                            protected void start(LivingEntity entity) {
-                                BrainUtils.setForgettableMemory(entity, MemoryModuleType.LOOK_TARGET, new EntityTracker(this.target, true),
-                                        entity.getRandom().nextInt(50, 100));
-                            }
-                        }.predicate(player -> player.distanceTo(this) < 4),
+                        new SetPlayerTransientLookTarget<>()
+                                .predicate(player -> player.distanceTo(this) < 4),
                         new SetRandomLookTarget<>()
                 ), new OneRandomBehaviour<>(
                         new SetRandomWalkTarget<>(),

@@ -15,6 +15,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
@@ -40,12 +41,6 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
 
     public JudgementBirdEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-    }
-
-    @Override
-    public void swing(InteractionHand pHand, boolean pUpdateSelf) {
-        super.swing(pHand, pUpdateSelf);
-        this.setAttackTick(WAIT_ANIM_TICK + 1);
     }
 
     @Override
@@ -81,6 +76,7 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
     @Override
     public BrainActivityGroup<JudgementBirdEntity> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
+                new FloatToSurfaceOfFluid<>(),
                 new LookAtTarget<JudgementBirdEntity>()
                         .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
                         .stopIf(judgementBird -> judgementBird.getAttackTick() > 0),
@@ -120,6 +116,12 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
                 .add(Attributes.ATTACK_DAMAGE, 30)
                 .add(Attributes.MOVEMENT_SPEED, 0.15F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0F).build();
+    }
+
+    @Override
+    public void swing(InteractionHand pHand, boolean pUpdateSelf) {
+        super.swing(pHand, pUpdateSelf);
+        this.setAttackTick(WAIT_ANIM_TICK + 1);
     }
 
     @Override

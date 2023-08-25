@@ -47,6 +47,8 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
         this.abnormalityType = ModEntityTypes.abnormalityEntityType(pEntityType);
 
         this.resetQliphothCounter();
+
+        this.navigation.setCanFloat(true);//デフォルトだと泳げる設定
     }
 
     public AnimationFactory getFactory() {

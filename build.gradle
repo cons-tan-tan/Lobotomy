@@ -168,6 +168,7 @@ repositories {
     // }
 
     maven {
+        name = "Curse Maven"
         url "https://cursemaven.com"
         content {
             includeGroup "curse.maven"
@@ -180,7 +181,13 @@ repositories {
     }
 
     maven {
+        name = "Curios Maven"
         url = "https://maven.theillusivec4.top/"
+    }
+
+    maven {
+        name = "SmartBrainLib (SBL) Maven Repo"
+        url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
     }
 }
 
@@ -192,7 +199,8 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.57')
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.1")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.1")
+    implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-1.18.2:1.9")
 
     implementation fg.deobf("curse.maven:just-enough-items-238222:3940240")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3965688")

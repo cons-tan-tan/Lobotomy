@@ -10,7 +10,7 @@ import java.util.function.ToIntFunction;
 
 public class SetPlayerTransientLookTarget<E extends LivingEntity> extends SetPlayerLookTarget<E> {
 
-    private ToIntFunction<E> expirationTicksFunction = entity -> entity.getRandom().nextInt(50, 100);
+    protected ToIntFunction<E> expirationTicksFunction = entity -> entity.getRandom().nextInt(50, 100);
 
     public SetPlayerTransientLookTarget<E> expirationTicks(ToIntFunction<E> function) {
         this.expirationTicksFunction = function;

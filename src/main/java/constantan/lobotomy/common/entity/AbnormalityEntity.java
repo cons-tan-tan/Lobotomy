@@ -54,7 +54,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
 
         this.navigation.setCanFloat(true);//デフォルトだと泳げる設定
 
-        if (this instanceof ILazyControlMob iLazyControlMob) {
+        if (this instanceof ILazyControlMob<?> iLazyControlMob) {
             this.lookControl = iLazyControlMob.createLookControl();
             this.moveControl = iLazyControlMob.createMoveControl();
         }

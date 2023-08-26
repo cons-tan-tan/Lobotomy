@@ -82,9 +82,9 @@ public abstract class MixinLivingEntity {
                 } else {
                     if (self instanceof Player player) {
                         if (damageType == DamageTypeUtil.WHITE || damageType == DamageTypeUtil.BLACK) {//sanity回復
-                            player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
-                                sanity.addSanityWithSync((int) calculatedDamageAmount, (ServerPlayer) player);
-                            });
+                            player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity ->
+                                    sanity.addSanityWithSync((int) calculatedDamageAmount, (ServerPlayer) player)
+                            );
                         }
                         if (damageType != DamageTypeUtil.WHITE) {//HP回復
                             player.heal(calculatedDamageAmount);
@@ -97,9 +97,9 @@ public abstract class MixinLivingEntity {
             }
 
             if (damageType.canAffectSanity() && self instanceof Player player) {
-                player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity -> {
-                    sanity.addSanityWithSync((int) -calculatedDamageAmount, (ServerPlayer) player);
-                });
+                player.getCapability(PlayerSanityProvider.PLAYER_SANITY).ifPresent(sanity ->
+                    sanity.addSanityWithSync((int) -calculatedDamageAmount, (ServerPlayer) player)
+                );
                 if (damageType == DamageTypeUtil.WHITE) {
                     return 0.0F;
                 }
@@ -113,7 +113,7 @@ public abstract class MixinLivingEntity {
     @Redirect(method = "hurt", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDD)V"))
     private void hurt_before_knockback2(LivingEntity livingEntity, double pStrength, double pX, double pZ, DamageSource damageSource) {
-        if (damageSource.getEntity() instanceof AbnormalityEntity abnormality && !abnormality.canDoKnockbackAttack()) {
+        if (damageSource.getEntity() instanceof AbnormalityEntity<?> abnormality && !abnormality.canDoKnockbackAttack()) {
             return;
         }
         livingEntity.knockback(pStrength, pX, pZ);

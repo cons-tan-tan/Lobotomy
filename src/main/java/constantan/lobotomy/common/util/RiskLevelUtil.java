@@ -54,7 +54,7 @@ public enum RiskLevelUtil {
     }
 
     public static RiskLevelUtil getRiskLevel(LivingEntity livingEntity) {
-        if (livingEntity instanceof AbnormalityEntity abnormalityEntity) {
+        if (livingEntity instanceof AbnormalityEntity<?> abnormalityEntity) {
             return abnormalityEntity.getRiskLevel();
         } else if (livingEntity instanceof Player player) {
             if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof EgoArmor egoArmor) {

@@ -83,7 +83,7 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
             cir.setReturnValue(getAbnormalDamageSource("mob", pMob,
                     egoMeleeWeapon.getRiskLevel(), egoMeleeWeapon.getDamageType(), false));
         }
-        if (pMob instanceof AbnormalityEntity abnormality) {
+        if (pMob instanceof AbnormalityEntity<?> abnormality) {
             cir.setReturnValue(getAbnormalDamageSource("mob", pMob,
                     abnormality.getRiskLevel(), abnormality.getDamageType(), !abnormality.canDoUnblockableAttack()));
         }

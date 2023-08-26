@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -27,7 +28,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnimatable {
+public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeavenEntity> implements IAnimatable {
 
     private static final AnimationBuilder ANIM_ACTIVATE = new AnimationBuilder()
             .addAnimation("activate", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME);
@@ -107,6 +108,7 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
         return new AABB(pos.x - x, pos.y, pos.z - z, pos.x + x, pos.y + 5.03125D, pos.z + z);
     }
 
+    @NotNull
     @Override
     public AABB getBoundingBoxForCulling() {
         return getBoundingBoxForCulling(1.0F);

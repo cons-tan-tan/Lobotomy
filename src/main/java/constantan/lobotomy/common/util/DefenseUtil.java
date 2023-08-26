@@ -25,7 +25,7 @@ public class DefenseUtil {
     }
 
     public static Map<DamageTypeUtil, Float> getDefense(LivingEntity livingEntity) {
-        if (livingEntity instanceof AbnormalityEntity abnormalityEntity) {
+        if (livingEntity instanceof AbnormalityEntity<?> abnormalityEntity) {
             return abnormalityEntity.getAbnormalDefense();
         } if (livingEntity instanceof Player player) {
             if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof EgoArmor egoArmor) {

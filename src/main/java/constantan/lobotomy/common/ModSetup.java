@@ -1,15 +1,11 @@
 package constantan.lobotomy.common;
 
-import constantan.lobotomy.common.entity.PunishingBirdEntity;
 import constantan.lobotomy.common.init.*;
 import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -35,6 +31,8 @@ public class ModSetup {
         ModBlocks.BLOCKS.register(modEventBus);
         ModEffects.MOB_EFFECTS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+        ModSensors.SENSOR_TYPES.register(modEventBus);
+        ModMemoryModuleTypes.MEMORY_MODULE_TYPES.register(modEventBus);
         modEventBus.addListener(ModEntityTypes::entityAttributeEvent);
 
         GeckoLib.initialize();

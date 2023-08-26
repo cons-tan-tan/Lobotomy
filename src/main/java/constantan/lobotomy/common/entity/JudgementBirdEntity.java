@@ -25,6 +25,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliat
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -119,13 +120,13 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
     }
 
     @Override
-    public void swing(InteractionHand pHand, boolean pUpdateSelf) {
+    public void swing(@NotNull InteractionHand pHand, boolean pUpdateSelf) {
         super.swing(pHand, pUpdateSelf);
         this.setAttackTick(WAIT_ANIM_TICK + 1);
     }
 
     @Override
-    public double getAttributeValue(Attribute pAttribute) {
+    public double getAttributeValue(@NotNull Attribute pAttribute) {
         if (pAttribute == Attributes.ATTACK_DAMAGE) {
             return super.getAttributeValue(pAttribute) + this.getRandom().nextInt(ATTACK_DAMAGE_RANDOM_RANGE + 1);
         }

@@ -131,7 +131,10 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity implements IAnim
                     Vec3 vec3 = this.getEyePosition();
                     Vec3 vec31 = minecraft.gameRenderer.getMainCamera().getPosition();
                     if (vec31.distanceTo(vec3) <= 128) {
-                        if (this.level.clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS) {
+                        boolean flag = this.level
+                                .clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this))
+                                .getType() == HitResult.Type.MISS;
+                        if (flag) {
                             Messages.sendToServer(new TheBurrowingHeavenC2SPacket(this.uuid));
                         }
                     }

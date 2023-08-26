@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
@@ -19,8 +20,9 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
-public abstract class AbnormalityEntity extends Monster implements IRiskLevel, IDefense, IDamageType, IAnimatableParent {
+public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends Monster implements IRiskLevel, IDefense, IDamageType, IAnimatableParent {
 
     private static final EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData.defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
@@ -37,6 +39,8 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     private final AnimationFactory factory;
     private final IMixinEntityType<?> abnormalityType;
 
+    public final Predicate<T> isAttackAnimating = abnormality -> abnormality.getAttackTick() > 0;
+
     public AbnormalityEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
 
@@ -49,6 +53,11 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
         this.resetQliphothCounter();
 
         this.navigation.setCanFloat(true);//デフォルトだと泳げる設定
+
+        if (this instanceof ILazyControlMob iLazyControlMob) {
+            this.lookControl = iLazyControlMob.createLookControl();
+            this.moveControl = iLazyControlMob.createMoveControl();
+        }
     }
 
     public AnimationFactory getFactory() {
@@ -83,25 +92,25 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     }
 
     public void setQliphothCounter(int counterValue) {
-        if (this.level.isClientSide) {
+        if (!this.level.isClientSide) {
             this.getEntityData().set(QLIPHOTH_COUNTER, Mth.clamp(counterValue, 0, this.getMaxQliphothCounter()));
         }
     }
 
     public void resetQliphothCounter() {
-        if (this.level.isClientSide) {
+        if (!this.level.isClientSide) {
             this.setQliphothCounter(this.getMaxQliphothCounter());
         }
     }
 
     public void addQliphothCounter(int add) {
-        if (this.level.isClientSide) {
+        if (!this.level.isClientSide) {
             this.setQliphothCounter(this.getQliphothCounter() + add);
         }
     }
 
     public void subQliphothCounter(int sub) {
-        if (this.level.isClientSide) {
+        if (!this.level.isClientSide) {
             this.setQliphothCounter(this.getQliphothCounter() - sub);
         }
     }
@@ -136,7 +145,7 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     }
 
     @Override
-    protected void blockedByShield(LivingEntity pDefender) {
+    protected void blockedByShield(@NotNull LivingEntity pDefender) {
         if (this.canDoKnockbackAttack()) {
             super.blockedByShield(pDefender);
         }
@@ -160,13 +169,13 @@ public abstract class AbnormalityEntity extends Monster implements IRiskLevel, I
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
+    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt(QLIPHOTH_COUNTER_NAME, this.getQliphothCounter());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
+    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setQliphothCounter(pCompound.getInt(QLIPHOTH_COUNTER_NAME));
     }

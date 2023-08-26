@@ -1,47 +1,61 @@
 package constantan.lobotomy.common.entity;
 
-import constantan.lobotomy.LobotomyMod;
+import constantan.lobotomy.common.entity.ai.behaviour.AnimatableRangedAoEAttack;
+import constantan.lobotomy.common.entity.ai.behaviour.FloatToSurfaceOfFluidWithSafety;
+import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;
+import constantan.lobotomy.common.entity.ai.behaviour.SetVariableSpeedWalkTargetToAttackTarget;
+import constantan.lobotomy.common.entity.ai.control.LazyFlyingMoveControl;
+import constantan.lobotomy.common.entity.ai.sensor.LivingEntityInAoESensor;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.util.Lazy;
+import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
+import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
+import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
-public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatable {
+public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBirdEntity>
+        implements IAnimatable, IAoEAttackMob, ILazyControlMob<PunishingBirdEntity> {
 
-    private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_ANGRY =
+            SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final AnimationBuilder ANIM_ATTACK_NORMAL = new AnimationBuilder()
             .addAnimation("attack_normal", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
@@ -50,68 +64,192 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
 
     private static final UUID MAX_HEALTH_MODIFIER_UUID = UUID.fromString("7354db20-6023-4192-a616-086dc218bc96");
     private static final UUID ATTACK_DAMAGE_MODIFIER_UUID = UUID.fromString("e7c57c66-49f4-4a35-9f37-1be7b2e06952");
-    private static final UUID FLYING_SPEED_MODIFIER_UUID = UUID.fromString("06a45601-13c7-434c-ac6f-941727e48e35");
 
     private static final String ATTRIBUTE_MODIFIER_NAME = "Punishing Bird Modifier";
 
-    private static final AttributeModifier FLYING_SPEED_MODIFIER = new AttributeModifier(
-            FLYING_SPEED_MODIFIER_UUID, ATTRIBUTE_MODIFIER_NAME, -Float.MAX_VALUE, AttributeModifier.Operation.ADDITION);
+    private static final float NORMAL_MAX_HEALTH = 200.0F;
+    private static final float ANGRY_MAX_HEALTH = 1000.0F;
 
-    public static final float NORMAL_MAX_HEALTH = 200.0F;
-    public static final float ANGRY_MAX_HEALTH = 1000.0F;
+    private static final double NORMAL_ATTACK_DAMAGE = 1.0D;
+    private static final double ANGRY_ATTACK_DAMAGE = 1000.0D;
 
-    public static final double NORMAL_ATTACK_DAMAGE = 1.0D;
-    public static final double ANGRY_ATTACK_DAMAGE = 1000.0D;
+    private static final int WAIT_ANIM_TICK = 30;
+    private static final int ATTACK_OCCUR_TICK = 21;
 
-    public static final int WAIT_ANIMATION_TICK = 30;
-    public static final int ENOUGH_REST_TICK = 20 * 60;
+    private static final int ENOUGH_REST_TICK = 20 * 60;
 
     private int restTick = 0;
 
     public PunishingBirdEntity(EntityType<? extends AbnormalityEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.moveControl = new FlyingMoveControl(this, 0, false);
-        this.lookControl = new PunishingBirdLookControl(this);
+    }
+
+    @Override
+    public List<ExtendedSensor<PunishingBirdEntity>> getSensors() {
+        return ObjectArrayList.of(
+                new NearbyPlayersSensor<>(),
+                new HurtBySensor<>(),
+                new LivingEntityInAoESensor<PunishingBirdEntity>()
+                        .attackRange(PunishingBirdEntity::getAngryAttackAABB)
+                        .checkRange(punishingBird -> punishingBird.getAngryAttackAABB().inflate(-0.5F))
+                        .setScanRate(punishingBird -> punishingBird.isAngry() ? 5 : 20)
+        );
+    }
+
+    @Override
+    public BrainActivityGroup<PunishingBirdEntity> getCoreTasks() {
+        return BrainActivityGroup.coreTasks(
+                new FloatToSurfaceOfFluidWithSafety<>(),
+                new LookAtTarget<>(),
+                new MoveToWalkTarget<>()
+        );
+    }
+
+    @Override
+    public BrainActivityGroup<PunishingBirdEntity> getIdleTasks() {
+        return BrainActivityGroup.<PunishingBirdEntity>idleTasks(//ここのジェネリクスを省略するとコンパイル通らない
+                new FirstApplicableBehaviour<>(
+                        new TargetOrRetaliate<>(),
+                        new SetPlayerTransientLookTarget<>()
+                                .predicate(player -> player.distanceTo(this) < 4),
+                        new SetRandomLookTarget<>()
+                ), new OneRandomBehaviour<>(
+                        new SetRandomWalkTarget<>(),
+                        new Idle<>()
+                                .runFor(livingEntity -> livingEntity.getRandom().nextInt(200, 400))
+                )
+        );
+    }
+
+    @Override
+    public BrainActivityGroup<PunishingBirdEntity> getFightTasks() {
+        return BrainActivityGroup.fightTasks(
+                new InvalidateAttackTarget<>(),
+                new SetVariableSpeedWalkTargetToAttackTarget<PunishingBirdEntity>()
+                        .speedMod((punishingBird, livingEntity) -> punishingBird.isAngry() ? 2.0F : 1.0F),
+                new AnimatableRangedAoEAttack<PunishingBirdEntity>(ATTACK_OCCUR_TICK + 1)
+                        .startCondition(punishingBird -> !this.isAttackAnimating.test(punishingBird) && punishingBird.isAngry())
+                        .stopIf(punishingBird -> !punishingBird.isAngry()),
+                new AnimatableMeleeAttack<PunishingBirdEntity>(2)
+                        .startCondition(punishingBird -> !this.isAttackAnimating.test(punishingBird) && !punishingBird.isAngry())
+                        .stopIf(PunishingBirdEntity::isAngry)
+        );
+    }
+
+    @Override
+    public void registerControllers(final AnimationData data) {
+        data.addAnimationController(new AnimationController<>(this, "body_controller", 0, event -> {
+            if (!this.isOnGround()) {
+                event.getController().setAnimation(ANIM_FLY);
+            } else {
+                event.getController().setAnimation(ANIM_IDLE);
+            }
+            return PlayState.CONTINUE;
+        }));
+        data.addAnimationController(new AnimationController<>(this, "attack_controller", 0, event -> {
+            if (this.isAngry()) {
+                if (this.getAttackTick() == WAIT_ANIM_TICK) {
+                    event.getController().markNeedsReload();
+                    event.getController().setAnimation(ANIM_ATTACK_ANGRY);
+                }
+            } else if (this.getAttackTick() == 1) {
+                event.getController().markNeedsReload();
+                event.getController().setAnimation(ANIM_ATTACK_NORMAL);
+            }
+            return PlayState.CONTINUE;
+        }));
+    }
+
+    @Override
+    public void performAoEAttack(List<LivingEntity> list) {
+        for (LivingEntity target : list) {
+            this.doHurtTarget(target);
+        }
+    }
+
+    public static AttributeSupplier setAttributes() {
+        return AbnormalityEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, NORMAL_MAX_HEALTH)
+                .add(Attributes.ATTACK_DAMAGE, NORMAL_ATTACK_DAMAGE)
+                .add(Attributes.MOVEMENT_SPEED, 0.1F)
+                .add(Attributes.FLYING_SPEED, 0.3F)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.8D).build();
+    }
+
+    public AABB getAngryAttackAABB() {
+        return this.getAngryAttackAABB(1.0F);
+    }
+
+    public AABB getAngryAttackAABB(float partialTicks) {
+        return this.getBoundingBox()
+                .move(this.getViewVector(partialTicks)
+                        .multiply(1.0F,0.0F,1.0F)
+                        .normalize().scale(2.25F))
+                .inflate(1.25F);
     }
 
     public void anger() {
-        double attackDamageModifierValue = ANGRY_ATTACK_DAMAGE - this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        AttributeModifier attackDamageModifier = new AttributeModifier(
-                ATTACK_DAMAGE_MODIFIER_UUID, ATTRIBUTE_MODIFIER_NAME, attackDamageModifierValue, AttributeModifier.Operation.ADDITION);
-        this.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(attackDamageModifier);
+        this.getAttribute(Attributes.ATTACK_DAMAGE)
+                .addPermanentModifier(new AttributeModifier(ATTACK_DAMAGE_MODIFIER_UUID, ATTRIBUTE_MODIFIER_NAME,
+                        ANGRY_ATTACK_DAMAGE - NORMAL_ATTACK_DAMAGE, AttributeModifier.Operation.ADDITION));
 
-        double maxHealthModifierValue = ANGRY_MAX_HEALTH - this.getAttributeValue(Attributes.MAX_HEALTH);
-        AttributeModifier maxHealthModifier = new AttributeModifier(
-                MAX_HEALTH_MODIFIER_UUID, ATTRIBUTE_MODIFIER_NAME, maxHealthModifierValue, AttributeModifier.Operation.ADDITION);
-        this.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(maxHealthModifier);
-        this.setHealth(this.getHealth() + (ANGRY_MAX_HEALTH - NORMAL_MAX_HEALTH));
+        float healthRatio = this.getHealth() / this.getMaxHealth();
+        this.getAttribute(Attributes.MAX_HEALTH)
+                .addPermanentModifier(new AttributeModifier(MAX_HEALTH_MODIFIER_UUID, ATTRIBUTE_MODIFIER_NAME,
+                        ANGRY_MAX_HEALTH - NORMAL_MAX_HEALTH, AttributeModifier.Operation.ADDITION));
+        this.setHealth(this.getMaxHealth() * healthRatio);
 
         this.setAngry(true);
     }
 
     public void calmDown() {
         this.getAttribute(Attributes.ATTACK_DAMAGE).removePermanentModifier(ATTACK_DAMAGE_MODIFIER_UUID);
+
+        float healthRatio = this.getHealth() / this.getMaxHealth();
         this.getAttribute(Attributes.MAX_HEALTH).removePermanentModifier(MAX_HEALTH_MODIFIER_UUID);
-        this.setHealth(Math.min(this.getHealth(), this.getMaxHealth()));
+        this.setHealth(this.getMaxHealth() * healthRatio);
+
         this.setAngry(false);
     }
 
-    public void stopFlyingSpeed() {
-        AttributeInstance flyingSpeed = this.getAttribute(Attributes.FLYING_SPEED);
-        if (!flyingSpeed.hasModifier(FLYING_SPEED_MODIFIER)) {
-            flyingSpeed.addPermanentModifier(FLYING_SPEED_MODIFIER);
+    public boolean isAngry() {
+        return this.getEntityData().get(IS_ANGRY);
+    }
+
+    public void setAngry(boolean flag) {
+        if (!this.level.isClientSide) {
+            this.getEntityData().set(IS_ANGRY, flag);
         }
     }
 
-    public void resetFlyingSpeed() {
-        AttributeInstance flyingSpeed = this.getAttribute(Attributes.FLYING_SPEED);
-        if (flyingSpeed.hasModifier(FLYING_SPEED_MODIFIER)) {
-            flyingSpeed.removePermanentModifier(FLYING_SPEED_MODIFIER_UUID);
+    public int getRestTick() {
+        return restTick;
+    }
+
+    public void setRestTick(int tick) {
+        if (!this.level.isClientSide) {
+            this.restTick = tick;
+        }
+    }
+
+    public void resetRestTick() {
+        if (!this.level.isClientSide) {
+            this.restTick = ENOUGH_REST_TICK;
         }
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    public void swing(@NotNull InteractionHand pHand, boolean pUpdateSelf) {
+        super.swing(pHand, pUpdateSelf);
+        if (this.isAngry()) {
+            this.setAttackTick(WAIT_ANIM_TICK + 1);
+        } else {
+            this.setAttackTick(2);
+        }
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         if (pSource == DamageSource.FALL) return false;
         boolean flag = super.hurt(pSource, pAmount);
         if (flag && this.getHealth() > 0) {
@@ -126,88 +264,12 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
     @Override
     public void tick() {
         super.tick();
-        if (!this.level.isClientSide()) {
-            if (this.getAttackTick() == 0) {
-                this.resetFlyingSpeed();
-            }
-            this.setRestTick(Math.max(this.getRestTick() - 1, 0));
-            if (this.isAngry() && this.getRestTick() == 0 && this.getAttackTick() == 0) {
+        this.setRestTick(Math.max(this.getRestTick() - 1, 0));
+        if (!this.level.isClientSide) {
+            if (this.isAngry() && this.getRestTick() == 0 && !this.isAttackAnimating.test(this)) {
                 this.calmDown();
             }
         }
-    }
-
-    @Override
-    protected PathNavigation createNavigation(Level pLevel) {
-        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, pLevel);
-        flyingpathnavigation.setCanOpenDoors(false);
-        flyingpathnavigation.setCanFloat(true);
-        flyingpathnavigation.setCanPassDoors(true);
-        return flyingpathnavigation;
-    }
-
-    @Override
-    protected BodyRotationControl createBodyControl() {
-        return new PunishingBirdBodyRotationControl(this);
-    }
-
-    public static AttributeSupplier setAttributes() {
-        return AbnormalityEntity.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, NORMAL_MAX_HEALTH)
-                .add(Attributes.ATTACK_DAMAGE, NORMAL_ATTACK_DAMAGE)
-                .add(Attributes.MOVEMENT_SPEED, 0.1F)
-                .add(Attributes.FLYING_SPEED, 0.3F)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.8D).build();
-    }
-
-    @Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new PunishingBirdAngryAttackGoal(this, 2.0F, true));
-        this.goalSelector.addGoal(3, new PunishingBirdNormalAttackGoal(this, 1.0F, false));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(
-                this, LivingEntity.class, 10, true, true, (livingEntity) ->
-                        (livingEntity instanceof Mob) && !(livingEntity instanceof PunishingBirdEntity) || livingEntity instanceof Player) {
-
-            @Override
-            protected AABB getTargetSearchArea(double pTargetDistance) {
-                return this.mob.getBoundingBox().inflate(pTargetDistance);//デフォルトから上下方向に感知範囲を広げた
-            }
-        });
-    }
-
-    private <P extends Entity & IAnimatable> PlayState bodyPredicate(AnimationEvent<P> event) {
-        if (!this.isOnGround()) {
-            event.getController().setAnimation(ANIM_FLY);
-        } else {
-            event.getController().setAnimation(ANIM_IDLE);
-        }
-        return PlayState.CONTINUE;
-    }
-
-    private <P extends Entity & IAnimatable> PlayState attackPredicate(AnimationEvent<P> event) {
-        if (this.isAngry()) {
-            if (this.getAttackTick() == 29) {
-                LobotomyMod.logger.info("Aaaaaaaa!!!!");
-                event.getController().markNeedsReload();
-                event.getController().setAnimation(ANIM_ATTACK_ANGRY);
-            }
-        } else if (this.swinging) {
-            event.getController().markNeedsReload();
-            event.getController().setAnimation(ANIM_ATTACK_NORMAL);
-        }
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public void registerControllers(final AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "body_controller",
-                0, this::bodyPredicate));
-        data.addAnimationController(new AnimationController<>(this, "attack_controller",
-                0, this::attackPredicate));
     }
 
     @Override
@@ -216,169 +278,40 @@ public class PunishingBirdEntity extends AbnormalityEntity implements IAnimatabl
         this.getEntityData().define(IS_ANGRY, false);
     }
 
-    public boolean isAngry() {
-        return this.getEntityData().get(IS_ANGRY);
-    }
-
-    public void setAngry(boolean flag) {
-        this.getEntityData().set(IS_ANGRY, flag);
-    }
-
-    public int getRestTick() {
-        return restTick;
-    }
-
-    public void setRestTick(int tick) {
-        this.restTick = tick;
-    }
-
-    public void resetRestTick() {
-        this.restTick = ENOUGH_REST_TICK;
-    }
-
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
+    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("angry", isAngry());
         pCompound.putInt("rest_tick", getRestTick());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
+    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         setAngry(pCompound.getBoolean("angry"));
         setRestTick(pCompound.getInt("rest_tick"));
     }
 
-    public AABB getAngryAttackAABB(float pPartialTicks) {
-        return this.getBoundingBox().move(this.getViewVector(pPartialTicks).multiply(1.0F,0.0F,1.0F).normalize().scale(2.25F)).inflate(1.25F);
+    @Override
+    public Lazy<Predicate<PunishingBirdEntity>> getPredicateLazy() {
+        return Lazy.of(() -> this.isAttackAnimating.and(PunishingBirdEntity::isAngry));
     }
 
-
-    /**
-     * 攻撃中のモデルの向きを視線方向に固定
-     */
-    private static class PunishingBirdBodyRotationControl extends BodyRotationControl {
-
-        private final PunishingBirdEntity owner;
-
-        public PunishingBirdBodyRotationControl(PunishingBirdEntity punishingBird) {
-            super(punishingBird);
-            this.owner = punishingBird;
-        }
-
-        @Override
-        public void clientTick() {
-            if (this.owner.getAttackTick() > 0) {
-                this.owner.yBodyRot = this.owner.yHeadRot;
-                return;
-            }
-            super.clientTick();
-        }
+    @Override
+    public MoveControl createMoveControl() {
+        return new LazyFlyingMoveControl<>(this, 20, false)
+                .isLazyIf(this.getPredicateLazy());
     }
 
-
-    /**
-     * 攻撃中の視線を固定
-     */
-    private static class PunishingBirdLookControl extends LookControl {
-
-        private final PunishingBirdEntity owner;
-
-        public PunishingBirdLookControl(PunishingBirdEntity punishingBird) {
-            super(punishingBird);
-            this.owner = punishingBird;
-        }
-
-        @Override
-        public void tick() {
-            if (this.owner.getAttackTick() > 0) {
-                return;
-            }
-            super.tick();
-        }
+    @NotNull
+    @Override
+    public BodyRotationControl createBodyControl() {
+        return ILazyControlMob.super.createBodyControl();
     }
 
-    /**
-     * 通常攻撃
-     */
-     private static class PunishingBirdNormalAttackGoal extends MeleeAttackGoal {
-        protected PunishingBirdEntity owner;
-
-        public PunishingBirdNormalAttackGoal(PunishingBirdEntity pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
-            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
-            this.owner = pMob;
-        }
-
-        @Override
-        public boolean canUse() {
-            return super.canUse() && !this.owner.isAngry();
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            return super.canContinueToUse() && !this.owner.isAngry();
-        }
-    }
-
-    /**
-     * 特殊攻撃
-     */
-    private static class PunishingBirdAngryAttackGoal extends MeleeAttackGoal {
-        protected final PunishingBirdEntity owner;
-        protected boolean isPunishing;
-
-        public PunishingBirdAngryAttackGoal(PunishingBirdEntity pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
-            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
-            this.owner = pMob;
-        }
-
-        @Override
-        public void start() {
-            super.start();
-            this.isPunishing = false;
-        }
-
-        @Override
-        public void stop() {
-            super.stop();
-            this.owner.resetFlyingSpeed();
-            this.isPunishing = false;
-        }
-
-        @Override
-        public boolean canUse() {
-            return super.canUse() && this.owner.isAngry();
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            return super.canContinueToUse() && this.owner.isAngry();
-        }
-
-        @Override
-        protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
-            AABB attackRange = this.owner.getAngryAttackAABB(1.0F);
-            List<LivingEntity> listInAttackRange = this.owner.level.getEntitiesOfClass(LivingEntity.class, attackRange);
-            List<LivingEntity> listInReadyRange = this.owner.level.getEntitiesOfClass(LivingEntity.class, attackRange.inflate(-0.5F));
-
-            if (this.isPunishing && this.owner.getAttackTick() == 9 && listInAttackRange.contains(pEnemy)) {
-                for (LivingEntity livingEntity : listInAttackRange) {
-                    if (livingEntity != this.owner) this.owner.doHurtTarget(livingEntity);
-                }
-                this.owner.resetFlyingSpeed();
-            }
-
-            if (!this.isPunishing && listInReadyRange.contains(pEnemy)) {
-                this.owner.swing(InteractionHand.MAIN_HAND);
-                this.owner.setAttackTick(30);
-                this.owner.stopFlyingSpeed();
-                this.isPunishing = true;
-            }
-
-            if (this.owner.getAttackTick() == 0) {
-                this.isPunishing = false;
-            }
-        }
+    @NotNull
+    @Override
+    protected PathNavigation createNavigation(@NotNull Level pLevel) {
+        return new FlyingPathNavigation(this, pLevel);
     }
 }

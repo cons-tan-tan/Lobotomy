@@ -1,6 +1,6 @@
 package constantan.lobotomy.client.model.entity;
 
-import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
+import constantan.lobotomy.common.entity.custom.TheBurrowingHeavenEntity;
 import constantan.lobotomy.lib.LibAbnormality;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;

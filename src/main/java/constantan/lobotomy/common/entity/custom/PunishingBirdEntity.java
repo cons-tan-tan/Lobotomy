@@ -1,5 +1,9 @@
-package constantan.lobotomy.common.entity;
+package constantan.lobotomy.common.entity.custom;
 
+import constantan.lobotomy.common.entity.AbnormalityEntity;
+import constantan.lobotomy.common.entity.IAoEAttackMob;
+import constantan.lobotomy.common.entity.ILazyControlMob;
+import constantan.lobotomy.common.entity.SmartBrainAbnormalityEntity;
 import constantan.lobotomy.common.entity.ai.behaviour.AnimatableRangedAoEAttack;
 import constantan.lobotomy.common.entity.ai.behaviour.FloatToSurfaceOfFluidWithSafety;
 import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;

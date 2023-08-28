@@ -1,8 +1,8 @@
 package constantan.lobotomy.common.init;
 
-import constantan.lobotomy.common.entity.JudgementBirdEntity;
-import constantan.lobotomy.common.entity.PunishingBirdEntity;
-import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
+import constantan.lobotomy.common.entity.custom.JudgementBirdEntity;
+import constantan.lobotomy.common.entity.custom.PunishingBirdEntity;
+import constantan.lobotomy.common.entity.custom.TheBurrowingHeavenEntity;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import constantan.lobotomy.common.util.mixin.IMixinEntityType;

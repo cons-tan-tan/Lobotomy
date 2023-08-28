@@ -2,7 +2,7 @@ package constantan.lobotomy.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import constantan.lobotomy.client.model.entity.TheBurrowingHeavenModel;
-import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
+import constantan.lobotomy.common.entity.custom.TheBurrowingHeavenEntity;
 import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;

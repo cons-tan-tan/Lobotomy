@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.network.packet.entity;
 
-import constantan.lobotomy.common.entity.TheBurrowingHeavenEntity;
+import constantan.lobotomy.common.entity.custom.TheBurrowingHeavenEntity;
 import constantan.lobotomy.common.network.Messages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;

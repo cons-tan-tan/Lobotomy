@@ -5,7 +5,7 @@ import constantan.lobotomy.client.model.entity.PunishingBirdModel;
 import constantan.lobotomy.client.renderer.entity.AbnormalityRenderer;
 import constantan.lobotomy.client.renderer.entity.GlowingAbnormalityRenderer;
 import constantan.lobotomy.client.renderer.entity.TheBurrowingHeavenRenderer;
-import constantan.lobotomy.common.entity.JudgementBirdEntity;
+import constantan.lobotomy.common.entity.custom.JudgementBirdEntity;
 import constantan.lobotomy.common.init.ModEntityTypes;
 import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

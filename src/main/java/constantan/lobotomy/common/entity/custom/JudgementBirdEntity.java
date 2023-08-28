@@ -1,5 +1,7 @@
-package constantan.lobotomy.common.entity;
+package constantan.lobotomy.common.entity.custom;
 
+import constantan.lobotomy.common.entity.AbnormalityEntity;
+import constantan.lobotomy.common.entity.SmartBrainAbnormalityEntity;
 import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.InteractionHand;

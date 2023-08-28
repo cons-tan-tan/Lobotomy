@@ -2,7 +2,7 @@ package constantan.lobotomy.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import constantan.lobotomy.client.model.entity.PunishingBirdModel;
-import constantan.lobotomy.common.entity.PunishingBirdEntity;
+import constantan.lobotomy.common.entity.custom.PunishingBirdEntity;
 import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;

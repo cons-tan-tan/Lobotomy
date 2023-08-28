@@ -1,6 +1,7 @@
-package constantan.lobotomy.common.entity;
+package constantan.lobotomy.common.entity.custom;
 
 import constantan.lobotomy.LobotomyMod;
+import constantan.lobotomy.common.entity.AbnormalityEntity;
 import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.common.network.packet.entity.TheBurrowingHeavenC2SPacket;
 import net.minecraft.client.Minecraft;

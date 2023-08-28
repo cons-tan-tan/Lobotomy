@@ -1,6 +1,6 @@
 package constantan.lobotomy.client.model.entity;
 
-import constantan.lobotomy.common.entity.PunishingBirdEntity;
+import constantan.lobotomy.common.entity.custom.PunishingBirdEntity;
 import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.resources.ResourceLocation;
 

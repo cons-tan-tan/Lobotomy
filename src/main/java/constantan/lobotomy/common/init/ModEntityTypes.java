@@ -64,6 +64,7 @@ public class ModEntityTypes {
     }
 
 
+    @SuppressWarnings("unchecked")
     public static <T extends Entity> IMixinEntityType<T> abnormalityEntityType(EntityType<T> entityType) {
         return (IMixinEntityType<T>) entityType;
     }

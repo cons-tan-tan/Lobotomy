@@ -18,18 +18,18 @@ public interface ILazyControlMob<P extends Mob> {
         return (P) this;
     }
 
-    default LookControl createLookControl() {
+    default LookControl createLazyLookControl() {
         return new LazyLookControl<>(self())
                 .isLazyIf(this.getPredicateLazy());
     }
 
-    default MoveControl createMoveControl() {
+    default MoveControl createLazyMoveControl() {
         return new LazyMoveControl<>(self())
                 .isLazyIf(this.getPredicateLazy());
     }
 
     @NotNull
-    default BodyRotationControl createBodyControl() {
+    default BodyRotationControl createLazyBodyControl() {
         return new LazyBodyRotationControl<>(self())
                 .isLazyIf(this.getPredicateLazy());
     }

@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -55,8 +56,8 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
         this.navigation.setCanFloat(true);//デフォルトだと泳げる設定
 
         if (this instanceof ILazyControlMob<?> iLazyControlMob) {
-            this.lookControl = iLazyControlMob.createLookControl();
-            this.moveControl = iLazyControlMob.createMoveControl();
+            this.lookControl = iLazyControlMob.createLazyLookControl();
+            this.moveControl = iLazyControlMob.createLazyMoveControl();
         }
     }
 
@@ -155,6 +156,14 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     public void tick() {
         super.tick();
         this.setAttackTick(Math.max(this.getAttackTick() - 1, 0));
+    }
+
+    @Override
+    protected BodyRotationControl createBodyControl() {
+        if (this instanceof ILazyControlMob<?> iLazyControlMob) {
+            return iLazyControlMob.createLazyBodyControl();
+        }
+        return super.createBodyControl();
     }
 
     @Override

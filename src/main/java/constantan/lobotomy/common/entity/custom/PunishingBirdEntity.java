@@ -22,7 +22,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -42,6 +41,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTar
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -92,6 +92,7 @@ public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBi
     public List<ExtendedSensor<PunishingBirdEntity>> getSensors() {
         return ObjectArrayList.of(
                 new NearbyPlayersSensor<>(),
+                new NearbyLivingEntitySensor<>(),
                 new HurtBySensor<>(),
                 new LivingEntityInAoESensor<PunishingBirdEntity>()
                         .attackRange(PunishingBirdEntity::getAngryAttackAABB)
@@ -302,15 +303,9 @@ public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBi
     }
 
     @Override
-    public MoveControl createMoveControl() {
+    public MoveControl createLazyMoveControl() {
         return new LazyFlyingMoveControl<>(this, 20, false)
                 .isLazyIf(this.getPredicateLazy());
-    }
-
-    @NotNull
-    @Override
-    public BodyRotationControl createBodyControl() {
-        return ILazyControlMob.super.createBodyControl();
     }
 
     @NotNull

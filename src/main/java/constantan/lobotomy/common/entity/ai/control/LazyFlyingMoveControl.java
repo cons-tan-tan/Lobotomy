@@ -38,7 +38,7 @@ public class LazyFlyingMoveControl<P extends Mob> extends FlyingMoveControl impl
             this.mob.setNoGravity(true);
             this.mob.setYya(0.0F);
             this.mob.setZza(0.0F);
-            this.mob.setDeltaMovement(this.mob.getDeltaMovement().scale(0.9F));
+            this.mob.setDeltaMovement(this.mob.getDeltaMovement().scale(this.deltaMovementMultiplier.apply(owner)));
         }
     }
 }

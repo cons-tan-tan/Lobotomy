@@ -141,8 +141,8 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
      * デフォルトはfalse<br>
      * 攻撃毎に参照
      */
-    public boolean canDoUnblockableAttack() {
-        return false;
+    public @NotNull Predicate<T> canDoUnblockableAttack() {
+        return abnormality -> false;
     }
 
     @Override
@@ -159,7 +159,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     }
 
     @Override
-    protected BodyRotationControl createBodyControl() {
+    protected @NotNull BodyRotationControl createBodyControl() {
         if (this instanceof ILazyControlMob<?> iLazyControlMob) {
             return iLazyControlMob.createLazyBodyControl();
         }

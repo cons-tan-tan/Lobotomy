@@ -2,9 +2,9 @@ package constantan.lobotomy.mixin;
 
 import constantan.lobotomy.common.entity.AbnormalityEntity;
 import constantan.lobotomy.common.item.EgoMeleeWeapon;
-import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
+import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -77,15 +77,18 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
         return this.riskLevel != null;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Inject(method = "mobAttack", at = @At("HEAD"), cancellable = true)
     private static void mobAttack_Head(LivingEntity pMob, CallbackInfoReturnable<DamageSource> cir) {
         if (pMob.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
             cir.setReturnValue(getAbnormalDamageSource("mob", pMob,
                     egoMeleeWeapon.getRiskLevel(), egoMeleeWeapon.getDamageType(), false));
         }
-        if (pMob instanceof AbnormalityEntity<?> abnormality) {
+        if (pMob instanceof AbnormalityEntity abnormality) {
             cir.setReturnValue(getAbnormalDamageSource("mob", pMob,
-                    abnormality.getRiskLevel(), abnormality.getDamageType(), !abnormality.canDoUnblockableAttack()));
+                    abnormality.getRiskLevel(),
+                    abnormality.getDamageType(),
+                    abnormality.canDoUnblockableAttack().negate().test(abnormality)));
         }
     }
 

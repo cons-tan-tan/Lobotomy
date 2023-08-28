@@ -28,6 +28,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeavenEntity> implements IAnimatable {
 
@@ -116,8 +117,8 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeav
     }
 
     @Override
-    public boolean canDoUnblockableAttack() {
-        return true;
+    public @NotNull Predicate<TheBurrowingHeavenEntity> canDoUnblockableAttack() {
+        return theBurrowingHeaven -> true;
     }
 
     @Override

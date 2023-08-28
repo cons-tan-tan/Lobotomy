@@ -141,8 +141,8 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
      * デフォルトはfalse<br>
      * 攻撃毎に参照
      */
-    public @NotNull Predicate<T> canDoUnblockableAttack() {
-        return abnormality -> false;
+    public boolean canDoUnblockableAttack() {
+        return false;
     }
 
     @Override

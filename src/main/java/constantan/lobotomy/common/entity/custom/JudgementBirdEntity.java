@@ -34,7 +34,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBirdEntity> implements IAnimatable {
 
@@ -137,8 +136,8 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
     }
 
     @Override
-    public @NotNull Predicate<JudgementBirdEntity> canDoUnblockableAttack() {
-        return judgementBirdEntity -> true;
+    public boolean canDoUnblockableAttack() {
+        return true;
     }
 
     @Override

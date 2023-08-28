@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(DamageSource.class)
 public abstract class MixinDamageSource implements IMixinDamageSource {
 
@@ -88,7 +89,7 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
             cir.setReturnValue(getAbnormalDamageSource("mob", pMob,
                     abnormality.getRiskLevel(),
                     abnormality.getDamageType(),
-                    abnormality.canDoUnblockableAttack().negate().test(abnormality)));
+                    abnormality.canDoUnblockableAttack()));
         }
     }
 

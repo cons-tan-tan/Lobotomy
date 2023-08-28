@@ -36,8 +36,8 @@ public enum RiskLevelUtil {
     public TextComponent getColoredTextComponent() {
         MutableComponent component = new TextComponent(this.name())
                 .withStyle(this.getColor()).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.BOLD);
-        return (TextComponent) new TextComponent("").append(new TranslatableComponent("tooltip.lobotomy.risk_level",
-                new TranslatableComponent("word.lobotomy.risk_level"), component));
+        return (TextComponent) new TextComponent("")
+                .append(new TranslatableComponent("tooltip.lobotomy.risk_level", new TranslatableComponent("word.lobotomy.risk_level"), component));
     }
 
     public static float getDamageRatio(RiskLevelUtil defenderRiskLevel, RiskLevelUtil attackerRiskLevel) {

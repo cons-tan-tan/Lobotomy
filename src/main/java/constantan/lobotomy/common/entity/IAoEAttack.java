@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Mob;
 
 import java.util.List;
 
-public interface IAoEAttackMob {
+public interface IAoEAttack {
 
     private Mob self() {
         return (Mob) this;

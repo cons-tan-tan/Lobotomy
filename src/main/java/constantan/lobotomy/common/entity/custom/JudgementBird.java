@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
-        implements IAnimatable, IQliphothAbnormality, IAoEAttackMob, ILazyControlMob<JudgementBird> {
+        implements IAnimatable, IQliphoth, IAoEAttack, ILazyControl<JudgementBird> {
 
     private static final EntityDataAccessor<Boolean> IS_SPONTANEOUSLY_MOVING = SynchedEntityData
             .defineId(JudgementBird.class, EntityDataSerializers.BOOLEAN);

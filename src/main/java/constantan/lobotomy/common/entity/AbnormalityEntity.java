@@ -50,14 +50,14 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
                 : null;
 
         this.abnormalityType = ModEntityTypes.abnormalityEntityType(pEntityType);
-        if (this instanceof IQliphothAbnormality iQliphothAbnormality) {
+        if (this instanceof IQliphoth iQliphoth) {
             //内部でthis.abnormalityを参照しているので、this.abnormalityを初期化した後に呼ぶ
-            iQliphothAbnormality.resetQliphothCounter();
+            iQliphoth.resetQliphothCounter();
         }
 
-        if (this instanceof ILazyControlMob<?> iLazyControlMob) {
-            this.lookControl = iLazyControlMob.createLazyLookControl();
-            this.moveControl = iLazyControlMob.createLazyMoveControl();
+        if (this instanceof ILazyControl<?> iLazyControl) {
+            this.lookControl = iLazyControl.createLazyLookControl();
+            this.moveControl = iLazyControl.createLazyMoveControl();
         }
     }
 
@@ -85,7 +85,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     }
 
     public boolean hasQliphothCounter() {
-        return this instanceof IQliphothAbnormality;
+        return this instanceof IQliphoth;
     }
 
     public int getAttackTick() {
@@ -132,8 +132,8 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
 
     @Override
     protected @NotNull BodyRotationControl createBodyControl() {
-        if (this instanceof ILazyControlMob<?> iLazyControlMob) {
-            return iLazyControlMob.createLazyBodyControl();
+        if (this instanceof ILazyControl<?> iLazyControl) {
+            return iLazyControl.createLazyBodyControl();
         }
         return super.createBodyControl();
     }
@@ -144,7 +144,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
         //これが読み込まれるのは親クラスのEntityなので、this.abnormalityTypeがnull
         //getMaxQliphothCounterは使えないので初期値は0、コンストラクタでabnormalityTypeを初期化した後クリフォトカウンターもリセットする
         if (this.hasQliphothCounter()) {
-            this.getEntityData().define(IQliphothAbnormality.QLIPHOTH_COUNTER, 0);
+            this.getEntityData().define(IQliphoth.QLIPHOTH_COUNTER, 0);
         }
         this.getEntityData().define(ATTACK_TICK, 0);
     }
@@ -152,16 +152,16 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        if (this instanceof IQliphothAbnormality iQliphothAbnormality) {
-            pCompound.putInt(QLIPHOTH_COUNTER_NAME, iQliphothAbnormality.getQliphothCounter());
+        if (this instanceof IQliphoth iQliphoth) {
+            pCompound.putInt(QLIPHOTH_COUNTER_NAME, iQliphoth.getQliphothCounter());
         }
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        if (this instanceof IQliphothAbnormality iQliphothAbnormality) {
-            iQliphothAbnormality.setQliphothCounter(pCompound.getInt(QLIPHOTH_COUNTER_NAME));
+        if (this instanceof IQliphoth iQliphoth) {
+            iQliphoth.setQliphothCounter(pCompound.getInt(QLIPHOTH_COUNTER_NAME));
         }
     }
 }

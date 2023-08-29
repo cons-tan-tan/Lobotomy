@@ -1,7 +1,7 @@
 package constantan.lobotomy.common.entity.ai.behaviour;
 
 import com.mojang.datafixers.util.Pair;
-import constantan.lobotomy.common.entity.IAoEAttackMob;
+import constantan.lobotomy.common.entity.IAoEAttack;
 import constantan.lobotomy.common.init.ModMemoryModuleTypes;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.server.level.ServerLevel;
@@ -30,7 +30,7 @@ public class AnimatableRangedAoEAttack<E extends Mob> extends DelayedBehaviour<E
     );
 
     protected BiConsumer<E, List<LivingEntity>> doAoEAttackConsumer = (owner, list) -> {
-        if (owner instanceof IAoEAttackMob iAoEAttackMob) iAoEAttackMob.performAoEAttack(list);
+        if (owner instanceof IAoEAttack iAoEAttack) iAoEAttack.performAoEAttack(list);
     };
     protected ToIntFunction<E> attackIntervalFunction = entity -> 20;
     protected BiPredicate<E, LivingEntity> exceptSelf = (self, target) -> true;

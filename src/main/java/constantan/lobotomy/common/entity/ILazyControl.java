@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
-public interface ILazyControlMob<P extends Mob> {
+public interface ILazyControl<P extends Mob> {
 
     private P self() {
         return (P) this;

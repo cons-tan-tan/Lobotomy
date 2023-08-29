@@ -5,7 +5,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 
-public interface IQliphothAbnormality {
+public interface IQliphoth {
 
     EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData
             .defineId(AbnormalityEntity.class, EntityDataSerializers.INT);

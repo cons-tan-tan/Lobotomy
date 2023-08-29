@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
 public class TheBurrowingHeavenRenderer extends AbnormalityRenderer<TheBurrowingHeaven> {
 
@@ -29,7 +30,7 @@ public class TheBurrowingHeavenRenderer extends AbnormalityRenderer<TheBurrowing
     }
 
     @Override
-    public boolean shouldRender(TheBurrowingHeaven pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
+    public boolean shouldRender(TheBurrowingHeaven pLivingEntity, @NotNull Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
         boolean seen;
 
         if (!pLivingEntity.shouldRender(pCamX, pCamY, pCamZ)) {

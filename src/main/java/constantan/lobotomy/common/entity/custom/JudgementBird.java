@@ -34,18 +34,18 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBirdEntity>
-        implements IAnimatable, IQliphoth, IAoEAttackMob, ILazyControlMob<JudgementBirdEntity> {
+public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
+        implements IAnimatable, IQliphoth, IAoEAttackMob, ILazyControlMob<JudgementBird> {
 
     private static final EntityDataAccessor<Boolean> IS_SPONTANEOUSLY_MOVING = SynchedEntityData
-            .defineId(JudgementBirdEntity.class, EntityDataSerializers.BOOLEAN);
+            .defineId(JudgementBird.class, EntityDataSerializers.BOOLEAN);
 
     private static final int ATTACK_DAMAGE_RANDOM_RANGE = 10;
 
     private static final int WAIT_ANIM_TICK = 85;
     private static final int ATTACK_OCCUR_TICK = 75;
 
-    public JudgementBirdEntity(EntityType<JudgementBirdEntity> pEntityType, Level pLevel) {
+    public JudgementBird(EntityType<JudgementBird> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -73,7 +73,7 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
     }
 
     @Override
-    public List<ExtendedSensor<JudgementBirdEntity>> getSensors() {
+    public List<ExtendedSensor<JudgementBird>> getSensors() {
         return this.sensors(
                 new NearbyPlayersSensor<>(),
                 new HurtBySensor<>()
@@ -81,19 +81,19 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
     }
 
     @Override
-    public BrainActivityGroup<JudgementBirdEntity> getCoreTasks() {
+    public BrainActivityGroup<JudgementBird> getCoreTasks() {
         return this.coreTasks(
                 new FloatToSurfaceOfFluid<>(),
-                new LookAtTarget<JudgementBirdEntity>()
+                new LookAtTarget<JudgementBird>()
                         .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
                         .stopIf(judgementBird -> judgementBird.getAttackTick() > 0),
-                new MoveToWalkTarget<JudgementBirdEntity>()
+                new MoveToWalkTarget<JudgementBird>()
                         .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
         );
     }
 
     @Override
-    public BrainActivityGroup<JudgementBirdEntity> getIdleTasks() {
+    public BrainActivityGroup<JudgementBird> getIdleTasks() {
         return this.idleTasks(
                 this.firstApplicableBehaviour(
                         new TargetOrRetaliate<>(),
@@ -102,17 +102,17 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
                         new SetRandomLookTarget<>()
                 ), this.oneRandomBehaviour(
                         new SetRandomWalkTarget<>(),
-                        new Idle<JudgementBirdEntity>()
+                        new Idle<JudgementBird>()
                                 .runFor(judgementBird -> judgementBird.getRandom().nextInt(200, 400))
                 ));
     }
 
     @Override
-    public BrainActivityGroup<JudgementBirdEntity> getFightTasks() {
+    public BrainActivityGroup<JudgementBird> getFightTasks() {
         return this.fightTasks(
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
-                new AnimatableMeleeAttack<JudgementBirdEntity>(ATTACK_OCCUR_TICK + 1)
+                new AnimatableMeleeAttack<JudgementBird>(ATTACK_OCCUR_TICK + 1)
                         .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
                         .whenStarting(judgementBird -> judgementBird.setAttackTick(WAIT_ANIM_TICK + 1))
         );
@@ -160,7 +160,7 @@ public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBi
     }
 
     @Override
-    public Lazy<Predicate<JudgementBirdEntity>> getPredicateLazy() {
+    public Lazy<Predicate<JudgementBird>> getPredicateLazy() {
         return Lazy.of(() -> this.isAttackAnimating);
     }
 }

@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.network.packet.entity;
 
-import constantan.lobotomy.common.entity.custom.TheBurrowingHeavenEntity;
+import constantan.lobotomy.common.entity.custom.TheBurrowingHeaven;
 import constantan.lobotomy.common.network.Messages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -44,10 +44,10 @@ public class TheBurrowingHeavenS2CPacket {
                 public void run() {
                     Player player = Minecraft.getInstance().player;
                     Vec3 pos = player.getPosition(1.0F);
-                    float r = TheBurrowingHeavenEntity.SEARCH_RANGE + 4.0F;
+                    float r = TheBurrowingHeaven.SEARCH_RANGE + 4.0F;
                     AABB searchArea = new AABB(pos.x - r, pos.y - r, pos.z - r, pos.x + r, pos.y + r, pos.z + r);
-                    List<TheBurrowingHeavenEntity> listTheBurrowingHeaven = player.level.getEntitiesOfClass(TheBurrowingHeavenEntity.class, searchArea);
-                    for (TheBurrowingHeavenEntity theBurrowingHeaven : listTheBurrowingHeaven) {
+                    List<TheBurrowingHeaven> listTheBurrowingHeaven = player.level.getEntitiesOfClass(TheBurrowingHeaven.class, searchArea);
+                    for (TheBurrowingHeaven theBurrowingHeaven : listTheBurrowingHeaven) {
                         if (theBurrowingHeaven.getUUID().equals(this.theBurrowingHeavenUUID) && theBurrowingHeaven.clientShouldRender) {
                             Messages.sendToServer(new TheBurrowingHeavenC2SPacket(this.theBurrowingHeavenUUID));
                         }

@@ -2,7 +2,7 @@ package constantan.lobotomy.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import constantan.lobotomy.client.model.entity.TheBurrowingHeavenModel;
-import constantan.lobotomy.common.entity.custom.TheBurrowingHeavenEntity;
+import constantan.lobotomy.common.entity.custom.TheBurrowingHeaven;
 import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -12,14 +12,14 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 
-public class TheBurrowingHeavenRenderer extends AbnormalityRenderer<TheBurrowingHeavenEntity> {
+public class TheBurrowingHeavenRenderer extends AbnormalityRenderer<TheBurrowingHeaven> {
 
     public TheBurrowingHeavenRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new TheBurrowingHeavenModel(LibAbnormality.THE_BURROWING_HEAVEN), 0.5F, 1.5F);
     }
 
     @Override
-    public void render(TheBurrowingHeavenEntity animatable, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void render(TheBurrowingHeaven animatable, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         super.render(animatable, entityYaw, partialTick, poseStack, bufferSource, packedLight);
 
         if (this.entityRenderDispatcher.shouldRenderHitBoxes() && !animatable.isInvisible() && !Minecraft.getInstance().showOnlyReducedInfo()) {
@@ -29,7 +29,7 @@ public class TheBurrowingHeavenRenderer extends AbnormalityRenderer<TheBurrowing
     }
 
     @Override
-    public boolean shouldRender(TheBurrowingHeavenEntity pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
+    public boolean shouldRender(TheBurrowingHeaven pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
         boolean seen;
 
         if (!pLivingEntity.shouldRender(pCamX, pCamY, pCamZ)) {

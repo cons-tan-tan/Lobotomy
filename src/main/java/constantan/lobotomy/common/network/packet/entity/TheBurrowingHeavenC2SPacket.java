@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.network.packet.entity;
 
-import constantan.lobotomy.common.entity.custom.TheBurrowingHeavenEntity;
+import constantan.lobotomy.common.entity.custom.TheBurrowingHeaven;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.AABB;
@@ -32,10 +32,10 @@ public class TheBurrowingHeavenC2SPacket {
             //サーバー上での処理
             ServerPlayer player = content.getSender();
             Vec3 pos = player.getPosition(1.0F);
-            float r = TheBurrowingHeavenEntity.SEARCH_RANGE + 8.0F;
+            float r = TheBurrowingHeaven.SEARCH_RANGE + 8.0F;
             AABB searchArea = new AABB(pos.x - r, pos.y - r, pos.z - r, pos.x + r, pos.y + r, pos.z + r);
-            List<TheBurrowingHeavenEntity> listTheBurrowingHeaven = player.level.getEntitiesOfClass(TheBurrowingHeavenEntity.class, searchArea);
-            for (TheBurrowingHeavenEntity theBurrowingHeaven : listTheBurrowingHeaven) {
+            List<TheBurrowingHeaven> listTheBurrowingHeaven = player.level.getEntitiesOfClass(TheBurrowingHeaven.class, searchArea);
+            for (TheBurrowingHeaven theBurrowingHeaven : listTheBurrowingHeaven) {
                 if (theBurrowingHeaven.getUUID().equals(this.theBurrowingHeavenUUID)) {
                     theBurrowingHeaven.serverSeen = true;
                 }

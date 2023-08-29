@@ -29,7 +29,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeavenEntity>
+public class TheBurrowingHeaven extends AbnormalityEntity<TheBurrowingHeaven>
         implements IAnimatable, IQliphoth {
 
     private static final AnimationBuilder ANIM_ACTIVATE = new AnimationBuilder()
@@ -45,7 +45,7 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeav
     private int subQliphothCounterSecond = 10;
     private int attackSecond = 3;
 
-    public TheBurrowingHeavenEntity(EntityType<TheBurrowingHeavenEntity> pEntityType, Level pLevel) {
+    public TheBurrowingHeaven(EntityType<TheBurrowingHeaven> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 

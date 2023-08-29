@@ -10,7 +10,7 @@ public class LazyMoveControl<P extends Mob> extends MoveControl implements ILazy
 
     protected final P owner;
 
-    protected Lazy<Predicate<P>> predicateLazy = Lazy.of(() -> (mob -> false));
+    protected Lazy<Predicate<P>> predicateLazy = Lazy.of(() -> mob -> false);
 
     public LazyMoveControl(P pMob) {
         super(pMob);

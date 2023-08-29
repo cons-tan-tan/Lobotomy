@@ -11,7 +11,7 @@ public class LazyFlyingMoveControl<P extends Mob> extends FlyingMoveControl impl
 
     protected final P owner;
 
-    protected Lazy<Predicate<P>> predicateLazy = Lazy.of(() -> (mob -> false));
+    protected Lazy<Predicate<P>> predicateLazy = Lazy.of(() -> mob -> false);
     protected ToFloatFunction<P> deltaMovementMultiplier = mob -> 0.9F;
 
     public LazyFlyingMoveControl(P pMob, int pMaxTurn, boolean pHoversInPlace) {

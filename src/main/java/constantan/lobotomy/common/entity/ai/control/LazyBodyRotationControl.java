@@ -10,7 +10,7 @@ public class LazyBodyRotationControl<P extends Mob> extends BodyRotationControl 
 
     protected final P owner;
 
-    protected Lazy<Predicate<P>> predicateLazy = Lazy.of(() -> (mob -> false));
+    protected Lazy<Predicate<P>> predicateLazy = Lazy.of(() -> mob -> false);
 
     public LazyBodyRotationControl(P pMob) {
         super(pMob);

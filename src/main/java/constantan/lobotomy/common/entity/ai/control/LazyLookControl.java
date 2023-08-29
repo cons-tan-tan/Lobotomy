@@ -10,7 +10,7 @@ public class LazyLookControl<P extends Mob> extends LookControl implements ILazy
 
     protected final P owner;
 
-    protected Lazy<Predicate<P>> predicateLazy = Lazy.of(() -> (mob -> false));
+    protected Lazy<Predicate<P>> predicateLazy = Lazy.of(() -> mob -> false);
 
     public LazyLookControl(P pMob) {
         super(pMob);

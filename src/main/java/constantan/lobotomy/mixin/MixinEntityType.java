@@ -22,6 +22,10 @@ public abstract class MixinEntityType<T extends Entity> implements IMixinEntityT
     private Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;
     @Unique
     private int qliphothCounter = 0;
+    @Unique
+    private boolean knockbackAttack = true;
+    @Unique
+    private boolean unblockableAttack = false;
 
     @Unique
     @Override
@@ -59,6 +63,20 @@ public abstract class MixinEntityType<T extends Entity> implements IMixinEntityT
 
     @Unique
     @Override
+    public IMixinEntityType<T> noKnockbackAttacker() {
+        this.knockbackAttack = false;
+        return this;
+    }
+
+    @Unique
+    @Override
+    public IMixinEntityType<T> unblockableAttacker() {
+        this.unblockableAttack = true;
+        return this;
+    }
+
+    @Unique
+    @Override
     public EntityType<T> build() {
         return (EntityType<T>) (Object) this;
     }
@@ -85,5 +103,17 @@ public abstract class MixinEntityType<T extends Entity> implements IMixinEntityT
     @Override
     public int getQliphothCounter() {
         return this.qliphothCounter;
+    }
+
+    @Unique
+    @Override
+    public boolean canKnockbackAttack() {
+        return this.knockbackAttack;
+    }
+
+    @Unique
+    @Override
+    public boolean canUnblockableAttack() {
+        return this.unblockableAttack;
     }
 }

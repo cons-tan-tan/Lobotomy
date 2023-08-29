@@ -105,16 +105,16 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
      * 盾で防いだ場合のノックバックの有無でも参照{@link AbnormalityEntity#blockedByShield(LivingEntity)}
      */
     public boolean canDoKnockbackAttack() {
-        return true;
+        return this.abnormalityType.canKnockbackAttack();
     }
 
     /**
-     * 攻撃を盾で防げるか<br>
+     * 盾で防げない貫通攻撃かどうか<br>
      * デフォルトはfalse<br>
      * 攻撃毎に参照
      */
     public boolean canDoUnblockableAttack() {
-        return false;
+        return this.abnormalityType.canUnblockableAttack();
     }
 
     @Override

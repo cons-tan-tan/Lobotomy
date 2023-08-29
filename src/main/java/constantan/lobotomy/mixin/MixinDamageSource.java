@@ -89,7 +89,7 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
             cir.setReturnValue(getAbnormalDamageSource("mob", pMob,
                     abnormality.getRiskLevel(),
                     abnormality.getDamageType(),
-                    abnormality.canDoUnblockableAttack()));
+                    !abnormality.canDoUnblockableAttack()));
         }
     }
 

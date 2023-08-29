@@ -42,6 +42,8 @@ public class ModEntityTypes {
                             .damageType(DamageTypeUtil.PALE)
                             .defense(0.8F, 0.8F, 0.8F, 2.0F)
                             .qliphothCounter(2)
+                            .noKnockbackAttacker()
+                            .unblockableAttacker()
                             .build());
 
     public static final RegistryObject<EntityType<TheBurrowingHeaven>> THE_BURROWING_HEAVEN = ENTITY_TYPES
@@ -54,6 +56,8 @@ public class ModEntityTypes {
                             .damageType(DamageTypeUtil.BLACK)
                             .defense(0.0F, 1.2F, 0.5F, 1.5F)
                             .qliphothCounter(3)
+                            .noKnockbackAttacker()
+                            .unblockableAttacker()
                             .build());
 
 

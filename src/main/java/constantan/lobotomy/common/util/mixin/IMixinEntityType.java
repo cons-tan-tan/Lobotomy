@@ -17,6 +17,10 @@ public interface IMixinEntityType<T extends Entity> {
 
     IMixinEntityType<T> qliphothCounter(int maxValue);
 
+    IMixinEntityType<T> noKnockbackAttacker();
+
+    IMixinEntityType<T> unblockableAttacker();
+
     EntityType<T> build();
 
     RiskLevelUtil getRiskLevel();
@@ -26,4 +30,8 @@ public interface IMixinEntityType<T extends Entity> {
     Map<DamageTypeUtil, Float> getDefense();
 
     int getQliphothCounter();
+
+    boolean canKnockbackAttack();
+
+    boolean canUnblockableAttack();
 }

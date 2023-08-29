@@ -37,9 +37,11 @@ public class TheBurrowingHeaven extends AbnormalityEntity<TheBurrowingHeaven>
 
     public static final float SEARCH_RANGE = 32.0F;
 
+    //Clientside Variables
     public boolean clientShouldRender;
     private int clientCheckTick = 20;
 
+    //Serverside Variables
     public boolean serverSeen = true;
     private int serverCheckTick = 20;
     private int subQliphothCounterSecond = 10;
@@ -112,11 +114,6 @@ public class TheBurrowingHeaven extends AbnormalityEntity<TheBurrowingHeaven>
     @Override
     public AABB getBoundingBoxForCulling() {
         return getBoundingBoxForCulling(1.0F);
-    }
-
-    @Override
-    public boolean canDoUnblockableAttack() {
-        return true;
     }
 
     @Override

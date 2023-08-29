@@ -129,16 +129,6 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
     }
 
     @Override
-    public boolean canDoUnblockableAttack() {
-        return true;
-    }
-
-    @Override
-    public boolean canDoKnockbackAttack() {
-        return false;
-    }
-
-    @Override
     public Lazy<Predicate<JudgementBird>> getPredicateLazy() {
         return Lazy.of(() -> this.isAttackAnimating);
     }

@@ -10,6 +10,8 @@ public interface IQliphoth {
     EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData
             .defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
 
+    String QLIPHOTH_COUNTER_NAME = "qliphoth_counter";
+
     private AbnormalityEntity<?> self() {
         return (AbnormalityEntity<?>) this;
     }

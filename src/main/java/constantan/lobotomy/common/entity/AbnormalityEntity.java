@@ -35,8 +35,6 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     protected static final AnimationBuilder ANIM_ATTACK = new AnimationBuilder()
             .addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
 
-    private static final String QLIPHOTH_COUNTER_NAME = "qliphoth_counter";
-
     private final AnimationFactory factory;
     private final IMixinEntityType<T> abnormalityType;
 
@@ -159,7 +157,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         if (this instanceof IQliphoth iQliphoth) {
-            pCompound.putInt(QLIPHOTH_COUNTER_NAME, iQliphoth.getQliphothCounter());
+            pCompound.putInt(IQliphoth.QLIPHOTH_COUNTER_NAME, iQliphoth.getQliphothCounter());
         }
     }
 
@@ -167,7 +165,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         if (this instanceof IQliphoth iQliphoth) {
-            iQliphoth.setQliphothCounter(pCompound.getInt(QLIPHOTH_COUNTER_NAME));
+            iQliphoth.setQliphothCounter(pCompound.getInt(IQliphoth.QLIPHOTH_COUNTER_NAME));
         }
     }
 }

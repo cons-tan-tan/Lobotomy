@@ -2,6 +2,7 @@ package constantan.lobotomy.common.entity.custom;
 
 import constantan.lobotomy.LobotomyMod;
 import constantan.lobotomy.common.entity.AbnormalityEntity;
+import constantan.lobotomy.common.entity.IQliphoth;
 import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.common.network.packet.entity.TheBurrowingHeavenC2SPacket;
 import net.minecraft.client.Minecraft;
@@ -28,7 +29,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeavenEntity> implements IAnimatable {
+public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeavenEntity>
+        implements IAnimatable, IQliphoth {
 
     private static final AnimationBuilder ANIM_ACTIVATE = new AnimationBuilder()
             .addAnimation("activate", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME);

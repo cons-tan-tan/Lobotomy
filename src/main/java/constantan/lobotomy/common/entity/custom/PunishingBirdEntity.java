@@ -1,9 +1,6 @@
 package constantan.lobotomy.common.entity.custom;
 
-import constantan.lobotomy.common.entity.AbnormalityEntity;
-import constantan.lobotomy.common.entity.IAoEAttackMob;
-import constantan.lobotomy.common.entity.ILazyControlMob;
-import constantan.lobotomy.common.entity.SmartBrainAbnormalityEntity;
+import constantan.lobotomy.common.entity.*;
 import constantan.lobotomy.common.entity.ai.behaviour.AnimatableRangedAoEAttack;
 import constantan.lobotomy.common.entity.ai.behaviour.FloatToSurfaceOfFluidWithSafety;
 import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;
@@ -51,7 +48,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBirdEntity>
-        implements IAnimatable, IAoEAttackMob, ILazyControlMob<PunishingBirdEntity> {
+        implements IAnimatable, IQliphoth, IAoEAttackMob, ILazyControlMob<PunishingBirdEntity> {
 
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData
             .defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);

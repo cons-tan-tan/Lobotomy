@@ -1,9 +1,6 @@
 package constantan.lobotomy.common.entity.custom;
 
-import constantan.lobotomy.common.entity.AbnormalityEntity;
-import constantan.lobotomy.common.entity.IAoEAttackMob;
-import constantan.lobotomy.common.entity.ILazyControlMob;
-import constantan.lobotomy.common.entity.SmartBrainAbnormalityEntity;
+import constantan.lobotomy.common.entity.*;
 import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -38,7 +35,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class JudgementBirdEntity extends SmartBrainAbnormalityEntity<JudgementBirdEntity>
-        implements IAnimatable, IAoEAttackMob, ILazyControlMob<JudgementBirdEntity> {
+        implements IAnimatable, IQliphoth, IAoEAttackMob, ILazyControlMob<JudgementBirdEntity> {
 
     private static final EntityDataAccessor<Boolean> IS_SPONTANEOUSLY_MOVING = SynchedEntityData
             .defineId(JudgementBirdEntity.class, EntityDataSerializers.BOOLEAN);

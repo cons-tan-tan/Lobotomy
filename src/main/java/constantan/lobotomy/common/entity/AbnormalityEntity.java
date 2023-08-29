@@ -7,7 +7,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -26,8 +25,6 @@ import java.util.function.Predicate;
 public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends Monster
         implements IRiskLevel, IDefense, IDamageType, IAnimatableParent {
 
-    private static final EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData
-            .defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData
             .defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
 
@@ -53,10 +50,10 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
                 : null;
 
         this.abnormalityType = ModEntityTypes.abnormalityEntityType(pEntityType);
-
-        this.resetQliphothCounter();
-
-        this.navigation.setCanFloat(true);//デフォルトだと泳げる設定
+        if (this instanceof IQliphoth iQliphoth) {
+            //内部でthis.abnormalityを参照しているので、this.abnormalityを初期化した後に呼ぶ
+            iQliphoth.resetQliphothCounter();
+        }
 
         if (this instanceof ILazyControlMob<?> iLazyControlMob) {
             this.lookControl = iLazyControlMob.createLazyLookControl();
@@ -83,40 +80,12 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
         return this.abnormalityType.getDamageType();
     }
 
-    public int getMaxQliphothCounter() {
-        return this.abnormalityType.getQliphothCounter();
+    public IMixinEntityType<T> getAbnormalityType() {
+        return this.abnormalityType;
     }
 
     public boolean hasQliphothCounter() {
-        return this.getMaxQliphothCounter() != 0;
-    }
-
-    public int getQliphothCounter() {
-        return this.getEntityData().get(QLIPHOTH_COUNTER);
-    }
-
-    public void setQliphothCounter(int counterValue) {
-        if (!this.level.isClientSide) {
-            this.getEntityData().set(QLIPHOTH_COUNTER, Mth.clamp(counterValue, 0, this.getMaxQliphothCounter()));
-        }
-    }
-
-    public void resetQliphothCounter() {
-        if (!this.level.isClientSide) {
-            this.setQliphothCounter(this.getMaxQliphothCounter());
-        }
-    }
-
-    public void addQliphothCounter(int add) {
-        if (!this.level.isClientSide) {
-            this.setQliphothCounter(this.getQliphothCounter() + add);
-        }
-    }
-
-    public void subQliphothCounter(int sub) {
-        if (!this.level.isClientSide) {
-            this.setQliphothCounter(this.getQliphothCounter() - sub);
-        }
+        return this instanceof IQliphoth;
     }
 
     public int getAttackTick() {
@@ -172,23 +141,27 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        //これが読み込まれるのは親クラスのEntity
-        //this.abnormalityTypeがnullなのでgetMaxQliphothCounterは使えない
-        //とりあえず初期値は0
-        //コンストラクタでabnormalityTypeを初期化した後クリフォトカウンターもリセットする
-        this.getEntityData().define(QLIPHOTH_COUNTER, 0);
+        //これが読み込まれるのは親クラスのEntityなので、this.abnormalityTypeがnull
+        //getMaxQliphothCounterは使えないので初期値は0、コンストラクタでabnormalityTypeを初期化した後クリフォトカウンターもリセットする
+        if (this.hasQliphothCounter()) {
+            this.getEntityData().define(IQliphoth.QLIPHOTH_COUNTER, 0);
+        }
         this.getEntityData().define(ATTACK_TICK, 0);
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putInt(QLIPHOTH_COUNTER_NAME, this.getQliphothCounter());
+        if (this instanceof IQliphoth iQliphoth) {
+            pCompound.putInt(QLIPHOTH_COUNTER_NAME, iQliphoth.getQliphothCounter());
+        }
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.setQliphothCounter(pCompound.getInt(QLIPHOTH_COUNTER_NAME));
+        if (this instanceof IQliphoth iQliphoth) {
+            iQliphoth.setQliphothCounter(pCompound.getInt(QLIPHOTH_COUNTER_NAME));
+        }
     }
 }

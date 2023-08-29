@@ -21,6 +21,8 @@ public abstract class SmartBrainAbnormalityEntity<T extends AbnormalityEntity<T>
 
     public SmartBrainAbnormalityEntity(EntityType<T> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+
+        this.navigation.setCanFloat(true);//デフォルトだと泳げる設定
     }
 
     @Override

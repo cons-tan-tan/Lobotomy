@@ -5,7 +5,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 
-public interface IQliphoth {
+public interface IQliphothAbnormality {
 
     EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData
             .defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
@@ -14,17 +14,22 @@ public interface IQliphoth {
         return (AbnormalityEntity<?>) this;
     }
 
+    private SynchedEntityData getEntityData() {
+        return self().getEntityData();
+    }
+
+
     default int getMaxQliphothCounter() {
         return self().getAbnormalityType().getQliphothCounter();
     }
 
     default int getQliphothCounter() {
-        return self().getEntityData().get(QLIPHOTH_COUNTER);
+        return this.getEntityData().get(QLIPHOTH_COUNTER);
     }
 
     default void setQliphothCounter(int counterValue) {
         if (!self().level.isClientSide) {
-            self().getEntityData().set(QLIPHOTH_COUNTER, Mth.clamp(counterValue, 0, this.getMaxQliphothCounter()));
+            this.getEntityData().set(QLIPHOTH_COUNTER, Mth.clamp(counterValue, 0, this.getMaxQliphothCounter()));
         }
     }
 

@@ -2,9 +2,6 @@ package constantan.lobotomy.common.entity.custom;
 
 import constantan.lobotomy.common.entity.*;
 import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -35,10 +32,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
-        implements IAnimatable, IQliphoth, IAoEAttack, ILazyControl<JudgementBird> {
-
-    private static final EntityDataAccessor<Boolean> IS_SPONTANEOUSLY_MOVING = SynchedEntityData
-            .defineId(JudgementBird.class, EntityDataSerializers.BOOLEAN);
+        implements IAnimatable, IQliphoth, IAoEAttack, ISyncSpontaneousMoving, ILazyControl<JudgementBird> {
 
     private static final int ATTACK_DAMAGE_RANDOM_RANGE = 10;
 
@@ -52,10 +46,9 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "body_controller", 0, event -> {
-            boolean isMoving = this.getEntityData().get(IS_SPONTANEOUSLY_MOVING);
             if (this.getAttackTick() > 0) {
                 return PlayState.STOP;
-            } else if (this.isOnGround() && isMoving) {
+            } else if (this.isOnGround() && this.isMovingSpontaneously()) {
                 event.getController().setAnimation(ANIM_WALK);
             } else {
                 event.getController().setAnimation(ANIM_IDLE);
@@ -128,14 +121,6 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (!this.level.isClientSide) {
-            this.getEntityData().set(IS_SPONTANEOUSLY_MOVING, this.zza != 0);
-        }
-    }
-
-    @Override
     public double getAttributeValue(@NotNull Attribute pAttribute) {
         if (pAttribute == Attributes.ATTACK_DAMAGE) {
             return super.getAttributeValue(pAttribute) + this.getRandom().nextInt(ATTACK_DAMAGE_RANDOM_RANGE + 1);
@@ -151,12 +136,6 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
     @Override
     public boolean canDoKnockbackAttack() {
         return false;
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.getEntityData().define(IS_SPONTANEOUSLY_MOVING, false);
     }
 
     @Override

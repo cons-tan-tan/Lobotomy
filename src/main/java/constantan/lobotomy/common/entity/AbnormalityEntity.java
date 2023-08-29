@@ -128,6 +128,9 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     public void tick() {
         super.tick();
         this.setAttackTick(Math.max(this.getAttackTick() - 1, 0));
+        if (this instanceof ISyncSpontaneousMoving iSyncSpontaneousMoving) {
+            iSyncSpontaneousMoving.setMovingSpontaneously(this.zza != 0.0F);
+        }
     }
 
     @Override
@@ -145,6 +148,9 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
         //getMaxQliphothCounterは使えないので初期値は0、コンストラクタでabnormalityTypeを初期化した後クリフォトカウンターもリセットする
         if (this.hasQliphothCounter()) {
             this.getEntityData().define(IQliphoth.QLIPHOTH_COUNTER, 0);
+        }
+        if (this instanceof ISyncSpontaneousMoving) {
+            this.getEntityData().define(ISyncSpontaneousMoving.IS_MOVING_SPONTANEOUSLY, false);
         }
         this.getEntityData().define(ATTACK_TICK, 0);
     }

@@ -23,10 +23,13 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends Monster implements IRiskLevel, IDefense, IDamageType, IAnimatableParent {
+public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends Monster
+        implements IRiskLevel, IDefense, IDamageType, IAnimatableParent {
 
-    private static final EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData.defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> QLIPHOTH_COUNTER = SynchedEntityData
+            .defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData
+            .defineId(AbnormalityEntity.class, EntityDataSerializers.INT);
 
     protected static final AnimationBuilder ANIM_WALK = new AnimationBuilder()
             .addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
@@ -38,11 +41,11 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     private static final String QLIPHOTH_COUNTER_NAME = "qliphoth_counter";
 
     private final AnimationFactory factory;
-    private final IMixinEntityType<?> abnormalityType;
+    private final IMixinEntityType<T> abnormalityType;
 
     public final Predicate<T> isAttackAnimating = abnormality -> abnormality.getAttackTick() > 0;
 
-    public AbnormalityEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public AbnormalityEntity(EntityType<T> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
 
         factory = this instanceof IAnimatable iAnimatable
@@ -170,7 +173,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     protected void defineSynchedData() {
         super.defineSynchedData();
         //これが読み込まれるのは親クラスのEntity
-        // this.abnormalityTypeがnullなのでgetMaxQliphothCounterは使えない
+        //this.abnormalityTypeがnullなのでgetMaxQliphothCounterは使えない
         //とりあえず初期値は0
         //コンストラクタでabnormalityTypeを初期化した後クリフォトカウンターもリセットする
         this.getEntityData().define(QLIPHOTH_COUNTER, 0);

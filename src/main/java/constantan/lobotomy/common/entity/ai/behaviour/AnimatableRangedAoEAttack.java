@@ -99,15 +99,17 @@ public class AnimatableRangedAoEAttack<E extends Mob> extends DelayedBehaviour<E
         if (this.target == null)
             return;
 
-        if (!owner.getSensing().hasLineOfSight(this.target) || !this.isWithinAoEAttackRange(owner, this.target))
-            return;
+//        if (!owner.getSensing().hasLineOfSight(this.target) || !this.isWithinAoEAttackRange(owner, this.target))
+//            return;
 
         List<LivingEntity> livingEntities = BrainUtils.getMemory(owner, ModMemoryModuleTypes.IN_AOE_LIVING_ENTITY.get());
-        if (this.exceptSelf.test(owner, target)) {
-            livingEntities.remove(owner);
-        }
-        livingEntities.removeIf(livingEntity -> this.exceptTargetIf.test(owner, livingEntity));
+        if (livingEntities != null) {
+            if (this.exceptSelf.test(owner, target)) {
+                livingEntities.remove(owner);
+            }
+            livingEntities.removeIf(livingEntity -> this.exceptTargetIf.test(owner, livingEntity));
 
-        this.doAoEAttackConsumer.accept(owner, livingEntities);
+            this.doAoEAttackConsumer.accept(owner, livingEntities);
+        }
     }
 }

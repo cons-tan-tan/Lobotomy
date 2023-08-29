@@ -23,7 +23,6 @@ import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.ArrayList;
@@ -44,23 +43,20 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeav
     private int subQliphothCounterSecond = 10;
     private int attackSecond = 3;
 
-    public TheBurrowingHeavenEntity(EntityType<? extends AbnormalityEntity> pEntityType, Level pLevel) {
+    public TheBurrowingHeavenEntity(EntityType<TheBurrowingHeavenEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller",
-                0, this::predicate));
-    }
-
-    private <P extends Entity & IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        if (this.getQliphothCounter() == 0) {
-            event.getController().setAnimation(ANIM_ACTIVATE);
-        } else {
-            event.getController().setAnimation(ANIM_IDLE);
-        }
-        return PlayState.CONTINUE;
+        data.addAnimationController(new AnimationController<>(this, "controller", 0, event -> {
+            if (this.getQliphothCounter() == 0) {
+                event.getController().setAnimation(ANIM_ACTIVATE);
+            } else {
+                event.getController().setAnimation(ANIM_IDLE);
+            }
+            return PlayState.CONTINUE;
+        }));
     }
 
     public static AttributeSupplier setAttributes() {
@@ -68,7 +64,8 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeav
                 .add(Attributes.MAX_HEALTH, 800.0F)
                 .add(Attributes.ATTACK_DAMAGE, 150.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.0F)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).build();
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                .build();
     }
 
     /**
@@ -125,9 +122,7 @@ public class TheBurrowingHeavenEntity extends AbnormalityEntity<TheBurrowingHeav
         super.tick();
 
         if (this.level.isClientSide && this.clientCheckTick-- == 0) {
-            clientCheckTick = this.getQliphothCounter() == 0
-                    ? 10
-                    : 20;
+            clientCheckTick = this.getQliphothCounter() == 0 ? 10 : 20;
             if (this.clientShouldRender) {
                 Minecraft minecraft = Minecraft.getInstance();
                 if (this.level == minecraft.level) {

@@ -10,15 +10,12 @@ import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarg
 import constantan.lobotomy.common.entity.ai.behaviour.SetVariableSpeedWalkTargetToAttackTarget;
 import constantan.lobotomy.common.entity.ai.control.LazyFlyingMoveControl;
 import constantan.lobotomy.common.entity.ai.sensor.LivingEntityInAoESensor;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -29,8 +26,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.Lazy;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
-import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
-import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
@@ -58,8 +53,8 @@ import java.util.function.Predicate;
 public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBirdEntity>
         implements IAnimatable, IAoEAttackMob, ILazyControlMob<PunishingBirdEntity> {
 
-    private static final EntityDataAccessor<Boolean> IS_ANGRY =
-            SynchedEntityData.defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData
+            .defineId(PunishingBirdEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final AnimationBuilder ANIM_ATTACK_NORMAL = new AnimationBuilder()
             .addAnimation("attack_normal", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
@@ -84,13 +79,13 @@ public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBi
 
     private int restTick = 0;
 
-    public PunishingBirdEntity(EntityType<? extends AbnormalityEntity> pEntityType, Level pLevel) {
+    public PunishingBirdEntity(EntityType<PunishingBirdEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     @Override
     public List<ExtendedSensor<PunishingBirdEntity>> getSensors() {
-        return ObjectArrayList.of(
+        return this.sensors(
                 new NearbyPlayersSensor<>(),
                 new NearbyLivingEntitySensor<>(),
                 new HurtBySensor<>(),
@@ -103,7 +98,7 @@ public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBi
 
     @Override
     public BrainActivityGroup<PunishingBirdEntity> getCoreTasks() {
-        return BrainActivityGroup.coreTasks(
+        return this.coreTasks(
                 new FloatToSurfaceOfFluidWithSafety<>(),
                 new LookAtTarget<>(),
                 new MoveToWalkTarget<>()
@@ -112,31 +107,33 @@ public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBi
 
     @Override
     public BrainActivityGroup<PunishingBirdEntity> getIdleTasks() {
-        return BrainActivityGroup.<PunishingBirdEntity>idleTasks(//ここのジェネリクスを省略するとコンパイル通らない
-                new FirstApplicableBehaviour<>(
+        return this.idleTasks(
+                this.firstApplicableBehaviour(
                         new TargetOrRetaliate<>(),
                         new SetPlayerTransientLookTarget<>()
                                 .predicate(player -> player.distanceTo(this) < 4),
                         new SetRandomLookTarget<>()
-                ), new OneRandomBehaviour<>(
+                ), this.oneRandomBehaviour(
                         new SetRandomWalkTarget<>(),
-                        new Idle<>()
-                                .runFor(livingEntity -> livingEntity.getRandom().nextInt(200, 400))
+                        new Idle<PunishingBirdEntity>()
+                                .runFor(punishingBird -> punishingBird.getRandom().nextInt(200, 400))
                 )
         );
     }
 
     @Override
     public BrainActivityGroup<PunishingBirdEntity> getFightTasks() {
-        return BrainActivityGroup.fightTasks(
+        return this.fightTasks(
                 new InvalidateAttackTarget<>(),
                 new SetVariableSpeedWalkTargetToAttackTarget<PunishingBirdEntity>()
                         .speedMod((punishingBird, livingEntity) -> punishingBird.isAngry() ? 2.0F : 1.0F),
                 new AnimatableRangedAoEAttack<PunishingBirdEntity>(ATTACK_OCCUR_TICK + 1)
                         .startCondition(punishingBird -> !this.isAttackAnimating.test(punishingBird) && punishingBird.isAngry())
+                        .whenStarting(punishingBird -> punishingBird.setAttackTick(WAIT_ANIM_TICK + 1))
                         .stopIf(punishingBird -> !punishingBird.isAngry()),
                 new AnimatableMeleeAttack<PunishingBirdEntity>(2)
                         .startCondition(punishingBird -> !this.isAttackAnimating.test(punishingBird) && !punishingBird.isAngry())
+                        .whenStarting(punishingBird -> punishingBird.setAttackTick(2))
                         .stopIf(PunishingBirdEntity::isAngry)
         );
     }
@@ -165,20 +162,14 @@ public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBi
         }));
     }
 
-    @Override
-    public void performAoEAttack(List<LivingEntity> list) {
-        for (LivingEntity target : list) {
-            this.doHurtTarget(target);
-        }
-    }
-
     public static AttributeSupplier setAttributes() {
         return AbnormalityEntity.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, NORMAL_MAX_HEALTH)
                 .add(Attributes.ATTACK_DAMAGE, NORMAL_ATTACK_DAMAGE)
                 .add(Attributes.MOVEMENT_SPEED, 0.1F)
                 .add(Attributes.FLYING_SPEED, 0.3F)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.8D).build();
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.8D)
+                .build();
     }
 
     public AABB getAngryAttackAABB() {
@@ -240,16 +231,6 @@ public class PunishingBirdEntity extends SmartBrainAbnormalityEntity<PunishingBi
     public void resetRestTick() {
         if (!this.level.isClientSide) {
             this.restTick = ENOUGH_REST_TICK;
-        }
-    }
-
-    @Override
-    public void swing(@NotNull InteractionHand pHand, boolean pUpdateSelf) {
-        super.swing(pHand, pUpdateSelf);
-        if (this.isAngry()) {
-            this.setAttackTick(WAIT_ANIM_TICK + 1);
-        } else {
-            this.setAttackTick(2);
         }
     }
 

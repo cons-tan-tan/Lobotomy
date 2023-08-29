@@ -27,6 +27,10 @@ public class LazyMoveControl<P extends Mob> extends MoveControl implements ILazy
     public void tick() {
         if (!this.predicateLazy.get().test(this.owner)) {
             super.tick();
+        } else {
+            this.mob.setXxa(0.0F);
+            this.mob.setYya(0.0F);
+            this.mob.setZza(0.0F);
         }
     }
 }

@@ -35,7 +35,7 @@ public abstract class MixinLivingEntity {
 
     @Inject(method = "isDamageSourceBlocked", at = @At("HEAD"), cancellable = true)
     private void isDamageSourceBlocked_Head(DamageSource pDamageSource, CallbackInfoReturnable<Boolean> cir) {
-        IMixinDamageSource damageSource = (IMixinDamageSource) pDamageSource;
+        var damageSource = (IMixinDamageSource) pDamageSource;
         if (!damageSource.isBlockable()) {
             cir.setReturnValue(false);
         }
@@ -45,9 +45,9 @@ public abstract class MixinLivingEntity {
             target = "Lnet/minecraft/world/entity/LivingEntity;isDamageSourceBlocked(Lnet/minecraft/world/damagesource/DamageSource;)Z",
             shift = At.Shift.BEFORE), ordinal = 0, argsOnly = true)
     private float hurt_Before_isDamageSourceBlocked(float pAmount, DamageSource pSource) {
-        LivingEntity self = (LivingEntity) (Object) this;
+        var self = (LivingEntity) (Object) this;
         boolean isShieldAvailable = self.isDamageSourceBlocked(pSource);
-        IMixinDamageSource damageSource = (IMixinDamageSource) pSource;
+        var damageSource = (IMixinDamageSource) pSource;
         if (damageSource.hasRiskLevel()) {
             RiskLevelUtil attackerRiskLevel = damageSource.getRiskLevel();
             RiskLevelUtil defenderRiskLevel;
@@ -121,7 +121,7 @@ public abstract class MixinLivingEntity {
 
     @Inject(method = "getDamageAfterArmorAbsorb", at = @At("HEAD"), cancellable = true)
     private void getDamageAfterArmorAbsorb_Head(DamageSource pDamageSource, float pDamageAmount, CallbackInfoReturnable<Float> cir) {
-        IMixinDamageSource damageSource = (IMixinDamageSource) pDamageSource;
+        var damageSource = (IMixinDamageSource) pDamageSource;
         if (damageSource.hasRiskLevel()) {
             cir.setReturnValue(pDamageAmount);
         }
@@ -129,7 +129,7 @@ public abstract class MixinLivingEntity {
 
     @Inject(method = "getDamageAfterMagicAbsorb", at = @At("HEAD"), cancellable = true)
     private void getDamageAfterMagicAbsorb_Head(DamageSource pDamageSource, float pDamageAmount, CallbackInfoReturnable<Float> cir) {
-        IMixinDamageSource damageSource = (IMixinDamageSource) pDamageSource;
+        var damageSource = (IMixinDamageSource) pDamageSource;
         if (damageSource.hasRiskLevel()) {
             cir.setReturnValue(pDamageAmount);
         }

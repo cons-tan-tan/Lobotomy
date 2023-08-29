@@ -40,7 +40,7 @@ public class DefenseUtil {
     }
 
     public static TextComponent getDefenseMultiplierTextComponent(Map<DamageTypeUtil, Float> defense, boolean isHighlighted) {
-        TextComponent tooltip = new TextComponent("");
+        var tooltip = new TextComponent("");
 
         for (DamageTypeUtil damageType : DamageTypeUtil.values()) {
             float multiplier = defense.get(damageType);

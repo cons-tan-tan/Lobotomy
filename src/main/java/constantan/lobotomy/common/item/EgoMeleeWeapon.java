@@ -27,7 +27,7 @@ public abstract class EgoMeleeWeapon extends EgoWeapon {
     public EgoMeleeWeapon(int minDamage, int maxDamage, Properties pProperties) {
         super(minDamage, maxDamage, pProperties);
 
-        EgoMeleeWeaponProperties egoMeleeWeaponProperties = (EgoMeleeWeaponProperties) pProperties;
+        var egoMeleeWeaponProperties = (EgoMeleeWeaponProperties) pProperties;
         this.weaponType = egoMeleeWeaponProperties.type;
         this.range = egoMeleeWeaponProperties.range;
         this.speed = egoMeleeWeaponProperties.speed;

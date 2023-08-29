@@ -32,7 +32,7 @@ public abstract class AbnormalityTool extends Item implements IAbnormalityTool, 
                 ? GeckoLibUtil.createFactory(iAnimatable)
                 : null;
 
-        AbnormalityToolItemProperties abnormalityToolItemProperties = (AbnormalityToolItemProperties) pProperties;
+        var abnormalityToolItemProperties = (AbnormalityToolItemProperties) pProperties;
         this.riskLevel = abnormalityToolItemProperties.riskLevel;
     }
 

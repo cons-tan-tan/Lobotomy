@@ -23,7 +23,7 @@ public abstract class MixinItemStack {
             target = "Lnet/minecraft/world/entity/EquipmentSlot;values()[Lnet/minecraft/world/entity/EquipmentSlot;",
             shift = At.Shift.BEFORE), name = "list")
     private List<Component> getTooltipLines_Before_values(List<Component> list) {
-        ItemStack itemStack = (ItemStack) (Object) this;
+        var itemStack = (ItemStack) (Object) this;
         Item item = itemStack.getItem();
         if (item instanceof EgoRangeWeapon egoRangeWeapon) {
             list.add(TextComponent.EMPTY);
@@ -37,11 +37,11 @@ public abstract class MixinItemStack {
             target = "Ljava/util/Map$Entry;getValue()Ljava/lang/Object;",
             shift = At.Shift.BEFORE), name = "list")
     private List<Component> getTooltipLines_Before_getValue(List<Component> list) {
-        ItemStack itemStack = (ItemStack) (Object) this;
-        Item item = itemStack.getItem();
+        var self = (ItemStack) (Object) this;
+        Item item = self.getItem();
         if (list.get(list.size() - 1).equals((new TranslatableComponent("item.modifiers." + EquipmentSlot.MAINHAND.getName())).withStyle(ChatFormatting.GRAY))) {
             if (item instanceof EgoMeleeWeapon egoMeleeWeapon) {
-                list.add(new TextComponent(" ").append(egoMeleeWeapon.getAbnormalDamageTooltip(itemStack)));
+                list.add(new TextComponent(" ").append(egoMeleeWeapon.getAbnormalDamageTooltip(self)));
             }
         } else if (list.get(list.size() - 1).equals((new TranslatableComponent("item.modifiers." + EquipmentSlot.CHEST.getName())).withStyle(ChatFormatting.GRAY))) {
             if (item instanceof EgoArmor egoArmor) {

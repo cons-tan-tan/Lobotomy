@@ -19,7 +19,7 @@ public abstract class MixinItem {
     @Inject(method = "appendHoverText", at = @At("HEAD"))
     private void appendHoverText_Head(ItemStack pStack, Level pLevel,
                                       List<Component> pTooltipComponents, TooltipFlag pIsAdvanced, CallbackInfo ci) {
-        Item self = (Item) (Object) this;
+        var self = (Item) (Object) this;
         if (self instanceof IRiskLevel iRiskLevel) {
             pTooltipComponents.add(iRiskLevel.getRiskLevel().getColoredTextComponent());
         }

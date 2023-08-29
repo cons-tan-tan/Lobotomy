@@ -57,7 +57,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
                 ? GeckoLibUtil.createFactory(iAnimatable)
                 : null;
 
-        EgoArmorProperties egoArmorItemProperties = (EgoArmorProperties) builder;
+        var egoArmorItemProperties = (EgoArmorProperties) builder;
         this.riskLevel = egoArmorItemProperties.riskLevel;
         this.defense = egoArmorItemProperties.defense;
         this.suitTexture = egoArmorItemProperties.suitTexture;
@@ -115,7 +115,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
     @Nullable
     public ResourceLocation getSuitTexture(LivingEntity livingEntity) {
         if (this instanceof IAnimatable) {
-            EgoArmorRenderer renderer = EgoArmorRenderer.getEgoArmorRenderer(this, livingEntity);
+            var renderer = EgoArmorRenderer.getEgoArmorRenderer(this, livingEntity);
             return renderer.egoArmorModel.getSuitTextureLocation(this);
         }
         return null;
@@ -140,7 +140,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
     @Override
     public final String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         if (this instanceof IAnimatable) {
-            EgoArmorRenderer renderer = EgoArmorRenderer.getEgoArmorRenderer(EgoArmor.this, entity);
+            var renderer = EgoArmorRenderer.getEgoArmorRenderer(EgoArmor.this, entity);
             return renderer.getTextureLocation(this).toString();
         }
         return super.getArmorTexture(stack, entity, slot, type);

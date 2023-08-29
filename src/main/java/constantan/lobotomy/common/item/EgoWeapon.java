@@ -56,7 +56,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
             GeckoLibNetwork.registerSyncable((T) this);
         }
 
-        EgoWeaponProperties egoWeaponItemProperties = (EgoWeaponProperties) pProperties;
+        var egoWeaponItemProperties = (EgoWeaponProperties) pProperties;
         this.riskLevel = egoWeaponItemProperties.riskLevel;
         this.damageType = egoWeaponItemProperties.damageType;
         this.hasIdleAnim = egoWeaponItemProperties.idleAnim;

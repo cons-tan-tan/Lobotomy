@@ -54,10 +54,11 @@ public class TheBurrowingHeaven extends AbnormalityEntity<TheBurrowingHeaven>
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, event -> {
+            var controller = event.getController();
             if (this.getQliphothCounter() == 0) {
-                event.getController().setAnimation(ANIM_ACTIVATE);
+                controller.setAnimation(ANIM_ACTIVATE);
             } else {
-                event.getController().setAnimation(ANIM_IDLE);
+                controller.setAnimation(ANIM_IDLE);
             }
             return PlayState.CONTINUE;
         }));
@@ -76,7 +77,7 @@ public class TheBurrowingHeaven extends AbnormalityEntity<TheBurrowingHeaven>
      * 計算は{@link Entity#lookAt(EntityAnchorArgument.Anchor, Vec3)}を参考にした
      */
     public float getXRadForAnimation(float partialTick) {//弧度法
-        Minecraft mc = Minecraft.getInstance();
+        var mc = Minecraft.getInstance();
         Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
         double d0 = camera.x - this.getPosition(partialTick).x;
         double d1 = camera.y - (this.getPosition(partialTick).y + (this.getBoundingBox().getYsize() * 159 / 176));
@@ -89,7 +90,7 @@ public class TheBurrowingHeaven extends AbnormalityEntity<TheBurrowingHeaven>
      * 同上
      */
     public float getYRadForAnimation(float partialTick) {//弧度法
-        Minecraft mc = Minecraft.getInstance();
+        var mc = Minecraft.getInstance();
         Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
         double d0 = camera.x - this.getPosition(partialTick).x;
         double d2 = camera.z - this.getPosition(partialTick).z;
@@ -123,7 +124,7 @@ public class TheBurrowingHeaven extends AbnormalityEntity<TheBurrowingHeaven>
         if (this.level.isClientSide && this.clientCheckTick-- == 0) {
             clientCheckTick = this.getQliphothCounter() == 0 ? 10 : 20;
             if (this.clientShouldRender) {
-                Minecraft minecraft = Minecraft.getInstance();
+                var minecraft = Minecraft.getInstance();
                 if (this.level == minecraft.level) {
                     Vec3 vec3 = this.getEyePosition();
                     Vec3 vec31 = minecraft.gameRenderer.getMainCamera().getPosition();

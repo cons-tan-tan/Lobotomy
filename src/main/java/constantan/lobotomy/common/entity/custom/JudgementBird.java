@@ -1,6 +1,7 @@
 package constantan.lobotomy.common.entity.custom;
 
 import constantan.lobotomy.common.entity.*;
+import constantan.lobotomy.common.entity.ai.behaviour.FloatToSurfaceOfFluidWithSafety;
 import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -12,7 +13,6 @@ import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
@@ -46,19 +46,21 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "body_controller", 0, event -> {
+            var controller = event.getController();
             if (this.getAttackTick() > 0) {
                 return PlayState.STOP;
             } else if (this.isOnGround() && this.isMovingSpontaneously()) {
-                event.getController().setAnimation(ANIM_WALK);
+                controller.setAnimation(ANIM_WALK);
             } else {
-                event.getController().setAnimation(ANIM_IDLE);
+                controller.setAnimation(ANIM_IDLE);
             }
             return PlayState.CONTINUE;
         }));
         data.addAnimationController(new AnimationController<>(this, "attack_controller", 0, event -> {
+            var controller = event.getController();
             if (this.getAttackTick() == WAIT_ANIM_TICK) {
-                event.getController().markNeedsReload();
-                event.getController().setAnimation(ANIM_ATTACK);
+                controller.markNeedsReload();
+                controller.setAnimation(ANIM_ATTACK);
                 return PlayState.CONTINUE;
             }
             return PlayState.CONTINUE;
@@ -76,12 +78,9 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
     @Override
     public BrainActivityGroup<JudgementBird> getCoreTasks() {
         return this.coreTasks(
-                new FloatToSurfaceOfFluid<>(),
-                new LookAtTarget<JudgementBird>()
-                        .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
-                        .stopIf(judgementBird -> judgementBird.getAttackTick() > 0),
-                new MoveToWalkTarget<JudgementBird>()
-                        .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
+                new FloatToSurfaceOfFluidWithSafety<>(),
+                new LookAtTarget<>(),
+                new MoveToWalkTarget<>()
         );
     }
 

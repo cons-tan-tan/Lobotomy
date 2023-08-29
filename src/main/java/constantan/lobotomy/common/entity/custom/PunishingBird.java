@@ -138,22 +138,24 @@ public class PunishingBird extends SmartBrainAbnormalityEntity<PunishingBird>
     @Override
     public void registerControllers(final AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "body_controller", 0, event -> {
+            var controller = event.getController();
             if (!this.isOnGround()) {
-                event.getController().setAnimation(ANIM_FLY);
+                controller.setAnimation(ANIM_FLY);
             } else {
-                event.getController().setAnimation(ANIM_IDLE);
+                controller.setAnimation(ANIM_IDLE);
             }
             return PlayState.CONTINUE;
         }));
         data.addAnimationController(new AnimationController<>(this, "attack_controller", 0, event -> {
+            var controller = event.getController();
             if (this.isAngry()) {
                 if (this.getAttackTick() == WAIT_ANIM_TICK) {
-                    event.getController().markNeedsReload();
-                    event.getController().setAnimation(ANIM_ATTACK_ANGRY);
+                    controller.markNeedsReload();
+                    controller.setAnimation(ANIM_ATTACK_ANGRY);
                 }
             } else if (this.getAttackTick() == 1) {
-                event.getController().markNeedsReload();
-                event.getController().setAnimation(ANIM_ATTACK_NORMAL);
+                controller.markNeedsReload();
+                controller.setAnimation(ANIM_ATTACK_NORMAL);
             }
             return PlayState.CONTINUE;
         }));

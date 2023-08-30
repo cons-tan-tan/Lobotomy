@@ -61,11 +61,9 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
         data.addAnimationController(new AnimationController<>(this, "attack_controller", 0, event -> {
             var controller = event.getController();
             if (this.getAttackTick() > 0) {
-//                controller.markNeedsReload();
                 controller.setAnimation(ANIM_ATTACK);
                 return PlayState.CONTINUE;
-            }
-            if (this.getAttackTick() == 0) {
+            } else {
                 controller.clearAnimationCache();
             }
             return PlayState.STOP;

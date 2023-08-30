@@ -145,16 +145,17 @@ public class PunishingBird extends SmartBrainAbnormalityEntity<PunishingBird>
         }));
         data.addAnimationController(new AnimationController<>(this, "attack_controller", 0, event -> {
             var controller = event.getController();
-            if (this.isAngry()) {
-                if (this.getAttackTick() == WAIT_ANIM_TICK) {
-                    controller.markNeedsReload();
+            if (this.getAttackTick() > 0) {
+                if (this.isAngry()) {
                     controller.setAnimation(ANIM_ATTACK_ANGRY);
+                } else {
+                    controller.setAnimation(ANIM_ATTACK_NORMAL);
                 }
-            } else if (this.getAttackTick() == 1) {
-                controller.markNeedsReload();
-                controller.setAnimation(ANIM_ATTACK_NORMAL);
+                return PlayState.CONTINUE;
+            } else {
+                controller.clearAnimationCache();
             }
-            return PlayState.CONTINUE;
+            return PlayState.STOP;
         }));
     }
 

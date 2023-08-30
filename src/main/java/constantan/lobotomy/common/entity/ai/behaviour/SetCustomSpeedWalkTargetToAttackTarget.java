@@ -12,7 +12,7 @@ import net.tslat.smartbrainlib.util.BrainUtils;
 
 import java.util.function.BiFunction;
 
-public class SetVariableSpeedWalkTargetToAttackTarget<E extends Mob> extends SetWalkTargetToAttackTarget<E> {
+public class SetCustomSpeedWalkTargetToAttackTarget<E extends Mob> extends SetWalkTargetToAttackTarget<E> {
 
     protected BiFunction<E, LivingEntity, Float> speedMod = ((owner, livingEntity) -> 1.0F);
 

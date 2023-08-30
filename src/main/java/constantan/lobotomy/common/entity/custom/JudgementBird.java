@@ -1,8 +1,11 @@
 package constantan.lobotomy.common.entity.custom;
 
 import constantan.lobotomy.common.entity.*;
+import constantan.lobotomy.common.entity.ai.behaviour.AnimatableRangedAoEAttack;
 import constantan.lobotomy.common.entity.ai.behaviour.FloatToSurfaceOfFluidWithSafety;
+import constantan.lobotomy.common.entity.ai.behaviour.SetCustomSpeedWalkTargetToAttackTargetWithAoE;
 import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;
+import constantan.lobotomy.common.entity.ai.sensor.LivingEntityInAoESensor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -10,12 +13,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Lazy;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
@@ -71,7 +72,10 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
     public List<ExtendedSensor<JudgementBird>> getSensors() {
         return this.sensors(
                 new NearbyPlayersSensor<>(),
-                new HurtBySensor<>()
+                new HurtBySensor<>(),
+                new LivingEntityInAoESensor<JudgementBird>()
+                        .attackRange(judgementBird -> getBoundingBox().inflate(16, 1, 16))
+                        .checkRange(judgementBird -> getBoundingBox().inflate(12, 0, 12))
         );
     }
 
@@ -103,8 +107,8 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
     public BrainActivityGroup<JudgementBird> getFightTasks() {
         return this.fightTasks(
                 new InvalidateAttackTarget<>(),
-                new SetWalkTargetToAttackTarget<>(),
-                new AnimatableMeleeAttack<JudgementBird>(ATTACK_OCCUR_TICK + 1)
+                new SetCustomSpeedWalkTargetToAttackTargetWithAoE<>(),
+                new AnimatableRangedAoEAttack<JudgementBird>(ATTACK_OCCUR_TICK + 1)
                         .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
                         .whenStarting(judgementBird -> judgementBird.setAttackTick(WAIT_ANIM_TICK + 1))
         );

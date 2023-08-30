@@ -1,10 +1,7 @@
 package constantan.lobotomy.common.entity.custom;
 
 import constantan.lobotomy.common.entity.*;
-import constantan.lobotomy.common.entity.ai.behaviour.AnimatableRangedAoEAttack;
-import constantan.lobotomy.common.entity.ai.behaviour.FloatToSurfaceOfFluidWithSafety;
-import constantan.lobotomy.common.entity.ai.behaviour.SetPlayerTransientLookTarget;
-import constantan.lobotomy.common.entity.ai.behaviour.SetVariableSpeedWalkTargetToAttackTarget;
+import constantan.lobotomy.common.entity.ai.behaviour.*;
 import constantan.lobotomy.common.entity.ai.control.LazyFlyingMoveControl;
 import constantan.lobotomy.common.entity.ai.sensor.LivingEntityInAoESensor;
 import net.minecraft.nbt.CompoundTag;
@@ -122,7 +119,7 @@ public class PunishingBird extends SmartBrainAbnormalityEntity<PunishingBird>
     public BrainActivityGroup<PunishingBird> getFightTasks() {
         return this.fightTasks(
                 new InvalidateAttackTarget<>(),
-                new SetVariableSpeedWalkTargetToAttackTarget<PunishingBird>()
+                new SetCustomSpeedWalkTargetToAttackTarget<PunishingBird>()
                         .speedMod((punishingBird, livingEntity) -> punishingBird.isAngry() ? 2.0F : 1.0F),
                 new AnimatableRangedAoEAttack<PunishingBird>(ATTACK_OCCUR_TICK + 1)
                         .startCondition(punishingBird -> !this.isAttackAnimating.test(punishingBird) && punishingBird.isAngry())

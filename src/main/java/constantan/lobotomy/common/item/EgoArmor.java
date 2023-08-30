@@ -146,7 +146,7 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         return super.getArmorTexture(stack, entity, slot, type);
     }
 
-    public static class EgoArmorProperties extends EgoProperties {
+    public static class EgoArmorProperties extends EgoProperties<EgoArmorProperties> {
 
         RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         Map<DamageTypeUtil, Float> defense = DefenseUtil.DEFAULT_DEFENSE;

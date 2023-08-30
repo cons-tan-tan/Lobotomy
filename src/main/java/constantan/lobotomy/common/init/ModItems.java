@@ -47,7 +47,7 @@ public class ModItems {
 
     //EGO_WEAPON
     public static final RegistryObject<Item> PEAK_WEAPON = ITEMS.register(LibAbnormality.PUNISHING_BIRD.getWeaponEgoName(),
-            () -> new PeakWeaponItem(2, 3, new EgoWeapon.EgoWeaponProperties()
+            () -> new PeakWeaponItem(2, 3, new EgoRangeWeapon.EgoRangeWeaponProperties()
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.TETH)));
 

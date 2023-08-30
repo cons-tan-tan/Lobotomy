@@ -130,27 +130,27 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         }
     }
 
-    public static class EgoWeaponProperties extends EgoProperties {
+    public static class EgoWeaponProperties<R> extends EgoProperties<R> {
 
         RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         DamageTypeUtil damageType = DamageTypeUtil.RED;
         boolean idleAnim;
 
         @Override
-        public EgoWeaponProperties riskLevel(RiskLevelUtil riskLevel) {
+        public R riskLevel(RiskLevelUtil riskLevel) {
             this.riskLevel = riskLevel;
-            return this;
+            return (R) this;
         }
 
         @Override
-        public EgoWeaponProperties idleAnim() {
+        public R idleAnim() {
             this.idleAnim = true;
-            return this;
+            return (R) this;
         }
 
-        public EgoWeaponProperties damageType(DamageTypeUtil damageType) {
+        public R damageType(DamageTypeUtil damageType) {
             this.damageType = damageType;
-            return this;
+            return (R) this;
         }
     }
 }

@@ -60,7 +60,7 @@ public abstract class EgoMeleeWeapon extends EgoWeapon {
         return slot == EquipmentSlot.MAINHAND ? this.lazyDefaultModifiers.get() : super.getAttributeModifiers(slot, stack);
     }
 
-    public static class EgoMeleeWeaponProperties extends EgoWeaponProperties {
+    public static class EgoMeleeWeaponProperties extends EgoWeaponProperties<EgoMeleeWeaponProperties> {
 
         EgoMeleeWeaponType type;
         float range;

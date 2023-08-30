@@ -6,10 +6,10 @@ import net.minecraft.world.item.Item;
 
 public interface IEgo extends IRiskLevel {
 
-    abstract class EgoProperties extends Item.Properties {
+    abstract class EgoProperties<R> extends Item.Properties {
 
-        public abstract EgoProperties riskLevel(RiskLevelUtil riskLevel);
+        public abstract R riskLevel(RiskLevelUtil riskLevel);
 
-        public abstract EgoProperties idleAnim();
+        public abstract R idleAnim();
     }
 }

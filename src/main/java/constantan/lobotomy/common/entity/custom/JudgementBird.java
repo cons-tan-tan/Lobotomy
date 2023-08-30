@@ -33,7 +33,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
-        implements IAnimatable, IQliphoth, IAoEAttack, ISyncSpontaneousMoving, ILazyControl<JudgementBird> {
+        implements IAnimatable, IQliphoth, IAoEAttack, ISyncSpontaneousMoving,
+        ITransientNoCulling<JudgementBird>, ILazyControl<JudgementBird> {
 
     private static final int ATTACK_DAMAGE_RANDOM_RANGE = 10;
 
@@ -59,12 +60,15 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
         }));
         data.addAnimationController(new AnimationController<>(this, "attack_controller", 0, event -> {
             var controller = event.getController();
-            if (this.getAttackTick() == WAIT_ANIM_TICK) {
-                controller.markNeedsReload();
+            if (this.getAttackTick() > 0) {
+//                controller.markNeedsReload();
                 controller.setAnimation(ANIM_ATTACK);
                 return PlayState.CONTINUE;
             }
-            return PlayState.CONTINUE;
+            if (this.getAttackTick() == 0) {
+                controller.clearAnimationCache();
+            }
+            return PlayState.STOP;
         }));
     }
 

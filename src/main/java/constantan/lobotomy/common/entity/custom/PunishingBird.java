@@ -45,7 +45,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 public class PunishingBird extends SmartBrainAbnormalityEntity<PunishingBird>
-        implements IAnimatable, IQliphoth, IAoEAttack, ILazyControl<PunishingBird> {
+        implements IAnimatable, IQliphoth, IAoEAttack, ITransientNoCulling<PunishingBird>, ILazyControl<PunishingBird> {
 
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData
             .defineId(PunishingBird.class, EntityDataSerializers.BOOLEAN);

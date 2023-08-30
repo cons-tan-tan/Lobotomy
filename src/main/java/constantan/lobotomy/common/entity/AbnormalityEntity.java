@@ -126,8 +126,15 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     public void tick() {
         super.tick();
         this.setAttackTick(Math.max(this.getAttackTick() - 1, 0));
+
+        //ServerSide
         if (this instanceof ISyncSpontaneousMoving iSyncSpontaneousMoving) {
-            iSyncSpontaneousMoving.setMovingSpontaneously(this.zza != 0.0F);
+            iSyncSpontaneousMoving.syncSpontaneousMovingTick();
+        }
+
+        //ClientSide
+        if (this instanceof ITransientNoCulling<?> iTransientNoCulling) {
+            iTransientNoCulling.noCullingTick();
         }
     }
 

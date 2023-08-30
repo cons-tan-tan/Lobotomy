@@ -49,6 +49,7 @@ public class TheBurrowingHeaven extends AbnormalityEntity<TheBurrowingHeaven>
 
     public TheBurrowingHeaven(EntityType<TheBurrowingHeaven> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.noCulling = true;
     }
 
     @Override

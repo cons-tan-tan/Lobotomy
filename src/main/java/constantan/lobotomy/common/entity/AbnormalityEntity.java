@@ -7,14 +7,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +21,6 @@ import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -161,7 +156,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     @Override
     public void setId(int pId) {
         super.setId(pId);
-        if (this instanceof IMultiPart iMultiPart) {
+        if (this instanceof IMultiPart<?> iMultiPart) {
             for (int i = 0; i < iMultiPart.getSubParts().length; i++) {
                 iMultiPart.getSubParts()[i].setId(pId + i + 1);
             }
@@ -176,7 +171,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     @Nullable
     @Override
     public PartEntity<?>[] getParts() {
-        return this instanceof IMultiPart iMultiPart ? iMultiPart.getSubParts() : super.getParts();
+        return this instanceof IMultiPart<?> iMultiPart ? iMultiPart.getSubParts() : super.getParts();
     }
 
     @Override
@@ -191,31 +186,8 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
 
     @Override
     protected void pushEntities() {
-        if (this instanceof IMultiPart iMultiPart) {
-            boolean flag = false;
-            for (PartEntity<?> part : iMultiPart.getSubParts()) {
-                List<Entity> list = part.level.getEntities(part, part.getBoundingBox(), EntitySelector.pushableBy(part));
-                if (!list.isEmpty()) {
-                    int i = part.level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
-                    if (i > 0 && list.size() > i - 1 && this.random.nextInt(4) == 0) {
-                        int j = 0;
-
-                        for (Entity entity : list) {
-                            if (!entity.isPassenger()) {
-                                ++j;
-                            }
-                        }
-
-                        if (j > i - 1 && !flag) {
-                            flag = part.hurt(DamageSource.CRAMMING, 6.0F);
-                        }
-                    }
-
-                    for (Entity entity : list) {
-                        entity.push(part);
-                    }
-                }
-            }
+        if (this instanceof IMultiPart<?> iMultiPart) {
+            iMultiPart.multiPartPushEntities();
         } else {
             super.pushEntities();
         }

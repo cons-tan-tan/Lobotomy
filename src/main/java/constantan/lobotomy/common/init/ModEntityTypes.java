@@ -36,7 +36,7 @@ public class ModEntityTypes {
             .register(LibAbnormality.JUDGEMENT_BIRD.getName(),
                     () -> abnormalityEntityType(EntityType.Builder
                             .of(JudgementBird::new, MobCategory.MONSTER)
-                            .sized(0.9F, 3.6F)
+                            .sized(0.9F, 3.2F)
                             .build(LibAbnormality.JUDGEMENT_BIRD.getBuild()))
                             .riskLevel(RiskLevelUtil.WAW)
                             .damageType(DamageTypeUtil.PALE)

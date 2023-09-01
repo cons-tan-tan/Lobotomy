@@ -8,9 +8,11 @@
     "MixinEntityType",
     "MixinItem",
     "MixinItemStack",
-    "MixinLivingEntity"
+    "MixinLivingEntity",
+    "MixinPlayer"
   ],
   "client": [
+    "MixinGameRenderer",
     "MixinHumanoidModel"
   ],
   "minVersion": "0.8"

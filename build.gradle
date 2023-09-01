@@ -203,7 +203,7 @@ dependencies {
     implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-1.18.2:1.9")
 
     implementation fg.deobf("curse.maven:just-enough-items-238222:3940240")
-    implementation fg.deobf("curse.maven:the-one-probe-245211:3965688")
+    implementation fg.deobf("curse.maven:jade-324717:4575623")
     implementation fg.deobf("curse.maven:patchouli-306770:3846086")
 
     runtimeOnly fg.deobf("curse.maven:cloth-config-api-348521:4633387")

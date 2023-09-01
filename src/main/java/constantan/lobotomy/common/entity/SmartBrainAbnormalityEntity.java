@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@SuppressWarnings({"Convert2Diamond", "RedundantTypeArguments"})
 public abstract class SmartBrainAbnormalityEntity<T extends AbnormalityEntity<T> & SmartBrainOwner<T>>
         extends AbnormalityEntity<T> implements SmartBrainOwner<T> {
 
@@ -25,11 +26,13 @@ public abstract class SmartBrainAbnormalityEntity<T extends AbnormalityEntity<T>
         this.navigation.setCanFloat(true);//デフォルトだと泳げる設定
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void customServerAiStep() {
         this.tickBrain((T) this);
     }
 
+    @SuppressWarnings("unchecked")
     @NotNull
     @Override
     protected Brain.Provider<?> brainProvider() {

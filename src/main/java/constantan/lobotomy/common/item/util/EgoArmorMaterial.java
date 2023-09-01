@@ -1,14 +1,14 @@
 package constantan.lobotomy.common.item.util;
 
-import constantan.lobotomy.common.init.ModItems;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.util.Lazy;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public class EgoArmorMaterial implements ArmorMaterial {
     private final SoundEvent sound;
     private final float toughness;
     private final float knockbackResistance;
-    private final LazyLoadedValue<Ingredient> repairIngredient;
+    private final Lazy<Ingredient> repairIngredient;
 
     public EgoArmorMaterial(RiskLevelUtil riskLevel, Map<DamageTypeUtil, Float> defense) {
 
@@ -32,7 +32,7 @@ public class EgoArmorMaterial implements ArmorMaterial {
         this.sound = SoundEvents.ARMOR_EQUIP_LEATHER;
         this.toughness = riskLevel.getLevel() - 1;
         this.knockbackResistance = riskLevel == RiskLevelUtil.ALEPH ? 0.2F : 0.0F;
-        this.repairIngredient = new LazyLoadedValue<>(() -> Ingredient.of(ModItems.LOBOTOMY_DEBUG_ITEM.get()));
+        this.repairIngredient = Lazy.of(Ingredient::of);
     }
 
     @Override
@@ -51,18 +51,18 @@ public class EgoArmorMaterial implements ArmorMaterial {
     }
 
     @Override
-    public SoundEvent getEquipSound() {
+    public @NotNull SoundEvent getEquipSound() {
         return this.sound;
     }
 
     @Override
-    public Ingredient getRepairIngredient() {
+    public @NotNull Ingredient getRepairIngredient() {
         return this.repairIngredient.get();
     }
 
     @Override
-    public String getName() {
-        return this.NAME;
+    public @NotNull String getName() {
+        return NAME;
     }
 
     @Override

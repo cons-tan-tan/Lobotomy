@@ -14,6 +14,7 @@ import java.util.function.Predicate;
 
 public interface ILazyControl<P extends Mob> {
 
+    @SuppressWarnings("unchecked")
     private P self() {
         return (P) this;
     }

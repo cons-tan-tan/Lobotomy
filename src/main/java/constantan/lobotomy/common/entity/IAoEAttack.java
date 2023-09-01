@@ -15,5 +15,5 @@ public interface IAoEAttack {
         for (LivingEntity target : list) {
             self().doHurtTarget(target);
         }
-    };
+    }
 }

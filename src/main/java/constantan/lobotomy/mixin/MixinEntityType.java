@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Map;
 
+@SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(EntityType.class)
 public abstract class MixinEntityType<T extends Entity> implements IMixinEntityType<T> {
 
@@ -75,6 +76,7 @@ public abstract class MixinEntityType<T extends Entity> implements IMixinEntityT
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     @Unique
     @Override
     public EntityType<T> build() {

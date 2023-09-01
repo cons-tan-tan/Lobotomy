@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 public interface ITransientNoCulling<R extends Entity> {
 
+    @SuppressWarnings("unchecked")
     private R self() {
         return (R) this;
     }

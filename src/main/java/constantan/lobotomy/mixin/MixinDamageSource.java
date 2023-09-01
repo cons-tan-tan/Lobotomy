@@ -78,7 +78,7 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
         return this.riskLevel != null;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({"rawtypes"})
     @Inject(method = "mobAttack", at = @At("HEAD"), cancellable = true)
     private static void mobAttack_Head(LivingEntity pMob, CallbackInfoReturnable<DamageSource> cir) {
         if (pMob.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
@@ -101,6 +101,7 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Unique
     private static DamageSource getAbnormalDamageSource(String damageTypeId, LivingEntity livingEntity,
                                                         RiskLevelUtil riskLevel, DamageTypeUtil damageType, boolean blockable) {

@@ -36,8 +36,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
-        implements IAnimatable, IQliphoth, IAoEAttack, ISyncSpontaneousMoving, IMultiPart<JudgementBird>,
-        ITransientNoCulling<JudgementBird>, ILazyControl<JudgementBird> {
+        implements IAnimatable, IQliphoth, IAoEAttack, ISyncSpontaneousMoving,
+        IMultiPart<JudgementBird>, ITransientNoCulling<JudgementBird>, ILazyControl<JudgementBird> {
 
     private static final int ATTACK_DAMAGE_RANDOM_RANGE = 10;
 

@@ -7,12 +7,14 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
-public interface IMultiPart<T extends Entity> {
+public interface IMultiPart<T extends Entity, U extends PartEntity<T>> {
 
+    @SuppressWarnings("unchecked")
     private T self() {
         return (T) this;
     }
@@ -22,30 +24,30 @@ public interface IMultiPart<T extends Entity> {
     }
 
     default void multiPartInit() {
-        self().setId(CommonPartEntity.getEntityCounter().getAndAdd(this.getSubParts().length + 1) + 1);
+        self().setId(CommonPartEntity.getEntityCounter().getAndAdd(this.getPartList().size() + 1) + 1);
     }
 
     default void multiPartTick() {
-        var vec3 = new Vec3[this.getSubParts().length];
-        for(int j = 0; j < this.getSubParts().length; ++j) {
-            vec3[j] = new Vec3(this.getSubParts()[j].getX(), this.getSubParts()[j].getY(), this.getSubParts()[j].getZ());
+        List<Vec3> vecList = new ArrayList<>();
+        for (PartEntity<?> part : this.getPartList()) {
+            vecList.add(new Vec3(part.getX(), part.getY(), part.getZ()));
         }
 
         this.partMovingConsumer().accept(self());
 
-        for(int l = 0; l < this.getSubParts().length; ++l) {
-            this.getSubParts()[l].xo = vec3[l].x;
-            this.getSubParts()[l].yo = vec3[l].y;
-            this.getSubParts()[l].zo = vec3[l].z;
-            this.getSubParts()[l].xOld = vec3[l].x;
-            this.getSubParts()[l].yOld = vec3[l].y;
-            this.getSubParts()[l].zOld = vec3[l].z;
+        for (int l = 0; l < this.getPartList().size(); ++l) {
+            this.getPartList().get(l).xo = vecList.get(l).x;
+            this.getPartList().get(l).yo = vecList.get(l).y;
+            this.getPartList().get(l).zo = vecList.get(l).z;
+            this.getPartList().get(l).xOld = vecList.get(l).x;
+            this.getPartList().get(l).yOld = vecList.get(l).y;
+            this.getPartList().get(l).zOld = vecList.get(l).z;
         }
     }
 
     default void multiPartPushEntities() {
         boolean flag = false;
-        for (PartEntity<?> part : this.getSubParts()) {
+        for (PartEntity<?> part : this.getPartList()) {
             List<Entity> list = part.level.getEntities(part, part.getBoundingBox(), EntitySelector.pushableBy(part));
             if (!list.isEmpty()) {
                 int i = part.level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
@@ -70,7 +72,7 @@ public interface IMultiPart<T extends Entity> {
         }
     }
 
-    PartEntity<?>[] getSubParts();
+    List<U> getPartList();
 
     Consumer<T> partMovingConsumer();
 }

@@ -13,7 +13,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.entity.PartEntity;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
@@ -37,24 +36,30 @@ import java.util.function.Predicate;
 
 public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
         implements IAnimatable, IQliphoth, IAoEAttack, ISyncSpontaneousMoving,
-        IMultiPart<JudgementBird>, ITransientNoCulling<JudgementBird>, ILazyControl<JudgementBird> {
+        ITransientNoCulling<JudgementBird>, ILazyControl<JudgementBird>,
+        IMultiPart<JudgementBird,CommonPartEntity<JudgementBird>> {
 
     private static final int ATTACK_DAMAGE_RANDOM_RANGE = 10;
 
     private static final int WAIT_ANIM_TICK = 85;
     private static final int ATTACK_OCCUR_TICK = 75;
 
-    private final CommonPartEntity<?>[] subEntities;
-    private final CommonPartEntity<?> head;
-    private final CommonPartEntity<?> body;
+    private final CommonPartEntity<JudgementBird> head;
+    private final CommonPartEntity<JudgementBird> body;
+    private final List<CommonPartEntity<JudgementBird>> list;
 
     public JudgementBird(EntityType<JudgementBird> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
 
         this.head = new CommonPartEntity<>(this, "head", 0.9F, 1.1F);
         this.body = new CommonPartEntity<>(this, "body", 0.9F, 2.1F);
-        this.subEntities = new CommonPartEntity[]{this.head, this.body};
+        list = List.of(this.head, this.body);
         this.multiPartInit();
+    }
+
+    @Override
+    public List<CommonPartEntity<JudgementBird>> getPartList() {
+        return this.list;
     }
 
     @Override
@@ -126,11 +131,6 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
                         .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
                         .whenStarting(judgementBird -> judgementBird.setAttackTick(WAIT_ANIM_TICK + 1))
         );
-    }
-
-    @Override
-    public PartEntity<?>[] getSubParts() {
-        return this.subEntities;
     }
 
     @Override

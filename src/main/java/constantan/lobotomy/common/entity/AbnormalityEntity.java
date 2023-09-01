@@ -129,7 +129,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
         super.tick();
 
         //Common
-        if (this instanceof IMultiPart<?> iMultiPart) {
+        if (this instanceof IMultiPart<?, ?> iMultiPart) {
             iMultiPart.multiPartTick();
         }
 
@@ -156,9 +156,9 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     @Override
     public void setId(int pId) {
         super.setId(pId);
-        if (this instanceof IMultiPart<?> iMultiPart) {
-            for (int i = 0; i < iMultiPart.getSubParts().length; i++) {
-                iMultiPart.getSubParts()[i].setId(pId + i + 1);
+        if (this instanceof IMultiPart<?, ?> iMultiPart) {
+            for (int i = 0; i < iMultiPart.getPartList().size(); i++) {
+                iMultiPart.getPartList().get(i).setId(pId + i + 1);
             }
         }
     }
@@ -171,7 +171,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     @Nullable
     @Override
     public PartEntity<?>[] getParts() {
-        return this instanceof IMultiPart<?> iMultiPart ? iMultiPart.getSubParts() : super.getParts();
+        return this instanceof IMultiPart<?, ?> iMultiPart ? iMultiPart.getPartList().toArray(new PartEntity[0]) : super.getParts();
     }
 
     @Override
@@ -186,7 +186,7 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
 
     @Override
     protected void pushEntities() {
-        if (this instanceof IMultiPart<?> iMultiPart) {
+        if (this instanceof IMultiPart<?, ?> iMultiPart) {
             iMultiPart.multiPartPushEntities();
         } else {
             super.pushEntities();

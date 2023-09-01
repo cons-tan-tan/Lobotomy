@@ -132,14 +132,19 @@ public abstract class AbnormalityEntity<T extends AbnormalityEntity<T>> extends 
     @Override
     public void tick() {
         super.tick();
-        this.setAttackTick(Math.max(this.getAttackTick() - 1, 0));
 
-        //ServerSide
+        //Common
+        if (this instanceof IMultiPart<?> iMultiPart) {
+            iMultiPart.multiPartTick();
+        }
+
+        //Server
+        this.setAttackTick(Math.max(this.getAttackTick() - 1, 0));
         if (this instanceof ISyncSpontaneousMoving iSyncSpontaneousMoving) {
             iSyncSpontaneousMoving.syncSpontaneousMovingTick();
         }
 
-        //ClientSide
+        //Client
         if (this instanceof ITransientNoCulling<?> iTransientNoCulling) {
             iTransientNoCulling.noCullingTick();
         }

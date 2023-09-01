@@ -12,7 +12,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.entity.PartEntity;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
@@ -33,10 +32,11 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
-        implements IAnimatable, IQliphoth, IAoEAttack, ISyncSpontaneousMoving, IMultiPart,
+        implements IAnimatable, IQliphoth, IAoEAttack, ISyncSpontaneousMoving, IMultiPart<JudgementBird>,
         ITransientNoCulling<JudgementBird>, ILazyControl<JudgementBird> {
 
     private static final int ATTACK_DAMAGE_RANDOM_RANGE = 10;
@@ -50,41 +50,11 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
 
     public JudgementBird(EntityType<JudgementBird> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+
         this.head = new CommonPartEntity<>(this, "head", 0.9F, 1.1F);
         this.body = new CommonPartEntity<>(this, "body", 0.9F, 2.1F);
         this.subEntities = new CommonPartEntity[]{this.head, this.body};
-
         this.multiPartInit();
-    }
-
-    @Override
-    public PartEntity<?>[] getSubParts() {
-        return this.subEntities;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-
-        var vec3 = new Vec3[this.subEntities.length];
-        for(int j = 0; j < this.subEntities.length; ++j) {
-            vec3[j] = new Vec3(this.subEntities[j].getX(), this.subEntities[j].getY(), this.subEntities[j].getZ());
-        }
-
-        float rad = this.yBodyRot * ((float)Math.PI / 180F);
-        float sin = Mth.sin(rad);
-        float cos = Mth.cos(rad);
-        this.tickPart(this.head, -sin * 0.7F, 2.1F, cos * 0.7F);
-        this.tickPart(this.body, 0.0F, 0.0F, 0.0F);
-
-        for(int l = 0; l < this.subEntities.length; ++l) {
-            this.subEntities[l].xo = vec3[l].x;
-            this.subEntities[l].yo = vec3[l].y;
-            this.subEntities[l].zo = vec3[l].z;
-            this.subEntities[l].xOld = vec3[l].x;
-            this.subEntities[l].yOld = vec3[l].y;
-            this.subEntities[l].zOld = vec3[l].z;
-        }
     }
 
     @Override
@@ -156,6 +126,22 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
                         .startCondition(judgementBird -> judgementBird.getAttackTick() == 0)
                         .whenStarting(judgementBird -> judgementBird.setAttackTick(WAIT_ANIM_TICK + 1))
         );
+    }
+
+    @Override
+    public PartEntity<?>[] getSubParts() {
+        return this.subEntities;
+    }
+
+    @Override
+    public Consumer<JudgementBird> partMovingConsumer() {
+        return judgementBird -> {
+            float rad = judgementBird.yBodyRot * ((float)Math.PI / 180F);
+            float sin = Mth.sin(rad);
+            float cos = Mth.cos(rad);
+            judgementBird.tickPart(judgementBird.head, -sin * 0.7F, 2.1F, cos * 0.7F);
+            judgementBird.tickPart(judgementBird.body, 0.0F, 0.0F, 0.0F);
+        };
     }
 
     public static AttributeSupplier setAttributes() {

@@ -26,6 +26,8 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
     private RiskLevelUtil riskLevel = null;
     @Unique
     private boolean blockable = true;
+    @Unique
+    private boolean ignoreInvulnerable = false;
 
     @Unique
     @Override
@@ -57,6 +59,17 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
     @Override
     public boolean isBlockable() {
         return this.blockable;
+    }
+
+    @Override
+    public IMixinDamageSource ignoreInvulnerable() {
+        this.ignoreInvulnerable = true;
+        return this;
+    }
+
+    @Override
+    public boolean canIgnoreInvulnerable() {
+        return this.ignoreInvulnerable;
     }
 
     @Unique

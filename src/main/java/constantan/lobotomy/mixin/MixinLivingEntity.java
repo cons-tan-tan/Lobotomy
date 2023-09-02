@@ -33,6 +33,8 @@ public abstract class MixinLivingEntity {
 
     @Shadow public abstract AttributeMap getAttributes();
 
+    @Shadow protected abstract float tickHeadTurn(float pYRot, float pAnimStep);
+
     @Inject(method = "isDamageSourceBlocked", at = @At("HEAD"), cancellable = true)
     private void isDamageSourceBlocked_Head(DamageSource pDamageSource, CallbackInfoReturnable<Boolean> cir) {
         var damageSource = (IMixinDamageSource) pDamageSource;
@@ -108,6 +110,16 @@ public abstract class MixinLivingEntity {
             return calculatedDamageAmount;
         }
         return pAmount;
+    }
+
+    @Inject(method = "hurt", at = @At(value = "FIELD",
+            target = "Lnet/minecraft/world/entity/LivingEntity;invulnerableTime:I", ordinal = 0, shift = At.Shift.BEFORE))
+    private void hurt_Before_InvulnerableTime(DamageSource pSource, float pAmount, CallbackInfoReturnable<Boolean> cir) {
+        var damageSource = (IMixinDamageSource) pSource;
+        if (damageSource.canIgnoreInvulnerable()) {
+            var self = (LivingEntity) (Object) this;
+            self.invulnerableTime = 0;
+        }
     }
 
     @Redirect(method = "hurt", at = @At(value = "INVOKE",

@@ -15,6 +15,10 @@ public interface IMixinDamageSource {
 
     boolean isBlockable();
 
+    IMixinDamageSource ignoreInvulnerable();
+
+    boolean canIgnoreInvulnerable();
+
     IMixinDamageSource riskLevel(RiskLevelUtil riskLevel);
 
     RiskLevelUtil getRiskLevel();

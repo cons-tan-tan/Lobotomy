@@ -2,11 +2,14 @@ package constantan.lobotomy.common;
 
 import constantan.lobotomy.common.init.*;
 import constantan.lobotomy.common.network.Messages;
+import constantan.lobotomy.config.LobotomyClientConfigs;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
@@ -36,6 +39,9 @@ public class ModSetup {
         modEventBus.addListener(ModEntityTypes::entityAttributeEvent);
 
         GeckoLib.initialize();
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, LobotomyClientConfigs.SPEC, "lobotomy-client.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LobotomyClientConfigs.SPEC, "lobotomy-common.toml");
     }
 
     public static void init(final FMLCommonSetupEvent event) {

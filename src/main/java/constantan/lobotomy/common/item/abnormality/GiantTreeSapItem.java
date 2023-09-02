@@ -36,7 +36,7 @@ public class GiantTreeSapItem extends AbnormalityTool implements IAnimatable {
             player.heal(player.getMaxHealth());
             player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20*60, 4, false, false));
             GiantTreeSapExplosionLevelManager manager = GiantTreeSapExplosionLevelManager.get(level);
-            if (player.getActiveEffectsMap().get(ModEffects.MOB_EFFECTS) == null && Math.random() < manager.getExplosionLevel() * PROBABILITY_MODIFIER) {
+            if (player.getActiveEffectsMap().get(ModEffects.OWING.get()) == null && Math.random() < manager.getExplosionLevel() * PROBABILITY_MODIFIER) {
                 player.addEffect(new MobEffectInstance(ModEffects.OWING.get(), 20*20, 0, false, false));
                 manager.resetExplosionLevel();
             } else {

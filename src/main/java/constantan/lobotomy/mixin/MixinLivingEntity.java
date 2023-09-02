@@ -140,7 +140,7 @@ public abstract class MixinLivingEntity {
         if (pAttribute == Attributes.ATTACK_DAMAGE) {
             ItemStack itemStack = this.getItemBySlot(EquipmentSlot.MAINHAND);
             if (itemStack.getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
-                cir.setReturnValue(this.getAttributes().getValue(pAttribute) + egoMeleeWeapon.getRangedRandomDamage(itemStack));
+                cir.setReturnValue(this.getAttributes().getValue(pAttribute) + egoMeleeWeapon.getRangedRandomDamage(itemStack) - 1);
             }
         }
     }

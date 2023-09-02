@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.network.GeckoLibNetwork;
@@ -43,6 +44,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
 
     protected final boolean hasIdleAnim;
 
+    @SuppressWarnings("unchecked")
     public <E extends ForgeRegistryEntry<E>, T extends ForgeRegistryEntry<E> & ISyncable> EgoWeapon(int minDamage, int maxDamage, Properties pProperties) {
         super(pProperties.tab(ModSetup.CREATIVE_TAB).stacksTo(1));
         this.minDamageAmount = minDamage;
@@ -56,7 +58,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
             GeckoLibNetwork.registerSyncable((T) this);
         }
 
-        var egoWeaponItemProperties = (EgoWeaponProperties) pProperties;
+        var egoWeaponItemProperties = (EgoWeaponProperties<?>) pProperties;
         this.riskLevel = egoWeaponItemProperties.riskLevel;
         this.damageType = egoWeaponItemProperties.damageType;
         this.hasIdleAnim = egoWeaponItemProperties.idleAnim;
@@ -70,7 +72,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     }
 
     public int getRangedRandomDamage(ItemStack stack) {
-        return new Random().nextInt(this.minDamageAmount - 1, this.maxDamageAmount);
+        return new Random().nextInt(this.minDamageAmount, this.maxDamageAmount + 1);
     }
 
     public int getMinDamageAmount(ItemStack stack) {
@@ -113,12 +115,12 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
      * クリエで左クリックしたときのブロック破壊を無くす
      */
     @Override
-    public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
+    public boolean canAttackBlock(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, Player pPlayer) {
         return !pPlayer.isCreative();
     }
 
     @Override
-    public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+    public void initializeClient(@NotNull Consumer<IItemRenderProperties> consumer) {
         super.initializeClient(consumer);
         if (this instanceof IAnimatable) {
             consumer.accept(new IItemRenderProperties() {
@@ -130,6 +132,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static class EgoWeaponProperties<R> extends EgoProperties<R> {
 
         RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;

@@ -1,7 +1,7 @@
 package constantan.lobotomy.mixin;
 
 import constantan.lobotomy.common.entity.AbnormalityEntity;
-import constantan.lobotomy.common.item.EgoMeleeWeapon;
+import constantan.lobotomy.common.item.EgoWeapon;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
@@ -81,9 +81,9 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
     @SuppressWarnings({"rawtypes"})
     @Inject(method = "mobAttack", at = @At("HEAD"), cancellable = true)
     private static void mobAttack_Head(LivingEntity pMob, CallbackInfoReturnable<DamageSource> cir) {
-        if (pMob.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
+        if (pMob.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof EgoWeapon egoWeapon) {
             cir.setReturnValue(getAbnormalDamageSource("mob", pMob,
-                    egoMeleeWeapon.getRiskLevel(), egoMeleeWeapon.getDamageType(), false));
+                    egoWeapon.getRiskLevel(), egoWeapon.getDamageType(), false));
         }
         if (pMob instanceof AbnormalityEntity abnormality) {
             cir.setReturnValue(getAbnormalDamageSource("mob", pMob,
@@ -95,9 +95,9 @@ public abstract class MixinDamageSource implements IMixinDamageSource {
 
     @Inject(method = "playerAttack", at = @At("HEAD"), cancellable = true)
     private static void playerAttack_Head(Player pPlayer, CallbackInfoReturnable<DamageSource> cir) {
-        if (pPlayer.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
+        if (pPlayer.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof EgoWeapon egoWeapon) {
             cir.setReturnValue(getAbnormalDamageSource("player", pPlayer,
-                    egoMeleeWeapon.getRiskLevel(), egoMeleeWeapon.getDamageType(), false));
+                    egoWeapon.getRiskLevel(), egoWeapon.getDamageType(), false));
         }
     }
 

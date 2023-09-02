@@ -1,16 +1,18 @@
 package constantan.lobotomy.common.item.ego;
 
-import constantan.lobotomy.LobotomyMod;
 import constantan.lobotomy.common.item.EgoRangeWeapon;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -50,8 +52,12 @@ public class PeakWeaponItem extends EgoRangeWeapon implements IAnimatable, ISync
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
         ItemStack stack = pPlayer.getItemInHand(pUsedHand);
+        pPlayer.getCooldowns().addCooldown(this, 10);
+        if (!pPlayer.isOnGround() && !pPlayer.getAbilities().instabuild) {
+            pPlayer.setDeltaMovement(pPlayer.getDeltaMovement().add(pPlayer.getViewVector(1.0F).normalize().scale(-0.1F)));
+        }
         if (!pLevel.isClientSide) {
             this.playAnimation(pPlayer, pUsedHand, FIRE_ANIM_STATE);
             float range = 16;
@@ -62,8 +68,14 @@ public class PeakWeaponItem extends EgoRangeWeapon implements IAnimatable, ISync
                     .getEntityHitResult(pPlayer, eyePos, eyePos.add(rangeVec), searchArea,
                             target -> !target.isSpectator() && target.isPickable(), Math.pow(range, 2));
             if (result != null) {
-                LobotomyMod.logger.info("distance = " + result.getEntity().distanceTo(pPlayer));
-                result.getEntity().hurt(DamageSource.playerAttack(pPlayer), this.getRangedRandomDamage(stack));
+                Entity target = result.getEntity();
+                Vec3 hitLocation = result.getLocation();
+                boolean flag = pLevel
+                        .clip(new ClipContext(eyePos, hitLocation, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, pPlayer))
+                        .getType() == HitResult.Type.MISS;
+                if (flag) {
+                    target.hurt(DamageSource.playerAttack(pPlayer), this.getRangedRandomDamage(stack));
+                }
             }
         }
         return InteractionResultHolder.fail(stack);

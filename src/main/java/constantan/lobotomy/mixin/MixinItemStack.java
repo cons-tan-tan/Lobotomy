@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
@@ -19,16 +20,18 @@ import java.util.List;
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack {
 
+    @Shadow public abstract Item getItem();
+
     @ModifyVariable(method = "getTooltipLines", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/entity/EquipmentSlot;values()[Lnet/minecraft/world/entity/EquipmentSlot;",
             shift = At.Shift.BEFORE), name = "list")
     private List<Component> getTooltipLines_Before_values(List<Component> list) {
-        var itemStack = (ItemStack) (Object) this;
-        Item item = itemStack.getItem();
+        var self = (ItemStack) (Object) this;
+        Item item = this.getItem();
         if (item instanceof EgoRangeWeapon egoRangeWeapon) {
             list.add(TextComponent.EMPTY);
             list.add(new TranslatableComponent("item.modifier.lobotomy.projectile").withStyle(ChatFormatting.GRAY));
-            list.add(new TextComponent(" ").append(egoRangeWeapon.getAbnormalDamageTooltip(itemStack)));
+            list.add(new TextComponent(" ").append(egoRangeWeapon.getAbnormalDamageTooltip(self)));
         }
         return list;
     }
@@ -38,7 +41,7 @@ public abstract class MixinItemStack {
             shift = At.Shift.BEFORE), name = "list")
     private List<Component> getTooltipLines_Before_getValue(List<Component> list) {
         var self = (ItemStack) (Object) this;
-        Item item = self.getItem();
+        Item item = this.getItem();
         if (list.get(list.size() - 1).equals((new TranslatableComponent("item.modifiers." + EquipmentSlot.MAINHAND.getName())).withStyle(ChatFormatting.GRAY))) {
             if (item instanceof EgoMeleeWeapon egoMeleeWeapon) {
                 list.add(new TextComponent(" ").append(egoMeleeWeapon.getAbnormalDamageTooltip(self)));

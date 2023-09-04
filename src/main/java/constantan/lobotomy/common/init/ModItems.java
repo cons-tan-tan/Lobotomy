@@ -7,9 +7,9 @@ import constantan.lobotomy.common.ego.action.EgoActionSequencer;
 import constantan.lobotomy.common.ego.action.ExtraDamageAction;
 import constantan.lobotomy.common.item.*;
 import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
-import constantan.lobotomy.common.item.ego.PeakWeaponItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoArmorItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoMeleeWeapon;
+import constantan.lobotomy.common.item.ego.SimpleEgoRangeWeapon;
 import constantan.lobotomy.common.item.util.EgoMeleeWeaponType;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
@@ -53,7 +53,7 @@ public class ModItems {
 
     //EGO_WEAPON
     public static final RegistryObject<Item> PEAK_WEAPON = ITEMS.register(LibAbnormality.PUNISHING_BIRD.getWeaponEgoName(),
-            () -> new PeakWeaponItem(2, 3, new EgoRangeWeapon.EgoRangeWeaponProperties()
+            () -> new SimpleEgoRangeWeapon(2, 3, new EgoRangeWeapon.EgoRangeWeaponProperties()
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.TETH)));
 

@@ -8,7 +8,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 public enum RiskLevelUtil {
     ZAYIN(1, ChatFormatting.GREEN),
@@ -56,15 +55,13 @@ public enum RiskLevelUtil {
     public static RiskLevelUtil getRiskLevel(LivingEntity livingEntity) {
         if (livingEntity instanceof AbnormalityEntity<?> abnormalityEntity) {
             return abnormalityEntity.getRiskLevel();
-        } else if (livingEntity instanceof Player player) {
-            if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof EgoArmor egoArmor) {
-                return egoArmor.getRiskLevel();
-            }
+        } else if (livingEntity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof EgoArmor egoArmor) {
+            return egoArmor.getRiskLevel();
         }
-        return getLivingEntityRiskLevel(livingEntity);
+        return calculateRiskLevel(livingEntity);
     }
 
-    private static RiskLevelUtil getLivingEntityRiskLevel(LivingEntity livingEntity) {
+    private static RiskLevelUtil calculateRiskLevel(LivingEntity livingEntity) {
         return ZAYIN;
     }
 }

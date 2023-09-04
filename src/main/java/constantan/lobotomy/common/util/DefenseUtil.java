@@ -8,7 +8,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.Map;
 
@@ -20,19 +19,17 @@ public class DefenseUtil {
         return Map.of(DamageTypeUtil.RED, red, DamageTypeUtil.WHITE, white, DamageTypeUtil.BLACK, black, DamageTypeUtil.PALE, pale);
     }
 
-    public static Map<DamageTypeUtil, Float> getLivingEntityDefense(LivingEntity livingEntity) {
+    public static Map<DamageTypeUtil, Float> calculateDefense(LivingEntity livingEntity) {
         return DEFAULT_DEFENSE;
     }
 
     public static Map<DamageTypeUtil, Float> getDefense(LivingEntity livingEntity) {
         if (livingEntity instanceof AbnormalityEntity<?> abnormalityEntity) {
             return abnormalityEntity.getAbnormalDefense();
-        } if (livingEntity instanceof Player player) {
-            if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof EgoArmor egoArmor) {
-                return egoArmor.getAbnormalDefense();
-            }
+        } else if (livingEntity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof EgoArmor egoArmor) {
+            return egoArmor.getAbnormalDefense();
         }
-        return getLivingEntityDefense(livingEntity);
+        return calculateDefense(livingEntity);
     }
 
     public static TextComponent getDefenseMultiplierTextComponent(Map<DamageTypeUtil, Float> defense) {

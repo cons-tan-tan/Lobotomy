@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
@@ -46,32 +45,36 @@ public class EgoSuitLayer<T extends LivingEntity, M extends EntityModel<T>> exte
                 }
             }
 
-            HumanoidModel<?> parentModel = (HumanoidModel<?>) this.getParentModel();
-            if (pLivingEntity instanceof Player) {
-                this.model.crouching = parentModel.crouching;
-                this.model.rightArmPose = parentModel.rightArmPose;
-                this.model.leftArmPose = parentModel.leftArmPose;
-
-                this.model.prepareMobModel(pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTick);
-                this.model.setupAnim(pLivingEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-
-            } else if (pLivingEntity instanceof ArmorStand) {
-                this.model.head.copyFrom(parentModel.head);
-                this.model.body.copyFrom(parentModel.body);
-                this.model.rightArm.copyFrom(parentModel.rightArm);
-                this.model.leftArm.copyFrom(parentModel.leftArm);
-                this.model.rightLeg.copyFrom(parentModel.rightLeg);
-                this.model.leftLeg.copyFrom(parentModel.leftLeg);
-                this.model.hat.copyFrom(parentModel.hat);
-                this.model.jacket.copyFrom(this.model.body);
-                this.model.rightSleeve.copyFrom(this.model.rightArm);
-                this.model.leftSleeve.copyFrom(this.model.leftArm);
-                this.model.rightPants.copyFrom(this.model.rightLeg);
-                this.model.leftPants.copyFrom(this.model.leftLeg);
-            }
+            this.setup(pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTick, pAgeInTicks, pNetHeadYaw, pHeadPitch);
 
             VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityCutoutNoCull(egoArmor.getSuitTexture(pLivingEntity)));
             this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1.0F);
+        }
+    }
+
+    public void setup(T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTick, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+        HumanoidModel<?> parentModel = (HumanoidModel<?>) this.getParentModel();
+        if (pLivingEntity instanceof Player) {
+            this.model.crouching = parentModel.crouching;
+            this.model.rightArmPose = parentModel.rightArmPose;
+            this.model.leftArmPose = parentModel.leftArmPose;
+
+            this.model.prepareMobModel(pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTick);
+            this.model.setupAnim(pLivingEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
+
+        } else {
+            this.model.head.copyFrom(parentModel.head);
+            this.model.body.copyFrom(parentModel.body);
+            this.model.rightArm.copyFrom(parentModel.rightArm);
+            this.model.leftArm.copyFrom(parentModel.leftArm);
+            this.model.rightLeg.copyFrom(parentModel.rightLeg);
+            this.model.leftLeg.copyFrom(parentModel.leftLeg);
+            this.model.hat.copyFrom(parentModel.hat);
+            this.model.jacket.copyFrom(this.model.body);
+            this.model.rightSleeve.copyFrom(this.model.rightArm);
+            this.model.leftSleeve.copyFrom(this.model.leftArm);
+            this.model.rightPants.copyFrom(this.model.rightLeg);
+            this.model.leftPants.copyFrom(this.model.leftLeg);
         }
     }
 

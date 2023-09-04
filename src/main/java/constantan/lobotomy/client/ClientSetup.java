@@ -23,6 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Mod.EventBusSubscriber(modid = LibMisc.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
 
@@ -41,7 +42,7 @@ public class ClientSetup {
         addPlayerLayer(event, "default");
         LivingEntityRenderer renderer = event.getRenderer(EntityType.ARMOR_STAND);
         if (renderer instanceof ArmorStandRenderer) {
-            renderer.addLayer(new EgoSuitLayer<>(renderer, new PlayerModel<>(event.getEntityModels().bakeLayer(ModelLayers.PLAYER), false)));
+            renderer.addLayer(new EgoSuitLayer(renderer, new PlayerModel<>(event.getEntityModels().bakeLayer(ModelLayers.PLAYER), false)));
         }
     }
 

@@ -1,6 +1,7 @@
-package constantan.lobotomy.integration.waila;
+package constantan.lobotomy.integration.jade;
 
 import constantan.lobotomy.common.entity.CommonPartEntity;
+import constantan.lobotomy.common.entity.IMultiPart;
 import mcp.mobius.waila.api.*;
 import mcp.mobius.waila.api.event.WailaRayTraceEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,15 +20,16 @@ public class MultiPartEntityPlugin implements IWailaPlugin {
         Accessor<?> accessor = event.getAccessor();
         if (accessor instanceof EntityAccessor entityAccessor) {
             if (entityAccessor.getEntity() instanceof CommonPartEntity<?> commonPartEntity) {
-                accessor = client.createEntityAccessor(
+                event.setAccessor(client.createEntityAccessor(
                         commonPartEntity.getParent(),
-                        accessor.getLevel(),
-                        accessor.getPlayer(),
+                        entityAccessor.getLevel(),
+                        entityAccessor.getPlayer(),
                         commonPartEntity.getParent().getPersistentData(),
                         entityAccessor.getHitResult(),
-                        accessor.isServerConnected()
-                );
-                event.setAccessor(accessor);
+                        entityAccessor.isServerConnected()
+                ));
+            } else if (entityAccessor.getEntity() instanceof IMultiPart<?,?>) {
+                event.setAccessor(DummyEntityAccessorImpl.copyFrom(entityAccessor));
             }
         }
     }

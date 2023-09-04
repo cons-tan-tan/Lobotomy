@@ -53,7 +53,7 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
 
         this.head = new CommonPartEntity<>(this, "head", 0.9F, 1.1F);
         this.body = new CommonPartEntity<>(this, "body", 0.9F, 2.1F);
-        list = List.of(this.head, this.body);
+        this.list = List.of(this.head, this.body);
         this.multiPartInit();
     }
 
@@ -119,7 +119,8 @@ public class JudgementBird extends SmartBrainAbnormalityEntity<JudgementBird>
                         new SetRandomWalkTarget<>(),
                         new Idle<JudgementBird>()
                                 .runFor(judgementBird -> judgementBird.getRandom().nextInt(200, 400))
-                ));
+                )
+        );
     }
 
     @Override

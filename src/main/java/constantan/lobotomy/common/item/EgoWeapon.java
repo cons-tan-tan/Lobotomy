@@ -2,11 +2,13 @@ package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.client.renderer.ModItemRenderers;
 import constantan.lobotomy.common.ModSetup;
+import constantan.lobotomy.common.ego.action.EgoActionSequencer;
 import constantan.lobotomy.common.item.util.IEgo;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.IDamageType;
 import constantan.lobotomy.common.item.util.ISyncableParent;
 import constantan.lobotomy.common.util.RiskLevelUtil;
+import constantan.lobotomy.common.util.mixin.IMixinPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
@@ -39,6 +41,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     private final int maxDamageAmount;
     private final DamageTypeUtil damageType;
     private final RiskLevelUtil riskLevel;
+    private final EgoActionSequencer.Builder<?> afterAttackActionSequencerBuilder;
 
     private final TextComponent abnormalDamageTooltip;
 
@@ -62,6 +65,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         this.riskLevel = egoWeaponItemProperties.riskLevel;
         this.damageType = egoWeaponItemProperties.damageType;
         this.hasIdleAnim = egoWeaponItemProperties.idleAnim;
+        this.afterAttackActionSequencerBuilder = egoWeaponItemProperties.afterAttackActionSequencerBuilder;
 
         this.abnormalDamageTooltip = this.getDamageType().getColoredTextComponentWithValue(minDamage, maxDamage, this instanceof EgoRangeWeapon);
     }
@@ -71,7 +75,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         playAnimation(entity, stack, state);
     }
 
-    public int getRangedRandomDamage(ItemStack stack) {
+    public float getRangedRandomDamage(ItemStack stack) {
         return new Random().nextInt(this.minDamageAmount, this.maxDamageAmount + 1);
     }
 
@@ -111,9 +115,17 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         return this.abnormalDamageTooltip;
     }
 
-    /**
-     * クリエで左クリックしたときのブロック破壊を無くす
-     */
+    @Override
+    public boolean hurtEnemy(@NotNull ItemStack pStack, @NotNull LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
+        if (this.afterAttackActionSequencerBuilder != null && pAttacker instanceof Player player) {
+            var iMixinPlayer = (IMixinPlayer) player;
+            if (!iMixinPlayer.hasEgoActionSequencer()) {
+                iMixinPlayer.setEgoActionSequencer(this.afterAttackActionSequencerBuilder.build(pStack));
+            }
+        }
+        return super.hurtEnemy(pStack, pTarget, pAttacker);
+    }
+
     @Override
     public boolean canAttackBlock(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, Player pPlayer) {
         return !pPlayer.isCreative();
@@ -139,6 +151,8 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         DamageTypeUtil damageType = DamageTypeUtil.RED;
         boolean idleAnim;
 
+        EgoActionSequencer.Builder<?> afterAttackActionSequencerBuilder;
+
         @Override
         public R riskLevel(RiskLevelUtil riskLevel) {
             this.riskLevel = riskLevel;
@@ -153,6 +167,11 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
 
         public R damageType(DamageTypeUtil damageType) {
             this.damageType = damageType;
+            return (R) this;
+        }
+
+        public R afterAttackAction(EgoActionSequencer.Builder<?> builder) {
+            this.afterAttackActionSequencerBuilder = builder;
             return (R) this;
         }
     }

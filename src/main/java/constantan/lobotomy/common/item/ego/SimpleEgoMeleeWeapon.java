@@ -8,9 +8,9 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
-public class SimpleEgoMeleeWeaponItem extends EgoMeleeWeapon implements IAnimatable {
+public class SimpleEgoMeleeWeapon extends EgoMeleeWeapon implements IAnimatable {
 
-    public SimpleEgoMeleeWeaponItem(int minDamage, int maxDamage, Properties pProperties) {
+    public SimpleEgoMeleeWeapon(int minDamage, int maxDamage, Properties pProperties) {
         super(minDamage, maxDamage, pProperties);
     }
 

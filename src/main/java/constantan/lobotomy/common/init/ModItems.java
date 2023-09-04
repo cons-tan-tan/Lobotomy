@@ -3,21 +3,27 @@ package constantan.lobotomy.common.init;
 
 import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
 import constantan.lobotomy.common.ModSetup;
+import constantan.lobotomy.common.ego.action.EgoActionSequencer;
+import constantan.lobotomy.common.ego.action.ExtraDamageAction;
 import constantan.lobotomy.common.item.*;
 import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
 import constantan.lobotomy.common.item.ego.PeakWeaponItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoArmorItem;
-import constantan.lobotomy.common.item.ego.SimpleEgoMeleeWeaponItem;
+import constantan.lobotomy.common.item.ego.SimpleEgoMeleeWeapon;
 import constantan.lobotomy.common.item.util.EgoMeleeWeaponType;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
+import constantan.lobotomy.common.util.mixin.IMixinDamageSource;
 import constantan.lobotomy.lib.LibAbnormality;
 import constantan.lobotomy.lib.LibItemNames;
 import constantan.lobotomy.lib.LibMisc;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Set;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, LibMisc.MOD_ID);
@@ -52,13 +58,20 @@ public class ModItems {
                     .riskLevel(RiskLevelUtil.TETH)));
 
     public static final RegistryObject<Item> JUSTITIA_WEAPON = ITEMS.register(LibAbnormality.JUDGEMENT_BIRD.getWeaponEgoName(),
-            () -> new SimpleEgoMeleeWeaponItem(2, 4, new EgoMeleeWeapon.EgoMeleeWeaponProperties()
+            () -> new SimpleEgoMeleeWeapon(2, 4, new EgoMeleeWeapon.EgoMeleeWeaponProperties()
                     .weaponType(EgoMeleeWeaponType.SWORD)
                     .damageType(DamageTypeUtil.PALE)
-                    .riskLevel(RiskLevelUtil.ALEPH)));
+                    .riskLevel(RiskLevelUtil.ALEPH)
+                    .afterAttackAction(new EgoActionSequencer.Builder<SimpleEgoMeleeWeapon>()
+                            .action(Set.of(1, 2, 3), new ExtraDamageAction<>(
+                                    player -> stack -> simpleEgoMeleeWeapon ->
+                                            ((IMixinDamageSource) DamageSource.playerAttack(player)).ignoreInvulnerable(),
+                                    player -> stack -> simpleEgoMeleeWeapon ->
+                                            simpleEgoMeleeWeapon.getRangedRandomDamage(stack)
+                            )))));
 
     public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibAbnormality.THE_BURROWING_HEAVEN.getWeaponEgoName(),
-            () -> new SimpleEgoMeleeWeaponItem(8, 16, new EgoMeleeWeapon.EgoMeleeWeaponProperties()
+            () -> new SimpleEgoMeleeWeapon(8, 16, new EgoMeleeWeapon.EgoMeleeWeaponProperties()
                     .weaponType(EgoMeleeWeaponType.SPEAR)
                     .damageType(DamageTypeUtil.RED)
                     .riskLevel(RiskLevelUtil.WAW)));

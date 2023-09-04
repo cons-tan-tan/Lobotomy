@@ -66,3 +66,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis lacinia magn
     versionRange="[geckolib-forge-1.18:3.0.57,)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.lobotomy]]
+    modId="smartbrainlib"
+    mandatory=true
+    versionRange="[1.5,)"
+    ordering="NONE"
+    side="SERVER"

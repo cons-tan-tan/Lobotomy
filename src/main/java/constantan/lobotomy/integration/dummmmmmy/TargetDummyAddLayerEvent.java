@@ -20,9 +20,13 @@ public class TargetDummyAddLayerEvent {
     @SubscribeEvent
     public static void onAddLayer(EntityRenderersEvent.AddLayers event) {
         if (ModList.get().isLoaded("dummmmmmy")) {
-            LivingEntityRenderer renderer = event.getRenderer(ModRegistry.TARGET_DUMMY.get());
-            if (renderer instanceof TargetDummyRenderer) {
-                renderer.addLayer(new EgoSuitLayer(renderer, new PlayerModel<>(event.getEntityModels().bakeLayer(ModelLayers.PLAYER), false)));
+            try {
+                LivingEntityRenderer renderer = event.getRenderer(ModRegistry.TARGET_DUMMY.get());
+                if (renderer instanceof TargetDummyRenderer) {
+                    renderer.addLayer(new EgoSuitLayer(renderer, new PlayerModel<>(event.getEntityModels().bakeLayer(ModelLayers.PLAYER), false)));
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("dummmmmmy mod was loaded, but error occur while AddLayers Event to TargetDummyRenderer");
             }
         }
     }

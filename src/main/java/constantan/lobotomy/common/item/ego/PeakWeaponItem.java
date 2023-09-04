@@ -1,19 +1,13 @@
 package constantan.lobotomy.common.item.ego;
 
 import constantan.lobotomy.common.item.EgoRangeWeapon;
+import constantan.lobotomy.common.util.EgoUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -60,23 +54,8 @@ public class PeakWeaponItem extends EgoRangeWeapon implements IAnimatable, ISync
         }
         if (!pLevel.isClientSide) {
             this.playAnimation(pPlayer, pUsedHand, FIRE_ANIM_STATE);
-            float range = 16;
-            Vec3 eyePos = pPlayer.getEyePosition();
-            Vec3 rangeVec = pPlayer.getViewVector(1.0F).normalize().scale(range);
-            AABB searchArea = pPlayer.getBoundingBox().expandTowards(rangeVec).inflate(1.0F);
-            EntityHitResult result = ProjectileUtil
-                    .getEntityHitResult(pPlayer, eyePos, eyePos.add(rangeVec), searchArea,
-                            target -> !target.isSpectator() && target.isPickable(), Math.pow(range, 2));
-            if (result != null) {
-                Entity target = result.getEntity();
-                Vec3 hitLocation = result.getLocation();
-                boolean flag = pLevel
-                        .clip(new ClipContext(eyePos, hitLocation, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, pPlayer))
-                        .getType() == HitResult.Type.MISS;
-                if (flag) {
-                    target.hurt(DamageSource.playerAttack(pPlayer), this.getRangedRandomDamage(stack));
-                }
-            }
+            EgoUtil.doConsumerToTargetInRange(pPlayer, 16, target ->
+                    target.hurt(DamageSource.playerAttack(pPlayer), this.getRangedRandomDamage(stack)));
         }
         return InteractionResultHolder.fail(stack);
     }

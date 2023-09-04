@@ -4,9 +4,9 @@ import constantan.lobotomy.common.ego.action.EgoActionSequencer;
 
 public interface IMixinPlayer {
 
-    EgoActionSequencer getEgoActionSequencer();
+    EgoActionSequencer<?> getEgoActionSequencer();
 
-    void setEgoActionSequencer(EgoActionSequencer egoActionSequencer);
+    void setEgoActionSequencer(EgoActionSequencer<?> egoActionSequencer);
 
     boolean hasEgoActionSequencer();
 

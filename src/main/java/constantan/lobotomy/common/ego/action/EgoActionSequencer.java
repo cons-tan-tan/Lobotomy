@@ -15,6 +15,7 @@ public class EgoActionSequencer<T> {
 
     private int tick = 0;
 
+    @SuppressWarnings("unchecked")
     public EgoActionSequencer(ItemStack stack, Map<Integer, List<IEgoAction<T>>> timeLine, int tickLength) {
         this.stack = stack;
         this.ego = (T) stack.getItem();

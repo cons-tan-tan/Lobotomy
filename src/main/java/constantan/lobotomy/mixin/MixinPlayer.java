@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public abstract class MixinPlayer implements IMixinPlayer {
 
     @Unique
-    private EgoActionSequencer egoActionSequencer = null;
+    private EgoActionSequencer<?> egoActionSequencer = null;
 
     @ModifyVariable(method = "attack", at = @At("HEAD"), index = 1, argsOnly = true)
     private Entity attack_Head(Entity target) {
@@ -26,12 +26,12 @@ public abstract class MixinPlayer implements IMixinPlayer {
     }
 
     @Override
-    public EgoActionSequencer getEgoActionSequencer() {
+    public EgoActionSequencer<?> getEgoActionSequencer() {
         return this.egoActionSequencer;
     }
 
     @Override
-    public void setEgoActionSequencer(EgoActionSequencer egoActionSequencer) {
+    public void setEgoActionSequencer(EgoActionSequencer<?> egoActionSequencer) {
         if (this.egoActionSequencer == null) {
             this.egoActionSequencer = egoActionSequencer;
         }

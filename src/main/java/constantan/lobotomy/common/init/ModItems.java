@@ -71,7 +71,7 @@ public class ModItems {
                                             player -> stack -> simpleEgoMeleeWeapon ->
                                                     simpleEgoMeleeWeapon.getRangedRandomDamage(stack))), 9)
                             .add(new EgoActionSequencer.Builder<SimpleEgoMeleeWeapon>()
-                                    .action(Set.of(1, 2, 3, 4, 5, 6, 7), new ExtraAttackAction<>(
+                                    .action(Set.of(1, 2, 3, 4, 5, 11, 15), new ExtraAttackAction<>(
                                             player -> stack -> simpleEgoMeleeWeapon ->
                                                     (DamageSource) ((IMixinDamageSource) DamageSource.playerAttack(player)).ignoreInvulnerable(),
                                             player -> stack -> simpleEgoMeleeWeapon ->

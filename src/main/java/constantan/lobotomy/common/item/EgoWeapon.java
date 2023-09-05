@@ -4,11 +4,10 @@ import constantan.lobotomy.client.renderer.ModItemRenderers;
 import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.ego.action.EgoActionSequencer;
 import constantan.lobotomy.common.item.util.IEgo;
+import constantan.lobotomy.common.item.util.ISyncableParent;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.IDamageType;
-import constantan.lobotomy.common.item.util.ISyncableParent;
 import constantan.lobotomy.common.util.RiskLevelUtil;
-import constantan.lobotomy.common.util.mixin.IMixinPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
@@ -119,10 +118,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     @Override
     public boolean hurtEnemy(@NotNull ItemStack pStack, @NotNull LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
         if (this.afterAttackActionSequencerBuilder != null && pAttacker instanceof Player player) {
-            var iMixinPlayer = (IMixinPlayer) player;
-            if (!iMixinPlayer.hasEgoActionSequencer(EquipmentSlot.MAINHAND)) {
-                iMixinPlayer.setEgoActionSequencer(this.afterAttackActionSequencerBuilder.build(EquipmentSlot.MAINHAND, pStack));
-            }
+            this.afterAttackActionSequencerBuilder.build(EquipmentSlot.MAINHAND, pStack).initAndSet(player);
         }
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }

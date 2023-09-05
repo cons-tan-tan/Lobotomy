@@ -34,9 +34,7 @@ public class EgoActionSequencer<T> {
             this.tick++;
 
             if (timeLine.containsKey(this.tick)) {
-                for (IEgoAction<T> iEgoAction : timeLine.get(this.tick)) {
-                    iEgoAction.getAction().apply(player).apply(this.stack).apply(this.ego);
-                }
+                this.applyIfContainsInTimeLine(player, this.tick);
             }
 
             if (this.tick >= tickLength) {
@@ -49,6 +47,14 @@ public class EgoActionSequencer<T> {
         }
     }
 
+    public void applyIfContainsInTimeLine(Player player, int currentTick) {
+        if (this.timeLine.containsKey(currentTick)) {
+            for (IEgoAction<T> iEgoAction : timeLine.get(currentTick)) {
+                iEgoAction.getAction().apply(player).apply(this.stack).apply(this.ego);
+            }
+        }
+    }
+
     public ItemStack getStack() {
         return this.stack;
     }
@@ -57,18 +63,24 @@ public class EgoActionSequencer<T> {
         return this.equipmentSlot;
     }
 
+    public boolean isInstant() {
+        return this.tickLength == 0;
+    }
+
+    public void initAndSet(Player player) {
+        this.applyIfContainsInTimeLine(player, 0);
+        if (!this.isInstant()) {
+            ((IMixinPlayer) player).setEgoActionSequencer(this);
+        }
+    }
+
     public static class Builder<T> {
 
         private final Map<Integer, List<IEgoAction<T>>> timeLine = new HashMap<>();
         private int tickLength = 0;
 
-        public Builder() {
-        }
-
         public Builder<T> action(int tick, IEgoAction<T> iEgoAction) {
-            timeLine.computeIfAbsent(tick, key -> new ArrayList<>()).add(iEgoAction);
-            this.tickLength = Math.max(this.tickLength, tick);
-            return this;
+            return this.action(tick, List.of(iEgoAction));
         }
 
         public Builder<T> action(int tick, List<IEgoAction<T>> iEgoActions) {
@@ -79,10 +91,17 @@ public class EgoActionSequencer<T> {
 
         public Builder<T> action(Set<Integer> tickSet, IEgoAction<T> iEgoAction) {
             for (int tick : tickSet) {
-                timeLine.computeIfAbsent(tick, key -> new ArrayList<>()).add(iEgoAction);
-                this.tickLength = Math.max(this.tickLength, tick);
+                this.action(tick, List.of(iEgoAction));
             }
             return this;
+        }
+
+        public Builder<T> instant(IEgoAction<T> iEgoAction) {
+            return this.action(0, List.of(iEgoAction));
+        }
+
+        public Builder<T> instant(List<IEgoAction<T>> iEgoActions) {
+            return this.action(0, iEgoActions);
         }
 
         public Builder<T> length(int tick) {

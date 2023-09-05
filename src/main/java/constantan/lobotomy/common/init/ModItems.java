@@ -65,7 +65,7 @@ public class ModItems {
                     .afterAttackAction(new EgoActionSequencer.Builder<SimpleEgoMeleeWeapon>()
                             .action(Set.of(1, 2, 3), new ExtraAttackAction<>(
                                     player -> stack -> simpleEgoMeleeWeapon ->
-                                            ((IMixinDamageSource) DamageSource.playerAttack(player)).ignoreInvulnerable(),
+                                            (DamageSource) ((IMixinDamageSource) DamageSource.playerAttack(player)).ignoreInvulnerable(),
                                     player -> stack -> simpleEgoMeleeWeapon ->
                                             simpleEgoMeleeWeapon.getRangedRandomDamage(stack)
                             )))));

@@ -4,7 +4,7 @@ package constantan.lobotomy.common.init;
 import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
 import constantan.lobotomy.common.ModSetup;
 import constantan.lobotomy.common.ego.action.EgoActionSequencer;
-import constantan.lobotomy.common.ego.action.ExtraDamageAction;
+import constantan.lobotomy.common.ego.action.ExtraAttackAction;
 import constantan.lobotomy.common.item.*;
 import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoArmorItem;
@@ -63,7 +63,7 @@ public class ModItems {
                     .damageType(DamageTypeUtil.PALE)
                     .riskLevel(RiskLevelUtil.ALEPH)
                     .afterAttackAction(new EgoActionSequencer.Builder<SimpleEgoMeleeWeapon>()
-                            .action(Set.of(1, 2, 3), new ExtraDamageAction<>(
+                            .action(Set.of(1, 2, 3), new ExtraAttackAction<>(
                                     player -> stack -> simpleEgoMeleeWeapon ->
                                             ((IMixinDamageSource) DamageSource.playerAttack(player)).ignoreInvulnerable(),
                                     player -> stack -> simpleEgoMeleeWeapon ->

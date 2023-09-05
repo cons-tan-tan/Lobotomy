@@ -9,19 +9,19 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Function;
 
-public class ExtraDamageAction<T extends EgoWeapon> implements IEgoAction<T>{
+public class ExtraAttackAction<T extends EgoWeapon> implements IEgoAction<T>{
 
     private final Function<Player, Function<ItemStack, Function<T, DamageSource>>> damageSourceFunction;
     private final Function<Player, Function<ItemStack, Function<T, Float>>> damageAmountFunction;
 
-    public ExtraDamageAction(Function<Player, Function<ItemStack, Function<T, IMixinDamageSource>>> iMixinDamageSourceFunction,
+    public ExtraAttackAction(Function<Player, Function<ItemStack, Function<T, IMixinDamageSource>>> iMixinDamageSourceFunction,
                              Function<Player, Function<ItemStack, Function<T, Float>>> damageAmountFunction) {
         this.damageSourceFunction = player -> stack -> egoWeapon ->
                 (DamageSource) iMixinDamageSourceFunction.apply(player).apply(stack).apply(egoWeapon);
         this.damageAmountFunction = damageAmountFunction;
     }
 
-    public ExtraDamageAction(Function<Player, Function<ItemStack, Function<T, DamageSource>>> damageSourceFunction,
+    public ExtraAttackAction(Function<Player, Function<ItemStack, Function<T, DamageSource>>> damageSourceFunction,
                              Function<Player, Function<ItemStack, Function<T, Float>>> damageAmountFunction,
                              DamageSource[] dummy) {
         this.damageSourceFunction = damageSourceFunction;

@@ -31,7 +31,7 @@ public class ExtraDamageAction<T extends EgoWeapon> implements IEgoAction<T>{
     @Override
     public Function<Player, Function<ItemStack, Function<T, Boolean>>> getAction() {
         return player -> stack -> egoWeapon -> EgoUtil.doConsumerToTargetInRange(player, (float) player.getAttackRange(), target ->
-                target.hurt((DamageSource) damageSourceFunction.apply(player).apply(stack).apply(egoWeapon),
+                target.hurt(damageSourceFunction.apply(player).apply(stack).apply(egoWeapon),
                         damageAmountFunction.apply(player).apply(stack).apply(egoWeapon)));
     }
 }

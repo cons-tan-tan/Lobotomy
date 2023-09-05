@@ -12,6 +12,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.Lazy;
 
 import java.util.UUID;
+import java.util.function.Function;
 
 public abstract class EgoMeleeWeapon extends EgoWeapon {
 
@@ -22,7 +23,7 @@ public abstract class EgoMeleeWeapon extends EgoWeapon {
 
     protected static final UUID BASE_ATTACK_RANGE_UUID = UUID.fromString("4925e86b-3e02-417d-a35b-f7cfcb0750e1");
 
-    private final Lazy<Multimap<Attribute, AttributeModifier>> lazyDefaultModifiers;
+    private final Lazy<Function<EquipmentSlot, Function<ItemStack, Multimap<Attribute, AttributeModifier>>>> lazyDefaultModifiers;
 
     public EgoMeleeWeapon(int minDamage, int maxDamage, Properties pProperties) {
         super(minDamage, maxDamage, pProperties);
@@ -33,7 +34,7 @@ public abstract class EgoMeleeWeapon extends EgoWeapon {
         this.speed = egoMeleeWeaponProperties.speed;
         this.twoHanded = egoMeleeWeaponProperties.twoHanded;
 
-        this.lazyDefaultModifiers = Lazy.of(() -> {
+        this.lazyDefaultModifiers = Lazy.of(() -> equipmentSlot -> itemstack -> {
             ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
             builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", this.speed, AttributeModifier.Operation.ADDITION));
             if (this.range != 0) {
@@ -57,7 +58,9 @@ public abstract class EgoMeleeWeapon extends EgoWeapon {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        return slot == EquipmentSlot.MAINHAND ? this.lazyDefaultModifiers.get() : super.getAttributeModifiers(slot, stack);
+        return slot == EquipmentSlot.MAINHAND
+                ? this.lazyDefaultModifiers.get().apply(slot).apply(stack)
+                : super.getAttributeModifiers(slot, stack);
     }
 
     public static class EgoMeleeWeaponProperties extends EgoWeaponProperties<EgoMeleeWeaponProperties> {

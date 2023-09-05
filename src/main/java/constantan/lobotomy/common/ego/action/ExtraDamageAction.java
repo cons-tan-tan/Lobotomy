@@ -20,6 +20,14 @@ public class ExtraDamageAction<T extends EgoWeapon> implements IEgoAction<T>{
         this.damageAmountFunction = damageAmountFunction;
     }
 
+    public ExtraDamageAction(Function<Player, Function<ItemStack, Function<T, DamageSource>>> damageSourceFunction,
+                             Function<Player, Function<ItemStack, Function<T, Float>>> damageAmountFunction,
+                             DamageSource[] dummy) {
+        this.damageSourceFunction = player -> stack -> egoWeapon ->
+                (IMixinDamageSource) damageSourceFunction.apply(player).apply(stack).apply(egoWeapon);
+        this.damageAmountFunction = damageAmountFunction;
+    }
+
     @Override
     public Function<Player, Function<ItemStack, Function<T, Boolean>>> getAction() {
         return player -> stack -> egoWeapon -> EgoUtil.doConsumerToTargetInRange(player, (float) player.getAttackRange(), target ->

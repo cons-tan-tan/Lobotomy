@@ -27,15 +27,24 @@ public class EgoActionSequencer<T> {
     }
 
     public void tick(Player player) {
-        this.tick++;
+        ItemStack currentStack = player.getItemBySlot(equipmentSlot);
+        boolean flag = this.stack.equals(currentStack);
 
-        if (timeLine.containsKey(this.tick)) {
-            for (IEgoAction<T> iEgoAction : timeLine.get(this.tick)) {
-                iEgoAction.getAction().apply(player).apply(this.stack).apply(this.ego);
+        if (flag) {
+            this.tick++;
+
+            if (timeLine.containsKey(this.tick)) {
+                for (IEgoAction<T> iEgoAction : timeLine.get(this.tick)) {
+                    iEgoAction.getAction().apply(player).apply(this.stack).apply(this.ego);
+                }
+            }
+
+            if (this.tick >= tickLength) {
+                flag = false;
             }
         }
 
-        if (this.tick >= tickLength) {
+        if (!flag) {
             ((IMixinPlayer) player).removeEgoActionSequencer(this.equipmentSlot);
         }
     }

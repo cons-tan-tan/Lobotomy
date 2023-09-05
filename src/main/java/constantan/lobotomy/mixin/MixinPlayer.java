@@ -19,8 +19,6 @@ import java.util.Map;
 public abstract class MixinPlayer implements IMixinPlayer {
 
     @Unique
-    private EgoActionSequencer<?> egoActionSequencer = null;
-    @Unique
     private final Map<EquipmentSlot, EgoActionSequencer<?>> egoActionSequencers = new HashMap<>();
 
     @ModifyVariable(method = "attack", at = @At("HEAD"), index = 1, argsOnly = true)

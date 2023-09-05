@@ -2,7 +2,8 @@ package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.client.renderer.ModItemRenderers;
 import constantan.lobotomy.common.ModSetup;
-import constantan.lobotomy.common.ego.action.EgoActionSequencer;
+import constantan.lobotomy.common.ego.action.EgoActionBuilderManager;
+import constantan.lobotomy.common.ego.action.EgoActionType;
 import constantan.lobotomy.common.item.util.IEgo;
 import constantan.lobotomy.common.item.util.ISyncableParent;
 import constantan.lobotomy.common.util.DamageTypeUtil;
@@ -30,6 +31,8 @@ import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -41,7 +44,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     private final int maxDamageAmount;
     private final DamageTypeUtil damageType;
     private final RiskLevelUtil riskLevel;
-    private final EgoActionSequencer.Builder<?> afterAttackActionSequencerBuilder;
+    private final Map<EgoActionType, EgoActionBuilderManager> actionManagers = new HashMap<>();
 
     private final TextComponent abnormalDamageTooltip;
 
@@ -65,7 +68,7 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
         this.riskLevel = egoWeaponItemProperties.riskLevel;
         this.damageType = egoWeaponItemProperties.damageType;
         this.hasIdleAnim = egoWeaponItemProperties.idleAnim;
-        this.afterAttackActionSequencerBuilder = egoWeaponItemProperties.afterAttackActionSequencerBuilder;
+        this.actionManagers.putAll(egoWeaponItemProperties.managers);
 
         this.abnormalDamageTooltip = this.getDamageType().getColoredTextComponentWithValue(minDamage, maxDamage, this instanceof EgoRangeWeapon);
     }
@@ -117,8 +120,9 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
 
     @Override
     public boolean hurtEnemy(@NotNull ItemStack pStack, @NotNull LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
-        if (this.afterAttackActionSequencerBuilder != null && pAttacker instanceof Player player) {
-            this.afterAttackActionSequencerBuilder.build(EquipmentSlot.MAINHAND, pStack).initAndSet(player);
+        EgoActionBuilderManager attackManager = this.actionManagers.get(EgoActionType.ATTACK);
+        if (attackManager != null && pAttacker instanceof Player player) {
+            attackManager.getActionBuilder().build(EquipmentSlot.MAINHAND, pStack).initAndSet(player);
         }
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
@@ -142,13 +146,13 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
     }
 
     @SuppressWarnings("unchecked")
-    public static class EgoWeaponProperties<R> extends EgoProperties<R> {
+    public abstract static class EgoWeaponProperties<R> extends EgoProperties<R> {
 
         RiskLevelUtil riskLevel = RiskLevelUtil.ZAYIN;
         DamageTypeUtil damageType = DamageTypeUtil.RED;
         boolean idleAnim;
 
-        EgoActionSequencer.Builder<?> afterAttackActionSequencerBuilder;
+        Map<EgoActionType, EgoActionBuilderManager> managers = new HashMap<>();
 
         @Override
         public R riskLevel(RiskLevelUtil riskLevel) {
@@ -167,8 +171,8 @@ public abstract class EgoWeapon extends Item implements IEgo, IDamageType, ISync
             return (R) this;
         }
 
-        public R afterAttackAction(EgoActionSequencer.Builder<?> builder) {
-            this.afterAttackActionSequencerBuilder = builder;
+        public R afterAttackAction(EgoActionBuilderManager manager) {
+            this.managers.put(EgoActionType.ATTACK, manager);
             return (R) this;
         }
     }

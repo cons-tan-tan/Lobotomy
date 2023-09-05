@@ -3,8 +3,9 @@ package constantan.lobotomy.common.init;
 
 import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
 import constantan.lobotomy.common.ModSetup;
+import constantan.lobotomy.common.ego.action.EgoActionBuilderManager;
 import constantan.lobotomy.common.ego.action.EgoActionSequencer;
-import constantan.lobotomy.common.ego.action.ExtraAttackAction;
+import constantan.lobotomy.common.ego.action.custom.ExtraAttackAction;
 import constantan.lobotomy.common.item.*;
 import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoArmorItem;
@@ -62,13 +63,19 @@ public class ModItems {
                     .weaponType(EgoMeleeWeaponType.SWORD)
                     .damageType(DamageTypeUtil.PALE)
                     .riskLevel(RiskLevelUtil.ALEPH)
-                    .afterAttackAction(new EgoActionSequencer.Builder<SimpleEgoMeleeWeapon>()
-                            .action(Set.of(1, 2, 3), new ExtraAttackAction<>(
-                                    player -> stack -> simpleEgoMeleeWeapon ->
-                                            (DamageSource) ((IMixinDamageSource) DamageSource.playerAttack(player)).ignoreInvulnerable(),
-                                    player -> stack -> simpleEgoMeleeWeapon ->
-                                            simpleEgoMeleeWeapon.getRangedRandomDamage(stack)
-                            )))));
+                    .afterAttackAction(new EgoActionBuilderManager()
+                            .add(new EgoActionSequencer.Builder<SimpleEgoMeleeWeapon>()
+                                    .action(Set.of(1, 2, 3), new ExtraAttackAction<>(
+                                            player -> stack -> simpleEgoMeleeWeapon ->
+                                                    (DamageSource) ((IMixinDamageSource) DamageSource.playerAttack(player)).ignoreInvulnerable(),
+                                            player -> stack -> simpleEgoMeleeWeapon ->
+                                                    simpleEgoMeleeWeapon.getRangedRandomDamage(stack))), 9)
+                            .add(new EgoActionSequencer.Builder<SimpleEgoMeleeWeapon>()
+                                    .action(Set.of(1, 2, 3, 4, 5, 6, 7), new ExtraAttackAction<>(
+                                            player -> stack -> simpleEgoMeleeWeapon ->
+                                                    (DamageSource) ((IMixinDamageSource) DamageSource.playerAttack(player)).ignoreInvulnerable(),
+                                            player -> stack -> simpleEgoMeleeWeapon ->
+                                                    simpleEgoMeleeWeapon.getRangedRandomDamage(stack))), 1))));
 
     public static final RegistryObject<Item> HEAVEN_WEAPON = ITEMS.register(LibAbnormality.THE_BURROWING_HEAVEN.getWeaponEgoName(),
             () -> new SimpleEgoMeleeWeapon(8, 16, new EgoMeleeWeapon.EgoMeleeWeaponProperties()

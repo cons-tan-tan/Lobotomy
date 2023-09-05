@@ -1,5 +1,6 @@
-package constantan.lobotomy.common.ego.action;
+package constantan.lobotomy.common.ego.action.custom;
 
+import constantan.lobotomy.common.ego.action.IEgoAction;
 import constantan.lobotomy.common.item.EgoWeapon;
 import constantan.lobotomy.common.util.EgoUtil;
 import net.minecraft.world.damagesource.DamageSource;
@@ -8,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Function;
 
-public class ExtraAttackAction<T extends EgoWeapon> implements IEgoAction<T>{
+public class ExtraAttackAction<T extends EgoWeapon> implements IEgoAction<T> {
 
     private final Function<Player, Function<ItemStack, Function<T, DamageSource>>> damageSourceFunction;
     private final Function<Player, Function<ItemStack, Function<T, Float>>> damageAmountFunction;

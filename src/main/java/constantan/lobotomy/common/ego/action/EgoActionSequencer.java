@@ -1,6 +1,7 @@
 package constantan.lobotomy.common.ego.action;
 
 import constantan.lobotomy.common.util.mixin.IMixinPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -8,6 +9,7 @@ import java.util.*;
 
 public class EgoActionSequencer<T> {
 
+    private final EquipmentSlot equipmentSlot;
     private final ItemStack stack;
     private final T ego;
     private final Map<Integer, List<IEgoAction<T>>> timeLine;
@@ -16,7 +18,8 @@ public class EgoActionSequencer<T> {
     private int tick = 0;
 
     @SuppressWarnings("unchecked")
-    public EgoActionSequencer(ItemStack stack, Map<Integer, List<IEgoAction<T>>> timeLine, int tickLength) {
+    public EgoActionSequencer(EquipmentSlot equipmentSlot, ItemStack stack, Map<Integer, List<IEgoAction<T>>> timeLine, int tickLength) {
+        this.equipmentSlot = equipmentSlot;
         this.stack = stack;
         this.ego = (T) stack.getItem();
         this.timeLine = new HashMap<>(timeLine);
@@ -32,8 +35,8 @@ public class EgoActionSequencer<T> {
             }
         }
 
-        if (this.tick == tickLength) {
-            ((IMixinPlayer) player).removeEgoActionSequencer();
+        if (this.tick >= tickLength) {
+            ((IMixinPlayer) player).removeEgoActionSequencer(this.equipmentSlot);
         }
     }
 
@@ -41,10 +44,14 @@ public class EgoActionSequencer<T> {
         return this.stack;
     }
 
+    public EquipmentSlot getEquipmentSlot() {
+        return this.equipmentSlot;
+    }
+
     public static class Builder<T> {
 
         private final Map<Integer, List<IEgoAction<T>>> timeLine = new HashMap<>();
-        private int tickLength = 1;
+        private int tickLength = 0;
 
         public Builder() {
         }
@@ -74,8 +81,8 @@ public class EgoActionSequencer<T> {
             return this;
         }
 
-        public EgoActionSequencer<T> build(ItemStack stack) {
-            return new EgoActionSequencer<>(stack, this.timeLine, this.tickLength);
+        public EgoActionSequencer<T> build(EquipmentSlot equipmentSlot, ItemStack stack) {
+            return new EgoActionSequencer<>(equipmentSlot, stack, this.timeLine, this.tickLength);
         }
     }
 }

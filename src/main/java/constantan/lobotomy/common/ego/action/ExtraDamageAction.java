@@ -11,20 +11,20 @@ import java.util.function.Function;
 
 public class ExtraDamageAction<T extends EgoWeapon> implements IEgoAction<T>{
 
-    private final Function<Player, Function<ItemStack, Function<T, IMixinDamageSource>>> damageSourceFunction;
+    private final Function<Player, Function<ItemStack, Function<T, DamageSource>>> damageSourceFunction;
     private final Function<Player, Function<ItemStack, Function<T, Float>>> damageAmountFunction;
 
     public ExtraDamageAction(Function<Player, Function<ItemStack, Function<T, IMixinDamageSource>>> iMixinDamageSourceFunction,
                              Function<Player, Function<ItemStack, Function<T, Float>>> damageAmountFunction) {
-        this.damageSourceFunction = iMixinDamageSourceFunction;
+        this.damageSourceFunction = player -> stack -> egoWeapon ->
+                (DamageSource) iMixinDamageSourceFunction.apply(player).apply(stack).apply(egoWeapon);
         this.damageAmountFunction = damageAmountFunction;
     }
 
     public ExtraDamageAction(Function<Player, Function<ItemStack, Function<T, DamageSource>>> damageSourceFunction,
                              Function<Player, Function<ItemStack, Function<T, Float>>> damageAmountFunction,
                              DamageSource[] dummy) {
-        this.damageSourceFunction = player -> stack -> egoWeapon ->
-                (IMixinDamageSource) damageSourceFunction.apply(player).apply(stack).apply(egoWeapon);
+        this.damageSourceFunction = damageSourceFunction;
         this.damageAmountFunction = damageAmountFunction;
     }
 

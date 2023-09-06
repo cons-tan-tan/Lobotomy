@@ -60,15 +60,38 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis lacinia magn
     versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"
+
 [[dependencies.lobotomy]]
     modId="geckolib3"
     mandatory=true
     versionRange="[geckolib-forge-1.18:3.0.57,)"
     ordering="NONE"
     side="BOTH"
+
 [[dependencies.lobotomy]]
     modId="smartbrainlib"
     mandatory=true
     versionRange="[1.5,)"
     ordering="NONE"
     side="SERVER"
+
+[[dependencies.lobotomy]]
+    modId="curios"
+    mandatory=true
+    versionRange="[forge:1.18.2-5.0.9.1,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.lobotomy]]
+    modId="dummmmmmy"
+    mandatory=false
+    versionRange="[1.18-1.5.2,)"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.lobotomy]]
+    modId="jade"
+    mandatory=false
+    versionRange="[5.3.0,)"
+    ordering="NONE"
+    side="CLIENT"

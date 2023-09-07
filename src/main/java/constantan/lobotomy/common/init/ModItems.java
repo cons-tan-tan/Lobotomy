@@ -102,6 +102,6 @@ public class ModItems {
                     .idleAnim()));
 
     //EGO_GIFT
-    public static final RegistryObject<Item> JUSTITIA_GIFT = ITEMS.register(LibAbnormality.JUDGEMENT_BIRD.getGiftName(),
+    public static final RegistryObject<Item> JUSTITIA_GIFT = ITEMS.register(LibAbnormality.JUDGEMENT_BIRD.getGiftEgoName(),
             () -> new EgoGift(basicItem()));
 }

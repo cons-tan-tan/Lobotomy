@@ -14,6 +14,7 @@ public class LibAbnormality {
 
         private final String name;
         private String egoName;
+        private String giftName;
 
         public EntityResourceData(String name) {
             this.name = name;
@@ -21,6 +22,7 @@ public class LibAbnormality {
 
         EntityResourceData egoName(String egoName) {
             this.egoName = egoName;
+            this.giftName = egoName;
             return this;
         }
 
@@ -96,8 +98,12 @@ public class LibAbnormality {
             return path("textures/armor/" + this.egoName + "_suit.png");
         }
 
-        public String getGiftName() {
-            return this.egoName + "_gift";
+        public String getGiftEgoName() {
+            return this.giftName + "_gift";
+        }
+
+        public ResourceLocation getGiftEgoTexture() {
+            return path("textures/gift/" + this.giftName + "_gift.png");
         }
     }
 

@@ -203,12 +203,11 @@ dependencies {
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.1")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.1:api")
 
-    implementation fg.deobf("curse.maven:just-enough-items-238222:3940240")
     implementation fg.deobf("curse.maven:jade-324717:4575623")
     implementation fg.deobf("curse.maven:patchouli-306770:3846086")
-
     implementation fg.deobf("curse.maven:target-dummy-225738:3820503")
 
+    implementation fg.deobf("curse.maven:just-enough-items-238222:3940240")
     runtimeOnly fg.deobf("curse.maven:cloth-config-api-348521:4633387")
     runtimeOnly fg.deobf("curse.maven:itemzoom-261725:3749454")
     runtimeOnly fg.deobf("curse.maven:neat-238372:3859673")

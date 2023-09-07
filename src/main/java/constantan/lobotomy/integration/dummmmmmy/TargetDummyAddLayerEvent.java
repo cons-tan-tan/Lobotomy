@@ -1,6 +1,7 @@
 package constantan.lobotomy.integration.dummmmmmy;
 
 import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
+import constantan.lobotomy.config.LobotomyClientConfigs;
 import constantan.lobotomy.lib.LibMisc;
 import net.mehvahdjukaar.dummmmmmy.client.TargetDummyRenderer;
 import net.mehvahdjukaar.dummmmmmy.setup.ModRegistry;
@@ -19,7 +20,7 @@ public class TargetDummyAddLayerEvent {
     @SuppressWarnings({"rawtypes", "unchecked"})
     @SubscribeEvent
     public static void onAddLayer(EntityRenderersEvent.AddLayers event) {
-        if (ModList.get().isLoaded("dummmmmmy")) {
+        if (ModList.get().isLoaded("dummmmmmy") && LobotomyClientConfigs.TARGET_DUMMY_SUIT_LAYER.get()) {
             try {
                 LivingEntityRenderer renderer = event.getRenderer(ModRegistry.TARGET_DUMMY.get());
                 if (renderer instanceof TargetDummyRenderer) {

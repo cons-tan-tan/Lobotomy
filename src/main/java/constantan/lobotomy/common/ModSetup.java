@@ -4,6 +4,7 @@ import constantan.lobotomy.common.init.*;
 import constantan.lobotomy.common.ego.gift.GiftCuriosSlotType;
 import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.config.LobotomyClientConfigs;
+import constantan.lobotomy.config.LobotomyCommonConfigs;
 import constantan.lobotomy.lib.LibMisc;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -47,7 +48,7 @@ public class ModSetup {
         GeckoLib.initialize();
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, LobotomyClientConfigs.SPEC, "lobotomy-client.toml");
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LobotomyClientConfigs.SPEC, "lobotomy-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LobotomyCommonConfigs.SPEC, "lobotomy-common.toml");
     }
 
     public static void init(final FMLCommonSetupEvent event) {

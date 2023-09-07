@@ -95,6 +95,10 @@ public class LibAbnormality {
         public ResourceLocation getSuitEgoTexture() {
             return path("textures/armor/" + this.egoName + "_suit.png");
         }
+
+        public String getGiftName() {
+            return this.egoName + "_gift";
+        }
     }
 
     public record ToolResourceData(String name) {

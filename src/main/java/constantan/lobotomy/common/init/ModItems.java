@@ -100,4 +100,8 @@ public class ModItems {
                     .defense(1.2F,0.8F,0.6F,1.5F)
                     .riskLevel(RiskLevelUtil.WAW)
                     .idleAnim()));
+
+    //EGO_GIFT
+    public static final RegistryObject<Item> JUSTITIA_GIFT = ITEMS.register(LibAbnormality.JUDGEMENT_BIRD.getGiftName(),
+            () -> new EgoGift(basicItem()));
 }

@@ -32,5 +32,7 @@
   "effect.lobotomy.owing": "Owing",
 
   "attribute.lobotomy.name.ego_armor.defense_multiplier": "Defense Multiplier",
-  "attribute.lobotomy.name.ego_armor.projectile_damage": "Projectile Damage"
+  "attribute.lobotomy.name.ego_armor.projectile_damage": "Projectile Damage",
+
+  "curios.identifier.gift_eye": "Eye (Gift)"
 }

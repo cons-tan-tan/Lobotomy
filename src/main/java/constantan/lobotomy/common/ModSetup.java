@@ -1,7 +1,7 @@
 package constantan.lobotomy.common;
 
 import constantan.lobotomy.common.init.*;
-import constantan.lobotomy.common.item.util.GiftCuriosSlotType;
+import constantan.lobotomy.common.ego.gift.GiftCuriosSlotType;
 import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.config.LobotomyClientConfigs;
 import constantan.lobotomy.lib.LibMisc;

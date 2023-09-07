@@ -11,7 +11,7 @@ import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoArmorItem;
 import constantan.lobotomy.common.item.ego.SimpleEgoMeleeWeapon;
 import constantan.lobotomy.common.item.ego.SimpleEgoRangeWeapon;
-import constantan.lobotomy.common.item.util.EgoMeleeWeaponType;
+import constantan.lobotomy.common.ego.weapon.EgoMeleeWeaponType;
 import constantan.lobotomy.common.util.DamageTypeUtil;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import constantan.lobotomy.common.util.mixin.IMixinDamageSource;

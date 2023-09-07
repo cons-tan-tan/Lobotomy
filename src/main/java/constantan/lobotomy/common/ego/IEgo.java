@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.item.util;
+package constantan.lobotomy.common.ego;
 
 import constantan.lobotomy.common.util.IRiskLevel;
 import constantan.lobotomy.common.util.RiskLevelUtil;

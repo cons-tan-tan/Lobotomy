@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.item.util;
+package constantan.lobotomy.common.util;
 
 import constantan.lobotomy.common.util.IAnimatableParent;
 import net.minecraft.world.entity.LivingEntity;

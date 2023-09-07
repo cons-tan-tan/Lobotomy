@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.item.util;
+package constantan.lobotomy.common.ego.weapon;
 
 public interface IEgoWeaponType {
 

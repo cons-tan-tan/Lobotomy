@@ -1,16 +1,18 @@
-package constantan.lobotomy.common.item.util;
+package constantan.lobotomy.common.ego.weapon;
 
-public enum EgoRangeWeaponType implements IEgoWeaponType{
-    PISTOL(16F, -2.0F, false),
-    CROSSBOW(24F, -3.5F, true),
-    RIFLE(32F, -3.0F, true),
-    CANNON(64F, -3.8F, true);
+public enum EgoMeleeWeaponType implements IEgoWeaponType{
+    SWORD(0.0F, -2.4F, false),
+    MACE(0.0F, -2.4F, false),
+    AXE(-1.0F, -1.2F, false),
+    SPEAR(1.0F, -1.2F, false),
+    FIST(-2, 0, false),
+    HAMMER(0.0F, -3.6F, true);
 
     private final float range;
     private final float speed;
     private final boolean twoHanded;
 
-    EgoRangeWeaponType(float range, float speed, boolean isTwoHanded) {
+    EgoMeleeWeaponType(float range, float speed, boolean isTwoHanded) {
         this.range = range;
         this.speed = speed;
         this.twoHanded = isTwoHanded;

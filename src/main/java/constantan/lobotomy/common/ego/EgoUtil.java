@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.util;
+package constantan.lobotomy.common.ego;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

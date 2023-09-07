@@ -2,7 +2,7 @@ package constantan.lobotomy.common.item;
 
 import constantan.lobotomy.client.renderer.ModItemRenderers;
 import constantan.lobotomy.common.ModSetup;
-import constantan.lobotomy.common.item.util.ISyncableParent;
+import constantan.lobotomy.common.util.ISyncableParent;
 import constantan.lobotomy.common.util.IAbnormalityTool;
 import constantan.lobotomy.common.util.RiskLevelUtil;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;

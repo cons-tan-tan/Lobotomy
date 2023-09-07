@@ -1,4 +1,4 @@
-package constantan.lobotomy.common.item.util;
+package constantan.lobotomy.common.ego.gift;
 
 import net.minecraft.resources.ResourceLocation;
 import top.theillusivec4.curios.api.CuriosApi;

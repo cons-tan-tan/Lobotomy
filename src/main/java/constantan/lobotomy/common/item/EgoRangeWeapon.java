@@ -1,6 +1,6 @@
 package constantan.lobotomy.common.item;
 
-import constantan.lobotomy.common.util.EgoUtil;
+import constantan.lobotomy.common.ego.EgoUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;

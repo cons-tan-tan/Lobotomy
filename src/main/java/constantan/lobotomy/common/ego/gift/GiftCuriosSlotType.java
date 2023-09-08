@@ -25,7 +25,7 @@ public enum GiftCuriosSlotType {
     }
 
     public int getPriority() {
-        return -(this.ordinal() + 653);
+        return this.ordinal() + 653;
     }
 
     public SlotTypeMessage.Builder getMessageBuilder() {

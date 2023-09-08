@@ -3,7 +3,6 @@ package constantan.lobotomy.common.init;
 
 import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
 import constantan.lobotomy.common.ModSetup;
-import constantan.lobotomy.common.ego.action.ModActions;
 import constantan.lobotomy.common.ego.weapon.EgoMeleeWeaponType;
 import constantan.lobotomy.common.item.*;
 import constantan.lobotomy.common.item.abnormality.GiantTreeSapItem;

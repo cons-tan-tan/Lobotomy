@@ -1,5 +1,7 @@
-package constantan.lobotomy.common.ego.action;
+package constantan.lobotomy.common.init;
 
+import constantan.lobotomy.common.ego.action.EgoActionBuilderManager;
+import constantan.lobotomy.common.ego.action.EgoActionSequencer;
 import constantan.lobotomy.common.ego.action.custom.ExtraAttackAction;
 import constantan.lobotomy.common.item.ego.SimpleEgoMeleeWeapon;
 import constantan.lobotomy.common.util.mixin.IMixinDamageSource;

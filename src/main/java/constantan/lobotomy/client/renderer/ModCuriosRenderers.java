@@ -1,7 +1,9 @@
 package constantan.lobotomy.client.renderer;
 
 import constantan.lobotomy.client.model.gift.EgoGiftModelPart;
-import constantan.lobotomy.client.renderer.gift.EgoGiftRenderer;
+import constantan.lobotomy.client.model.gift.HeavenGiftModel;
+import constantan.lobotomy.client.renderer.gift.CrownGiftRenderer;
+import constantan.lobotomy.client.renderer.gift.SkinOverlayGiftRenderer;
 import constantan.lobotomy.common.init.ModItems;
 import constantan.lobotomy.lib.LibAbnormality;
 import net.minecraft.world.item.Item;
@@ -21,6 +23,9 @@ public class ModCuriosRenderers {
     }
 
     static {
-        MAP.put(ModItems.JUSTITIA_GIFT.get(), () -> new EgoGiftRenderer(LibAbnormality.JUDGEMENT_BIRD.getGiftEgoTexture(), EgoGiftModelPart.HEAD));
+        MAP.put(ModItems.JUSTITIA_GIFT.get(), () ->
+                new SkinOverlayGiftRenderer(LibAbnormality.JUDGEMENT_BIRD.getGiftEgoTexture(), EgoGiftModelPart.HEAD));
+        MAP.put(ModItems.HEAVEN_GIFT.get(), () ->
+                new CrownGiftRenderer(LibAbnormality.THE_BURROWING_HEAVEN.getGiftEgoTexture(), new HeavenGiftModel<>()));
     }
 }

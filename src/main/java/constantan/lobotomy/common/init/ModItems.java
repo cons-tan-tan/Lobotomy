@@ -85,4 +85,7 @@ public class ModItems {
     //EGO_GIFT
     public static final RegistryObject<Item> JUSTITIA_GIFT = ITEMS.register(LibAbnormality.JUDGEMENT_BIRD.getGiftEgoName(),
             () -> new EgoGift(basicItem()));
+
+    public static final RegistryObject<Item> HEAVEN_GIFT = ITEMS.register(LibAbnormality.THE_BURROWING_HEAVEN.getGiftEgoName(),
+            () -> new EgoGift(basicItem()));
 }

@@ -8,11 +8,11 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-public class EgoGiftModel<T extends LivingEntity> extends HumanoidModel<T> {
+public class SkinOverlayModel<T extends LivingEntity> extends HumanoidModel<T> {
 
     private final EgoGiftModelPart part;
 
-    public EgoGiftModel(EgoGiftModelPart part) {
+    public SkinOverlayModel(EgoGiftModelPart part) {
         super(createBodyLayer().bakeRoot());
         this.part = part;
     }

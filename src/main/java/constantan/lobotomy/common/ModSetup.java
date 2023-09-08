@@ -56,6 +56,8 @@ public class ModSetup {
     }
 
     private static void enqueueIMC(final InterModEnqueueEvent event) {
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> GiftCuriosSlotType.EYE.getMessageBuilder().build());
+        for (GiftCuriosSlotType type : GiftCuriosSlotType.values()) {
+            InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> type.getMessageBuilder().build());
+        }
     }
 }

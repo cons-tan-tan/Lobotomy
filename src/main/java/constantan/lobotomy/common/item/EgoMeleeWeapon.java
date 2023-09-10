@@ -36,9 +36,13 @@ public abstract class EgoMeleeWeapon extends EgoWeapon {
 
         this.lazyDefaultModifiers = Lazy.of(() -> equipmentSlot -> itemstack -> {
             ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", this.speed, AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier",
+                    this.getRangedRandomDamage(itemstack) - 1, AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier",
+                    this.speed, AttributeModifier.Operation.ADDITION));
             if (this.range != 0) {
-                builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(BASE_ATTACK_RANGE_UUID, "Weapon modifier", this.range, AttributeModifier.Operation.ADDITION));
+                builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(BASE_ATTACK_RANGE_UUID, "Weapon modifier",
+                        this.range, AttributeModifier.Operation.ADDITION));
             }
             return builder.build();
         });

@@ -11,9 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,17 +21,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
 
-    @Shadow public abstract ItemStack getItemBySlot(EquipmentSlot pSlot);
-
     @Shadow public abstract AttributeMap getAttributes();
-
-    @Shadow protected abstract float tickHeadTurn(float pYRot, float pAnimStep);
 
     @Inject(method = "isDamageSourceBlocked", at = @At("HEAD"), cancellable = true)
     private void isDamageSourceBlocked_Head(DamageSource pDamageSource, CallbackInfoReturnable<Boolean> cir) {
@@ -147,12 +142,18 @@ public abstract class MixinLivingEntity {
         }
     }
 
-    @Inject(method = "getAttributeValue", at = @At("HEAD"), cancellable = true)
-    private void getAttributeValue_Head(Attribute pAttribute, CallbackInfoReturnable<Double> cir) {
-        if (pAttribute == Attributes.ATTACK_DAMAGE) {
-            ItemStack itemStack = this.getItemBySlot(EquipmentSlot.MAINHAND);
-            if (itemStack.getItem() instanceof EgoMeleeWeapon egoMeleeWeapon) {
-                cir.setReturnValue(this.getAttributes().getValue(pAttribute) + egoMeleeWeapon.getRangedRandomDamage(itemStack) - 1);
+    @Inject(method = "collectEquipmentChanges", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/item/ItemStack;matches(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void collectEquipmentChanges_Before_matches(CallbackInfoReturnable<Map<EquipmentSlot, ItemStack>> cir,
+                                                        Map<EquipmentSlot, ItemStack> map, EquipmentSlot[] var2,
+                                                        int var3, int var4, EquipmentSlot equipmentslot,
+                                                        ItemStack itemstack, ItemStack itemstack1) {
+        if (ItemStack.matches(itemstack1, itemstack) && itemstack1.getItem() instanceof EgoMeleeWeapon) {
+            if (!itemstack.isEmpty()) {
+                this.getAttributes().removeAttributeModifiers(itemstack.getAttributeModifiers(equipmentslot));
+            }
+            if (!itemstack1.isEmpty()) {
+                this.getAttributes().addTransientAttributeModifiers(itemstack1.getAttributeModifiers(equipmentslot));
             }
         }
     }

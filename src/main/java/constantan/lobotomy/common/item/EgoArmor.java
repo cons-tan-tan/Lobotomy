@@ -1,15 +1,14 @@
 package constantan.lobotomy.common.item;
 
-import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import constantan.lobotomy.client.renderer.armor.EgoArmorRenderer;
+import constantan.lobotomy.client.renderer.entity.layer.EgoSuitLayer;
 import constantan.lobotomy.common.ModSetup;
-import constantan.lobotomy.common.ego.armor.EgoArmorMaterial;
 import constantan.lobotomy.common.ego.IEgo;
-import constantan.lobotomy.common.util.ISyncableParent;
-import constantan.lobotomy.common.util.DamageTypeUtil;
-import constantan.lobotomy.common.util.DefenseUtil;
-import constantan.lobotomy.common.util.IDefense;
-import constantan.lobotomy.common.util.RiskLevelUtil;
+import constantan.lobotomy.common.ego.armor.EgoArmorMaterial;
+import constantan.lobotomy.common.init.ModAttributes;
+import constantan.lobotomy.common.util.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.network.chat.TextComponent;
@@ -18,9 +17,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.network.PacketDistributor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -32,9 +34,14 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyncableParent {
+
+    protected static final UUID BASE_EGO_DEFENSE_UUID = UUID.fromString("165378a8-e81c-4625-a33a-604711b02373");
 
     private final AnimationFactory factory;
 
@@ -46,6 +53,8 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
     private final TextComponent defenseMultiplierTooltip;
     private final TextComponent highlightedDefenseMultiplierTooltip;
+
+    private final Lazy<Function<EquipmentSlot, Function<ItemStack, UnaryOperator<Multimap<Attribute, AttributeModifier>>>>> lazyModifier;
 
     public EgoArmor(Properties builder) {
         super(new EgoArmorMaterial(
@@ -66,6 +75,14 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
 
         this.defenseMultiplierTooltip = DefenseUtil.getDefenseMultiplierTextComponent(egoArmorItemProperties.defense);
         this.highlightedDefenseMultiplierTooltip = DefenseUtil.getDefenseMultiplierTextComponent(egoArmorItemProperties.defense, true);
+
+        this.lazyModifier = Lazy.of(() -> equipmentSlot -> stack -> multimap -> {
+            ImmutableMultimap.Builder<Attribute, AttributeModifier> mapBuilder = ImmutableMultimap.builder();
+            mapBuilder.putAll(multimap);
+            mapBuilder.put(ModAttributes.EGO_DEFENSE.get(), new AttributeModifier(BASE_EGO_DEFENSE_UUID, "Ego armor modifier",
+                    20, AttributeModifier.Operation.ADDITION));
+            return mapBuilder.build();
+        });
     }
 
     @Override
@@ -112,13 +129,20 @@ public abstract class EgoArmor extends ArmorItem implements IEgo, IDefense, ISyn
         return this.innerPartSet;
     }
 
-    @Nullable
-    public ResourceLocation getSuitTexture(LivingEntity livingEntity) {
+
+    public @Nullable ResourceLocation getSuitTexture(LivingEntity livingEntity) {
         if (this instanceof IAnimatable) {
             var renderer = EgoArmorRenderer.getEgoArmorRenderer(this, livingEntity);
             return renderer.egoArmorModel.getSuitTextureLocation(this);
         }
         return null;
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        return slot == EquipmentSlot.CHEST
+                ? this.lazyModifier.get().apply(slot).apply(stack).apply(super.getAttributeModifiers(slot, stack))
+                : super.getAttributeModifiers(slot, stack);
     }
 
     @Override

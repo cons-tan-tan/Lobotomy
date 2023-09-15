@@ -40,6 +40,7 @@ public class ModSetup {
         ModBlocks.BLOCKS.register(modEventBus);
         ModEffects.MOB_EFFECTS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+        ModAttributes.ATTRIBUTES.register(modEventBus);
         ModSensors.SENSOR_TYPES.register(modEventBus);
         ModMemoryModuleTypes.MEMORY_MODULE_TYPES.register(modEventBus);
         modEventBus.addListener(ModEntityTypes::entityAttributeEvent);

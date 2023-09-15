@@ -1,14 +1,17 @@
 package constantan.lobotomy.common;
 
-import constantan.lobotomy.common.init.*;
 import constantan.lobotomy.common.ego.gift.GiftCuriosSlotType;
+import constantan.lobotomy.common.init.*;
 import constantan.lobotomy.common.network.Messages;
 import constantan.lobotomy.config.LobotomyClientConfigs;
 import constantan.lobotomy.config.LobotomyCommonConfigs;
 import constantan.lobotomy.lib.LibMisc;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -60,5 +63,10 @@ public class ModSetup {
         for (GiftCuriosSlotType type : GiftCuriosSlotType.values()) {
             InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> type.getMessageBuilder().build());
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerAttributeModificationEvent(EntityAttributeModificationEvent event) {
+        event.add(EntityType.PLAYER, ModAttributes.EGO_DEFENSE.get());
     }
 }

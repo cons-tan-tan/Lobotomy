@@ -60,6 +60,9 @@ public class ModItems {
     public static final RegistryObject<Item> THE_BURROWING_HEAVEN_SPAWN_EGG = ITEMS.register(LibAbnormality.THE_BURROWING_HEAVEN.getSpawnEggName(),
             () -> new AbnormalitySpawnEggItem(ModEntityTypes.THE_BURROWING_HEAVEN, 0xb40a1a, 0xe4af50));
 
+    public static final RegistryObject<Item> BIG_BIRD_SPAWN_EGG = ITEMS.register(LibAbnormality.BIG_BIRD.getSpawnEggName(),
+            () -> new AbnormalitySpawnEggItem(ModEntityTypes.BIG_BIRD, 0x000000, 0xf5c62b));
+
     //ABNORMALITY_TOOL
     public static final RegistryObject<Item> GIANT_TREE_SAP = ITEMS.register(LibAbnormality.GIANT_TREE_SAP.name(),
             () -> new GiantTreeSapItem(tool().riskLevel(RiskLevelUtil.HE)));

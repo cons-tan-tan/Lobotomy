@@ -7,6 +7,7 @@ public class LibAbnormality {
     public static final EntityResourceData PUNISHING_BIRD = new EntityResourceData("punishing_bird").egoName("peak");
     public static final EntityResourceData JUDGEMENT_BIRD = new EntityResourceData("judgement_bird").egoName("justitia");
     public static final EntityResourceData THE_BURROWING_HEAVEN = new EntityResourceData("the_burrowing_heaven").egoName("heaven");
+    public static final EntityResourceData BIG_BIRD = new EntityResourceData("big_bird").egoName("lamp");
     public static final ToolResourceData GIANT_TREE_SAP = new ToolResourceData("giant_tree_sap");
 
 

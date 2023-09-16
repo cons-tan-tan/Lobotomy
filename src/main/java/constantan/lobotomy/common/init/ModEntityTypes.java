@@ -1,5 +1,6 @@
 package constantan.lobotomy.common.init;
 
+import constantan.lobotomy.common.entity.custom.BigBird;
 import constantan.lobotomy.common.entity.custom.JudgementBird;
 import constantan.lobotomy.common.entity.custom.PunishingBird;
 import constantan.lobotomy.common.entity.custom.TheBurrowingHeaven;
@@ -60,11 +61,24 @@ public class ModEntityTypes {
                             .unblockableAttacker()
                             .build());
 
+    public static final RegistryObject<EntityType<BigBird>> BIG_BIRD = ENTITY_TYPES
+            .register(LibAbnormality.BIG_BIRD.getName(),
+                    () -> abnormalityEntityType(EntityType.Builder
+                            .of(BigBird::new, MobCategory.MONSTER)
+                            .sized(2, 3)
+                            .build(LibAbnormality.BIG_BIRD.getBuild()))
+                            .riskLevel(RiskLevelUtil.WAW)
+                            .damageType(DamageTypeUtil.BLACK)
+                            .defense(0.8F, 1.2F, 0.5F, 1.5F)
+                            .qliphothCounter(5)
+                            .build());
+
 
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.PUNISHING_BIRD.get(), PunishingBird.setAttributes());
         event.put(ModEntityTypes.THE_BURROWING_HEAVEN.get(), TheBurrowingHeaven.setAttributes());
         event.put(ModEntityTypes.JUDGEMENT_BIRD.get(), JudgementBird.setAttributes());
+        event.put(ModEntityTypes.BIG_BIRD.get(), BigBird.setAttributes());
     }
 
 

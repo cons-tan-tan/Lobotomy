@@ -21,6 +21,8 @@ import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
 import java.util.List;
@@ -36,6 +38,15 @@ public class BigBird extends SmartBrainAbnormalityEntity<BigBird>
 
     @Override
     public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<>(this, "body_controller", 0, event -> {
+            var controller = event.getController();
+            if (this.isOnGround() && this.isMovingSpontaneously()) {
+                controller.setAnimation(ANIM_WALK);
+            } else {
+                return PlayState.STOP;
+            }
+            return PlayState.CONTINUE;
+        }));
     }
 
     @Override

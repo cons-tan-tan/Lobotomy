@@ -3,9 +3,9 @@ package constantan.lobotomy.client.renderer;
 import constantan.lobotomy.client.model.entity.AbnormalityModel;
 import constantan.lobotomy.client.model.entity.PunishingBirdModel;
 import constantan.lobotomy.client.renderer.entity.AbnormalityRenderer;
+import constantan.lobotomy.client.renderer.entity.BigBirdRenderer;
 import constantan.lobotomy.client.renderer.entity.GlowingAbnormalityRenderer;
 import constantan.lobotomy.client.renderer.entity.TheBurrowingHeavenRenderer;
-import constantan.lobotomy.common.entity.custom.BigBird;
 import constantan.lobotomy.common.entity.custom.JudgementBird;
 import constantan.lobotomy.common.init.ModEntityTypes;
 import constantan.lobotomy.lib.LibAbnormality;
@@ -30,9 +30,7 @@ public class ModEntityRenderers {
                 r -> new AbnormalityRenderer<>(r, new PunishingBirdModel(LibAbnormality.PUNISHING_BIRD), 0.3F, 0.4F));
         MAP.put(ModEntityTypes.JUDGEMENT_BIRD.get(),
                 r -> new GlowingAbnormalityRenderer<>(r, new AbnormalityModel<JudgementBird>(LibAbnormality.JUDGEMENT_BIRD), 0.4F));
-        MAP.put(ModEntityTypes.THE_BURROWING_HEAVEN.get(),
-                TheBurrowingHeavenRenderer::new);
-        MAP.put(ModEntityTypes.BIG_BIRD.get(),
-                r -> new AbnormalityRenderer<>(r, new AbnormalityModel<BigBird>(LibAbnormality.BIG_BIRD), 1.0F, 1.5F));
+        MAP.put(ModEntityTypes.THE_BURROWING_HEAVEN.get(), TheBurrowingHeavenRenderer::new);
+        MAP.put(ModEntityTypes.BIG_BIRD.get(), BigBirdRenderer::new);
     }
 }
